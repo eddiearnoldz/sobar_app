@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "757537496365",
+    "project_id": "sobar-app",
+    "storage_bucket": "sobar-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757537496365:android:d1bc903cc69c6ffcef07a4",
+        "android_client_info": {
+          "package_name": "com.example.sobarApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJBFdlKCCPLpMob7PgnLCguMMuDbL8Q4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
