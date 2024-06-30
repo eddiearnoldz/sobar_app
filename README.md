@@ -1,6 +1,6 @@
 # sobar_app
 
-A new Flutter project.
+An app to search London's pubs for no and low alcohol drinks.
 
 ## Getting Started
 
