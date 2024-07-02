@@ -33,8 +33,10 @@ class MyAppView extends StatelessWidget {
                 create: (context) => SignInBloc(context.read<AuthenticationBloc>().userRepository),
                 child: const HomeScreen(),
               );
-            } else {
+            } else if (state.status == AuthenticationStatus.unauthenticated) {
               return const WelcomeScreen();
+            } else {
+              return Container();
             }
           }),
         ));
