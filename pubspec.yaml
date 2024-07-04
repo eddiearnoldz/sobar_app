@@ -34,6 +34,7 @@ flutter:
   - assets/backgrounds/
   - assets/logos/
   - assets/icons/
+  - assets/lucky_saint_pubs_london.json
 
   fonts:
     - family: Anton

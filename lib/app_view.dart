@@ -12,7 +12,7 @@ class MyAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'SOBAR',
+        title: 'SOBÆR',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primaryColor: HexColor("#DBDAD9"),

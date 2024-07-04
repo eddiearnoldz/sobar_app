@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sobar_app/components/my_text_button.dart';
 import 'package:sobar_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
+import 'package:sobar_app/screens/home/views/favourite_drinks_screen.dart';
+import 'package:sobar_app/screens/home/views/map_screen.dart';
+import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
+import 'package:sobar_app/screens/home/views/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +17,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
+
+  final List<Widget> _screens = [
+    const MapScreen(), // Placeholder for Map Screen
+    const FavoriteDrinksScreen(),
+    const NewsletterScreen(),
+    const SettingsScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: BottomAppBar(
+        elevation: 3,
         height: 60,
         color: Theme.of(context).primaryColor,
         child: Row(
@@ -50,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 index: 0),
             buildBottomBarItem(
                 icon: Icon(Icons.local_drink, color: currentPageIndex == 1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30), index: 1),
-            const SizedBox(width: 30), // Placeholder for the FloatingActionButton
             buildBottomBarItem(
                 icon: Icon(Icons.mail_outline_sharp, color: currentPageIndex == 2 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30),
                 index: 2),
@@ -59,29 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "TEST - YOU'RE IN",
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.red),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: MyTextButton(
-                buttonText: 'Sign Out',
-                onPressed: () {
-                  context.read<SignInBloc>().add(SignOutRequired());
-                },
-                padding: 12,
-                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.tertiary),
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _screens[currentPageIndex],
     );
   }
 
