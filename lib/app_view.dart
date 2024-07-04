@@ -26,7 +26,6 @@ class MyAppView extends StatelessWidget {
               onPrimary: HexColor("#292829"),
               error: HexColor("#FB0606"),
             ),
-            textTheme: TextTheme(),
             fontFamily: 'Work Sans',
             focusColor: HexColor("#FBF6C7")),
         darkTheme: ThemeData.dark(),
