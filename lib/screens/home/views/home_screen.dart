@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(
               Icons.person_outline_outlined,
               size: 30,
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ),
@@ -48,22 +48,22 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomAppBar(
         elevation: 3,
         height: 60,
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildBottomBarItem(
                 icon: Icon(currentPageIndex == 0 ? Icons.map_sharp : Icons.map_outlined,
-                    color: currentPageIndex == 0 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30),
+                    color: currentPageIndex == 0 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30),
                 index: 0),
             buildBottomBarItem(
-                icon: Icon(Icons.local_drink, color: currentPageIndex == 1 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30), index: 1),
+                icon: Icon(Icons.local_drink, color: currentPageIndex == 1 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30), index: 1),
             buildBottomBarItem(
-                icon: Icon(Icons.mail_outline_sharp, color: currentPageIndex == 2 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30),
+                icon: Icon(Icons.mail_outline_sharp, color: currentPageIndex == 2 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30),
                 index: 2),
             buildBottomBarItem(
-                icon: Icon(Icons.settings, color: currentPageIndex == 3 ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary.withOpacity(0.5), size: 30), index: 3),
+                icon: Icon(Icons.settings, color: currentPageIndex == 3 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30), index: 3),
           ],
         ),
       ),

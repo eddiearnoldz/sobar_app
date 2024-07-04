@@ -17,12 +17,21 @@ class PubBloc extends Bloc<PubEvent, PubState> {
     emit(PubLoading());
     try {
       QuerySnapshot snapshot = await firestore.collection('pubs').get();
-      List<Pub> pubs = snapshot.docs.map((doc) {
-        final data = doc.data() as Map<String, dynamic>;
-        return Pub.fromJson(data);
+
+      List<Future<Pub?>> futures = snapshot.docs.map((doc) async {
+        try {
+          final data = doc.data() as Map<String, dynamic>;
+          return Pub.fromJson(data);
+        } catch (e) {
+          print('Error parsing pub document: ${doc.id}, error: $e');
+          return null; // Skip the document if there's an error
+        }
       }).toList();
+
+      List<Pub> pubs = (await Future.wait(futures)).whereType<Pub>().toList();
       emit(PubLoaded(pubs: pubs));
     } catch (e) {
+      print('Error loading pubs: $e');
       emit(PubError());
     }
   }

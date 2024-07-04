@@ -13,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Text(
             "SETTINGS SCREEN",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.red),
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.error),
           ),
           const SizedBox(height: 20),
           SizedBox(
@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
                 context.read<SignInBloc>().add(SignOutRequired());
               },
               padding: 12,
-              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],

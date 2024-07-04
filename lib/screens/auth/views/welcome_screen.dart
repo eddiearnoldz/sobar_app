@@ -111,12 +111,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                             children: [
                               TextSpan(
                                 text: 'discover more at ',
-                                style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 13, fontFamily: 'Work Sans'),
+                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 13, fontFamily: 'Work Sans'),
                               ),
                               TextSpan(
                                 text: 'www.sobar-app.dev',
                                 style:
-                                    TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 13, decoration: TextDecoration.underline, fontFamily: 'Work Sans', fontWeight: FontWeight.w700),
+                                    TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 13, decoration: TextDecoration.underline, fontFamily: 'Work Sans', fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),

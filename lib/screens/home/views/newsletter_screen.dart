@@ -10,8 +10,7 @@ class NewsletterScreen extends StatelessWidget {
         children: [
           Text(
             "NEWSLETTER SCREEN",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w700),
-
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.w700),
           ),
         ],
       ),

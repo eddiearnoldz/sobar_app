@@ -59,27 +59,27 @@ class PubDetailsSheet extends StatelessWidget {
           children: [
             Text(
               pub.locationName,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             SizedBox(height: 8),
             Text(
               pub.locationAddress,
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             SizedBox(height: 8),
             Text(
               'City: ${pub.city}',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             SizedBox(height: 8),
             Text(
               'Latitude: ${pub.latitude}',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             SizedBox(height: 8),
             Text(
               'Longitude: ${pub.longitude}',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
             SizedBox(height: 16),
             ...pub.drinks
@@ -104,9 +104,9 @@ class PubDetailsSheet extends StatelessWidget {
                               ),
                               Text(
                                 '${drink.name} - ABV: ${drink.abv}',
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(color: Theme.of(context).colorScheme.error),
                               ),
-                              Text('${drink.averageRating}/5', style: TextStyle(color: Colors.red))
+                              Text('${drink.averageRating}/5', style: TextStyle(color: Theme.of(context).colorScheme.error))
                             ],
                           );
                         }

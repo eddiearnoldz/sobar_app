@@ -26,7 +26,7 @@ class MyTextButton extends StatelessWidget {
           child: Text(
             buttonText,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 20),
+            style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primary),
           ),
         ));
   }

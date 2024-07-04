@@ -46,7 +46,7 @@ class MyTextField extends StatelessWidget {
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: const BorderSide(color: Colors.transparent)),
-        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Theme.of(context).colorScheme.primary)),
+        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
         fillColor: Theme.of(context).colorScheme.surface.withOpacity(0.8),
         filled: true,
         errorText: errorMessage,

@@ -17,10 +17,21 @@ class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
     emit(DrinkLoading());
     try {
       QuerySnapshot snapshot = await firestore.collection('drinks').get();
-      List<Drink> drinks = snapshot.docs.map((doc) => Drink.fromJson(doc.data() as Map<String, dynamic>)).toList();
+
+      List<Future<Drink?>> futures = snapshot.docs.map((doc) async {
+        try {
+          final data = doc.data() as Map<String, dynamic>;
+          return Drink.fromJson(data);
+        } catch (e) {
+          print('Error parsing drink document: ${doc.id}, error: $e');
+          return null; // Skip the document if there's an error
+        }
+      }).toList();
+
+      List<Drink> drinks = (await Future.wait(futures)).whereType<Drink>().toList();
       emit(DrinkLoaded(drinks: drinks));
     } catch (e) {
-      print("error with drink model: $e");
+      print("Error loading drinks: $e");
       emit(DrinkError());
     }
   }
