@@ -26,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 40,
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
@@ -41,13 +42,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        title: SvgPicture.asset('assets/logos/sobar_logo_square.svg', width: MediaQuery.of(context).size.width / 4),
+        title: SvgPicture.asset('assets/logos/sobar_logo_square.svg', width: MediaQuery.of(context).size.width / 5),
         centerTitle: true,
       ),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       bottomNavigationBar: BottomAppBar(
         elevation: 3,
-        height: 60,
+        height: 55,
         color: Theme.of(context).colorScheme.primary,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
