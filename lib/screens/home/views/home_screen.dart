@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:location/location.dart';
 import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/map_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
 import 'package:sobar_app/screens/home/views/settings_screen.dart';
+import 'package:sobar_app/utils/location_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,6 +24,39 @@ class _HomeScreenState extends State<HomeScreen> {
     const SettingsScreen(),
   ];
 
+  final LocationService locationService = LocationService();
+
+  void _showLocationDialog(LocationData? locationData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Current Location'),
+          content: locationData != null
+              ? Text(
+                  'Latitude: ${locationData.latitude}\nLongitude: ${locationData.longitude}',
+                )
+              : const Text('Failed to get location.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _getLocation() async {
+    print("running");
+    LocationData? locationData = await locationService.getCurrentLocation();
+    print("location data: $locationData");
+    _showLocationDialog(locationData);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
-            print('Profile image tapped');
+            print('Get current location');
+            _getLocation();
           },
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0, bottom: 5),
