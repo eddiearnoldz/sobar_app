@@ -16,6 +16,5 @@ class NewsletterScreen extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

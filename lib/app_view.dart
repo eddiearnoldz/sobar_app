@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
+import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/views/welcome_screen.dart';
 import 'package:sobar_app/screens/home/views/home_screen.dart';
@@ -29,8 +32,18 @@ class MyAppView extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: ((context, state) {
             if (state.status == AuthenticationStatus.authenticated) {
-              return BlocProvider<SignInBloc>(
-                create: (context) => SignInBloc(context.read<AuthenticationBloc>().userRepository),
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider<SignInBloc>(
+                    create: (context) => SignInBloc(context.read<AuthenticationBloc>().userRepository),
+                  ),
+                  BlocProvider<PubBloc>(
+                    create: (context) => PubBloc(firestore: FirebaseFirestore.instance)..add(LoadPubs()),
+                  ),
+                  BlocProvider<DrinkBloc>(
+                    create: (context) => DrinkBloc(firestore: FirebaseFirestore.instance)..add(LoadDrinks()),
+                  ),
+                ],
                 child: const HomeScreen(),
               );
             } else if (state.status == AuthenticationStatus.unauthenticated) {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sobar_app/components/my_text_button.dart';
-import 'package:sobar_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/home/views/favourite_drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/map_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
@@ -29,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
           onTap: () {
