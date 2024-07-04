@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_image/flutter_image.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/filter_button.dart';
@@ -20,19 +21,19 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
     if (currentFilter == 'alphabetical') {
       filteredDrinks = List.from(state.drinks)..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'onlyZero') {
-      filteredDrinks = state.drinks.where((drink) => drink.abv == '0.0%').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.abv == '0.0%'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'mostPopular') {
       filteredDrinks = List.from(state.drinks)..sort((a, b) => b.ratingsCount.compareTo(a.ratingsCount));
     } else if (currentFilter == 'bottle') {
-      filteredDrinks = state.drinks.where((drink) => drink.type == 'bottle').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'bottle'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'can') {
-      filteredDrinks = state.drinks.where((drink) => drink.type == 'can').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'can'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'wine') {
-      filteredDrinks = state.drinks.where((drink) => drink.type == 'wine').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'wine'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'spirit') {
-      filteredDrinks = state.drinks.where((drink) => drink.type == 'spirit').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'spirit'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'draught') {
-      filteredDrinks = state.drinks.where((drink) => drink.type == 'draught').toList();
+      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'draught'))..sort((a, b) => a.name.compareTo(b.name));
     } else {
       filteredDrinks = List.from(state.drinks)..sort((a, b) => b.averageRating.compareTo(a.averageRating));
     }
@@ -50,40 +51,56 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
               } else if (state is DrinkLoaded) {
                 filterDrinks(state);
                 return ListView.builder(
-                  itemCount: filteredDrinks.length,
+                  itemCount: filteredDrinks.length + 1,
                   itemBuilder: (context, index) {
-                    Drink drink = filteredDrinks[index];
-                    return ListTile(
-                      title: Text(
-                        drink.name,
-                        style: TextStyle(fontFamily: 'Anton'),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('ABV: ${drink.abv}'),
-                          Text('SOBÆR Rating: ${drink.averageRating}/5'),
-                          Text('Votes: ${drink.ratingsCount.round()}'),
-                        ],
-                      ),
-                      leading: Image(
-                        image: NetworkImageWithRetry(
-                          drink.imageUrl,
+                    if (index == filteredDrinks.length) {
+                      return const SizedBox(
+                        height: 40,
+                      );
+                    } else {
+                      Drink drink = filteredDrinks[index];
+                      return ListTile(
+                        title: Text(
+                          drink.name,
+                          style: TextStyle(fontFamily: 'Anton'),
                         ),
-                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                          if (loadingProgress == null) return child;
-                          return Container(
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('ABV: ${drink.abv}'),
+                            Text('SOBÆR Rating: ${drink.averageRating}/5'),
+                            Text('Votes: ${drink.ratingsCount.round()}'),
+                          ],
+                        ),
+                        leading: CachedNetworkImage(
+                          imageUrl: drink.imageUrl,
+                          placeholder: (context, url) => Container(
                             decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
                             width: 60,
                             height: 60,
-                          );
-                        },
-                        errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
-                        height: 60,
-                        width: 60,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    );
+                          ),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.contain,
+                        ),
+                        trailing: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            if (drink.isVegan)
+                              const Text(
+                                "VEGAN",
+                                style: TextStyle(fontFamily: 'Anton', color: Color.fromARGB(255, 12, 74, 14)),
+                              ),
+                            if (drink.isGlutenFree)
+                              const Text(
+                                "GF",
+                                style: TextStyle(fontFamily: 'Anton'),
+                              ),
+                          ],
+                        ),
+                      );
+                    }
                   },
                 );
               } else {
@@ -143,7 +160,7 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
                       },
                     ),
                     FilterButton(
-                      label: 'Bottle',
+                      label: 'Bottles',
                       color: Colors.orange,
                       isActive: currentFilter == 'bottle',
                       onPressed: () {
@@ -153,7 +170,7 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
                       },
                     ),
                     FilterButton(
-                      label: 'Can',
+                      label: 'Cans',
                       color: Colors.purple,
                       isActive: currentFilter == 'can',
                       onPressed: () {
@@ -163,7 +180,7 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
                       },
                     ),
                     FilterButton(
-                      label: 'Wine',
+                      label: 'Wines',
                       color: Colors.pink,
                       isActive: currentFilter == 'wine',
                       onPressed: () {
@@ -173,7 +190,7 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
                       },
                     ),
                     FilterButton(
-                      label: 'Spirit',
+                      label: 'Spirits',
                       color: Colors.cyan,
                       isActive: currentFilter == 'spirit',
                       onPressed: () {

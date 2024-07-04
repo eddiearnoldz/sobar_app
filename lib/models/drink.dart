@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Drink {
   final String name;
   final String abv;
+  final bool isVegan, isGlutenFree;
   final double averageRating;
   final String imageUrl;
   final String type;
@@ -12,6 +13,8 @@ class Drink {
   Drink({
     required this.name,
     required this.abv,
+    required this.isVegan,
+    required this.isGlutenFree,
     required this.averageRating,
     required this.imageUrl,
     required this.type,
@@ -21,8 +24,10 @@ class Drink {
 
   factory Drink.fromJson(Map<String, dynamic> json) {
     return Drink(
-      name: json['name'],
-      abv: json['abv'],
+      name: json['name'] ?? "",
+      abv: json['abv'] ?? "",
+      isVegan: json['isVegan'] ?? false,
+      isGlutenFree: json['isGlutenFree'] ?? false,
       averageRating: (json['averageRating'] as num).toDouble(),
       imageUrl: json['imageUrl'],
       type: json['type'],
@@ -35,6 +40,8 @@ class Drink {
     return {
       'name': name,
       'abv': abv,
+      'isVegan': isVegan,
+      'isGlutenFree': isGlutenFree,
       'averageRating': averageRating,
       'imageUrl': imageUrl,
       'type': type,

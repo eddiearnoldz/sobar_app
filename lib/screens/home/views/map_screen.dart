@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class MapScreen extends StatelessWidget {
       body: BlocBuilder<PubBloc, PubState>(
         builder: (context, state) {
           if (state is PubLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state is PubLoaded) {
             return Scrollbar(
               thumbVisibility: true,
@@ -59,7 +60,7 @@ class MapScreen extends StatelessWidget {
                             pub.locationAddress,
                             style: TextStyle(fontSize: 16, color: Colors.black),
                           ),
-                          trailing: CircularProgressIndicator(),
+                          trailing: const SizedBox(height: 10),
                           onTap: () => showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -85,24 +86,24 @@ class MapScreen extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               if (drinkTypes['draught']!) ...[
-                                CircleAvatar(radius: 5, backgroundColor: const Color.fromARGB(255, 245, 89, 78)),
-                                SizedBox(width: 2),
+                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 245, 89, 78)),
+                                const SizedBox(width: 2),
                               ],
                               if (drinkTypes['can']!) ...[
-                                CircleAvatar(radius: 5, backgroundColor: const Color.fromARGB(255, 248, 234, 115)),
-                                SizedBox(width: 2),
+                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 248, 234, 115)),
+                                const SizedBox(width: 2),
                               ],
                               if (drinkTypes['bottle']!) ...[
-                                CircleAvatar(radius: 5, backgroundColor: const Color.fromARGB(255, 91, 177, 248)),
-                                SizedBox(width: 2),
+                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 91, 177, 248)),
+                                const SizedBox(width: 2),
                               ],
                               if (drinkTypes['wine']!) ...[
-                                CircleAvatar(radius: 5, backgroundColor: const Color.fromARGB(255, 30, 113, 33)),
-                                SizedBox(width: 2),
+                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 30, 113, 33)),
+                                const SizedBox(width: 2),
                               ],
                               if (drinkTypes['spirit']!) ...[
-                                CircleAvatar(radius: 5, backgroundColor: const Color.fromARGB(255, 215, 115, 228)),
-                                SizedBox(width: 2),
+                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 215, 115, 228)),
+                                const SizedBox(width: 2),
                               ],
                             ],
                           ),
@@ -155,22 +156,12 @@ class PubDetailsSheet extends StatelessWidget {
                     children: [
                       Text(
                         pub.locationName,
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton'),
                       ),
                       SizedBox(height: 8),
                       Text(
                         pub.locationAddress,
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Latitude: ${pub.latitude}',
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Longitude: ${pub.longitude}',
-                        style: TextStyle(color: Theme.of(context).colorScheme.error),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       SizedBox(height: 16),
                       (!snapshot.hasData || snapshot.data!.isEmpty)
@@ -228,15 +219,26 @@ class PubDetailsSheet extends StatelessWidget {
 
     drinkGroups.forEach((type, drinks) {
       if (drinks.isNotEmpty) {
-        sections.add(Text(type, style: TextStyle(fontSize: 16, fontFamily: 'Anton')));
+        sections.add(Text(type, style: TextStyle(fontSize: 14, fontFamily: 'Anton')));
         sections.add(SizedBox(height: 8));
         sections.addAll(drinks.map((drink) => Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Image.network(drink.imageUrl),
+                  height: 40,
+                  width: 40,
+                  child: CachedNetworkImage(
+                    imageUrl: drink.imageUrl,
+                    placeholder: (context, url) => Container(
+                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+                      width: 40,
+                      height: 40,
+                    ),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    height: 40,
+                    width: 40,
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 SizedBox(width: 8),
                 Text(
