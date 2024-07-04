@@ -16,22 +16,25 @@ class MapScreen extends StatelessWidget {
           if (state is PubLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is PubLoaded) {
-            return ListView.builder(
-              itemCount: state.pubs.length,
-              itemBuilder: (context, index) {
-                Pub pub = state.pubs[index];
-                return ListTile(
-                  title: Text(
-                    pub.locationName,
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16, color: Colors.black),
-                  ),
-                  subtitle: Text(
-                    pub.locationAddress,
-                    style: Theme.of(context).textTheme.labelSmall!.copyWith(fontSize: 16, color: Colors.black),
-                  ),
-                  onTap: () => {showModalBottomSheet(context: context, builder: (context) => PubDetailsSheet(pub: pub), backgroundColor: Colors.white)},
-                );
-              },
+            return Scrollbar(
+              thumbVisibility: true,
+              child: ListView.builder(
+                itemCount: state.pubs.length,
+                itemBuilder: (context, index) {
+                  Pub pub = state.pubs[index];
+                  return ListTile(
+                    title: Text(
+                      pub.locationName,
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(fontSize: 16, color: Colors.black),
+                    ),
+                    subtitle: Text(
+                      pub.locationAddress,
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(fontSize: 16, color: Colors.black),
+                    ),
+                    onTap: () => {showModalBottomSheet(context: context, builder: (context) => PubDetailsSheet(pub: pub), backgroundColor: Colors.white)},
+                  );
+                },
+              ),
             );
           } else {
             return Center(child: Text('Failed to load pubs'));
