@@ -5,7 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
-import 'package:sobar_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
+import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/views/welcome_screen.dart';
 import 'package:sobar_app/screens/home/views/home_screen.dart';
 
@@ -46,10 +46,8 @@ class MyAppView extends StatelessWidget {
                 ],
                 child: const HomeScreen(),
               );
-            } else if (state.status == AuthenticationStatus.unauthenticated) {
-              return const WelcomeScreen();
             } else {
-              return Container();
+              return const WelcomeScreen();
             }
           }),
         ));

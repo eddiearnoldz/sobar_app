@@ -24,24 +24,22 @@ class FirebaseUserRepo implements UserRepository {
   }
 
   @override
-  Future<void> signIn(String email, String password) async {
+  Future<MyUser> signIn(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      final firebaseUser = userCredential.user!;
+      final userDocument = await userCollection.doc(firebaseUser.uid).get();
+      return MyUser.fromEntity(MyUserEntity.fromJson(userDocument.data()!));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        // Handle user not found error
         log('No user found for that email.');
       } else if (e.code == 'wrong-password') {
-        // Handle wrong password error
         log('Your password does not match the account');
       } else {
-        // Handle other errors
         log('Error signing in: ${e.message}');
       }
-      // Rethrow the exception after handling
       rethrow;
     } catch (e) {
-      // Handle other exceptions
       log('Error signing in: $e');
       rethrow;
     }
@@ -52,13 +50,12 @@ class FirebaseUserRepo implements UserRepository {
     try {
       UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(email: myUser.email, password: password);
       myUser.userId = user.user!.uid;
-      return myUser; // Return MyUser upon successful signup
+      return myUser;
     } on FirebaseAuthException catch (e) {
-      String errorMessage = getFirebaseErrorMessage(e); // Get error message using helper function
-      log(errorMessage); // Log the error message
-      throw FirebaseAuthException(message: errorMessage, code: e.code); // Throw FirebaseAuthException with modified message
+      String errorMessage = getFirebaseErrorMessage(e);
+      log(errorMessage);
+      throw FirebaseAuthException(message: errorMessage, code: e.code);
     } catch (e) {
-      // Handle other exceptions
       log('Error signing up: $e');
       rethrow;
     }
@@ -79,7 +76,7 @@ class FirebaseUserRepo implements UserRepository {
     }
   }
 
-    String getFirebaseErrorMessage(FirebaseAuthException e) {
+  String getFirebaseErrorMessage(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
         return 'Invalid email address';

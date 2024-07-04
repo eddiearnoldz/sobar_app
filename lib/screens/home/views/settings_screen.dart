@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sobar_app/components/my_text_button.dart';
-import 'package:sobar_app/screens/auth/blocs/sing_in_bloc/sign_in_bloc.dart';
+import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
                 context.read<SignInBloc>().add(SignOutRequired());
               },
               padding: 12,
-              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
             ),
           ),
         ],

@@ -26,7 +26,7 @@ class MyTextButton extends StatelessWidget {
           child: Text(
             buttonText,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.primary),
+            style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton'),
           ),
         ));
   }
