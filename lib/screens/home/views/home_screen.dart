@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
         height: 55,
         color: Theme.of(context).colorScheme.primary,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildBottomBarItem(
@@ -129,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildBottomBarItem({required Widget icon, required int index}) {
     return Expanded(
+      flex: 0,
       child: TextButton(
         onPressed: () => setState(() => currentPageIndex = index),
         style: TextButton.styleFrom(
