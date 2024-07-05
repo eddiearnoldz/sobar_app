@@ -22,7 +22,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: '${user?.name}' ?? 'bello 🍺',
+                  text: '${user?.name}' ?? 'bello',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimary,
