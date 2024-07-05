@@ -91,16 +91,35 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             buildBottomBarItem(
-                icon: Icon(currentPageIndex == 0 ? Icons.map_sharp : Icons.map_outlined,
-                    color: currentPageIndex == 0 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30),
+                icon: SvgPicture.asset(
+                  currentPageIndex == 0 ? "assets/icons/icon_map_filled.svg" : "assets/icons/icon_map_line.svg",
+                  color: currentPageIndex == 0 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                ),
                 index: 0),
             buildBottomBarItem(
-                icon: Icon(Icons.local_drink, color: currentPageIndex == 1 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30), index: 1),
+                icon: SvgPicture.asset(
+                  "assets/icons/icon_pint_outline.svg",
+                  color: currentPageIndex == 1 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                  height: 30,
+                  width: 30,
+                ),
+                index: 1),
             buildBottomBarItem(
-                icon: Icon(Icons.mail_outline_sharp, color: currentPageIndex == 2 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30),
+                icon: SvgPicture.asset(
+                  "assets/icons/icon_newsletter.svg",
+                  color: currentPageIndex == 2 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                  height: 30,
+                  width: 30,
+                ),
                 index: 2),
             buildBottomBarItem(
-                icon: Icon(Icons.settings, color: currentPageIndex == 3 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5), size: 30), index: 3),
+                icon: SvgPicture.asset(
+                  "assets/icons/icon_settings.svg",
+                  color: currentPageIndex == 3 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                  height: 30,
+                  width: 30,
+                ),
+                index: 3),
           ],
         ),
       ),
