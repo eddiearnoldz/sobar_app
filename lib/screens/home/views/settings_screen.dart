@@ -12,15 +12,17 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: false,
           title: RichText(
             text: TextSpan(
-              text: 'ciao ',
+              text: "‘sup ",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: user?.name ?? 'bello',
+                  text: '${user?.name}' ?? 'bello 🍺',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimary,
