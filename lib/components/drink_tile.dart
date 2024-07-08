@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sobar_app/components/av_rating_text_span.dart';
 import 'package:sobar_app/models/drink.dart';
 
 class DrinkTile extends StatelessWidget {
@@ -32,19 +33,7 @@ class DrinkTile extends StatelessWidget {
               ],
             ),
           ),
-          Text.rich(
-            TextSpan(
-              children: [
-                const TextSpan(
-                  text: 'rating: ',
-                ),
-                TextSpan(
-                  text: '${drink.averageRating}/5',
-                  style: const TextStyle(fontFamily: 'Work Sans', fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
+          AvgRatingSpan(avRating: drink.averageRating.toString()),
           Text.rich(
             TextSpan(
               children: [
