@@ -66,7 +66,7 @@ class NewsletterScreen extends StatelessWidget {
                         height: MediaQuery.of(context).size.width,
                         width: MediaQuery.of(context).size.width,
                         fit: BoxFit.cover,
-                        fadeInDuration: const Duration(seconds: 1),
+                        fadeInDuration: const Duration(milliseconds: 300),
                       ),
                     ),
                     const SizedBox(height: 20),

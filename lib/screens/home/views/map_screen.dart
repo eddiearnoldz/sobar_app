@@ -58,7 +58,7 @@ class MapScreen extends StatelessWidget {
                           ),
                           subtitle: Text(
                             pub.locationAddress,
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSecondary),
                           ),
                           trailing: const SizedBox(height: 10),
                           onTap: () => showModalBottomSheet(
@@ -68,7 +68,7 @@ class MapScreen extends StatelessWidget {
                               heightFactor: 1,
                               child: PubDetailsSheet(pub: pub),
                             ),
-                            backgroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
                           ),
                         );
                       } else {
@@ -80,7 +80,7 @@ class MapScreen extends StatelessWidget {
                           ),
                           subtitle: Text(
                             pub.locationAddress,
-                            style: TextStyle(fontSize: 16, color: Colors.black),
+                            style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onPrimary),
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -110,7 +110,7 @@ class MapScreen extends StatelessWidget {
                           onTap: () => showModalBottomSheet(
                             context: context,
                             builder: (context) => PubDetailsSheet(pub: pub),
-                            backgroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
                           ),
                         );
                       }

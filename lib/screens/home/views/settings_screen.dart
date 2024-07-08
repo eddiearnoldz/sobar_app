@@ -12,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           centerTitle: false,
           title: RichText(
             text: TextSpan(

@@ -47,7 +47,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
   void _showReviewModal(Drink drink) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       isScrollControlled: true,
       builder: (context) {
         return Container(
