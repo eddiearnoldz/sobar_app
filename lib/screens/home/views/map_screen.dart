@@ -22,7 +22,7 @@ class MapScreen extends StatelessWidget {
       try {
         DocumentSnapshot snapshot = await drinkRef.get();
         if (snapshot.exists) {
-          Drink drink = Drink.fromJson(snapshot.data() as Map<String, dynamic>);
+          Drink drink = Drink.fromJson(drinkRef.id, snapshot.data() as Map<String, dynamic>);
           drinkTypes[drink.type] = true;
         }
       } catch (e) {
@@ -188,7 +188,7 @@ class PubDetailsSheet extends StatelessWidget {
       try {
         DocumentSnapshot snapshot = await drinkRef.get();
         if (snapshot.exists) {
-          drinks.add(Drink.fromJson(snapshot.data() as Map<String, dynamic>));
+          drinks.add(Drink.fromJson(drinkRef.id, snapshot.data() as Map<String, dynamic>));
         }
       } catch (e) {
         print('Error fetching drink: $e');

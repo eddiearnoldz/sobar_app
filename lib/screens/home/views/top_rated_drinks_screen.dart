@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
+import 'package:sobar_app/components/drink_review_modal.dart';
+import 'package:sobar_app/components/drink_tile.dart';
+import 'package:sobar_app/components/drinks_filter_bar.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/filter_button.dart';
 
-class TopRatedDrinksScreen extends StatefulWidget {
-  const TopRatedDrinksScreen({super.key});
+class DrinksScreen extends StatefulWidget {
+  const DrinksScreen({super.key});
 
   @override
-  _TopRatedDrinksScreenState createState() => _TopRatedDrinksScreenState();
+  _DrinksScreenState createState() => _DrinksScreenState();
 }
 
-class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
+class _DrinksScreenState extends State<DrinksScreen> {
   List<Drink> filteredDrinks = [];
   String currentFilter = 'topRated';
 
@@ -39,6 +42,26 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
     }
   }
 
+  void updateFilter(String newFilter) {
+    setState(() {
+      currentFilter = newFilter;
+    });
+  }
+
+  void _showReviewModal(Drink drink) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      builder: (context) {
+        return Container(
+          margin: const EdgeInsets.only(top: 30),
+          child: DrinkReviewModal(drink: drink),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,46 +82,9 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
                       );
                     } else {
                       Drink drink = filteredDrinks[index];
-                      return ListTile(
-                        title: Text(
-                          drink.name,
-                          style: TextStyle(fontFamily: 'Anton'),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('ABV: ${drink.abv}'),
-                            Text('SOBÆR Rating: ${drink.averageRating}/5'),
-                            Text('Votes: ${drink.ratingsCount.round()}'),
-                          ],
-                        ),
-                        leading: CachedNetworkImage(
-                          imageUrl: drink.imageUrl,
-                          placeholder: (context, url) => Container(
-                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
-                            width: 60,
-                            height: 60,
-                          ),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                          height: 60,
-                          width: 60,
-                          fit: BoxFit.contain,
-                        ),
-                        trailing: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            if (drink.isVegan)
-                              const Text(
-                                "VEGAN",
-                                style: TextStyle(fontFamily: 'Anton', color: Color.fromARGB(255, 12, 74, 14)),
-                              ),
-                            if (drink.isGlutenFree)
-                              const Text(
-                                "GF",
-                                style: TextStyle(fontFamily: 'Anton'),
-                              ),
-                          ],
-                        ),
+                      return DrinkTile(
+                        drink: drink,
+                        onTap: () => _showReviewModal(filteredDrinks[index]),
                       );
                     }
                   },
@@ -112,106 +98,9 @@ class _TopRatedDrinksScreenState extends State<TopRatedDrinksScreen> {
             bottom: 5,
             left: 0,
             right: 0,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FilterButton(
-                      label: 'A to Z',
-                      color: Colors.red,
-                      isActive: currentFilter == 'alphabetical',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'alphabetical';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: '0.0%',
-                      color: Colors.blue,
-                      isActive: currentFilter == 'onlyZero',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'onlyZero';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Popular',
-                      color: Colors.yellow,
-                      isActive: currentFilter == 'mostPopular',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'mostPopular';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Top rated',
-                      color: Colors.green,
-                      isActive: currentFilter == 'topRated',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'topRated';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Bottles',
-                      color: Colors.orange,
-                      isActive: currentFilter == 'bottle',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'bottle';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Cans',
-                      color: Colors.purple,
-                      isActive: currentFilter == 'can',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'can';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Wines',
-                      color: Colors.pink,
-                      isActive: currentFilter == 'wine',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'wine';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Spirits',
-                      color: Colors.cyan,
-                      isActive: currentFilter == 'spirit',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'spirit';
-                        });
-                      },
-                    ),
-                    FilterButton(
-                      label: 'Draught',
-                      color: Colors.brown,
-                      isActive: currentFilter == 'draught',
-                      onPressed: () {
-                        setState(() {
-                          currentFilter = 'draught';
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            child: DrinksFilterBar(
+              currentFilter: currentFilter,
+              onFilterChanged: updateFilter,
             ),
           ),
         ],

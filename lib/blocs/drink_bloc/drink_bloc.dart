@@ -21,7 +21,7 @@ class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
       List<Future<Drink?>> futures = snapshot.docs.map((doc) async {
         try {
           final data = doc.data() as Map<String, dynamic>;
-          return Drink.fromJson(data);
+          return Drink.fromJson(doc.id, data);
         } catch (e) {
           print('Error parsing drink document: ${doc.id}, error: $e');
           return null; // Skip the document if there's an error
