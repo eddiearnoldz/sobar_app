@@ -13,15 +13,51 @@ class DrinkTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       title: Text(
-        drink.name,
+        drink.name.toUpperCase(),
         style: const TextStyle(fontFamily: 'Anton'),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('ABV: ${drink.abv}'),
-          Text('SOBÆR Rating: ${drink.averageRating}/5'),
-          Text('Reviews: ${drink.ratingsCount.round()}'),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'abv: ',
+                ),
+                TextSpan(
+                  text: '${drink.abv}',
+                  style: const TextStyle(fontFamily: 'Work Sans', fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'SOBÆR score: ',
+                ),
+                TextSpan(
+                  text: '${drink.averageRating}/5',
+                  style: const TextStyle(fontFamily: 'Work Sans', fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'reviews: ',
+                ),
+                TextSpan(
+                  text: '${drink.ratingsCount.round()}',
+                  style: const TextStyle(fontFamily: 'Work Sans', fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       leading: CachedNetworkImage(
@@ -40,14 +76,19 @@ class DrinkTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (drink.isVegan)
-            const Text(
-              "VEGAN",
-              style: TextStyle(fontFamily: 'Anton', color: Color.fromARGB(255, 12, 74, 14)),
+            Text(
+              "vegan",
+              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
             ),
           if (drink.isGlutenFree)
-            const Text(
-              "GF",
-              style: TextStyle(fontFamily: 'Anton'),
+            Text(
+              "gf",
+              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
+            ),
+          if (drink.calories.isFinite)
+            Text(
+              "${drink.calories.floor()} cals",
+              style: TextStyle(fontFamily: 'Anton', color: Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
             ),
         ],
       ),

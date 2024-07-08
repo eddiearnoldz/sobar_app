@@ -20,7 +20,7 @@ class FilterButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: color.withOpacity(isActive ? 0.9 : 0.4),
+            backgroundColor: color.withOpacity(isActive ? 0.9 : 0.5),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
             minimumSize: Size(MediaQuery.of(context).size.width / 5, 28)),
