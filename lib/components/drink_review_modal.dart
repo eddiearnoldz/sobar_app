@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/review_tile.dart';
@@ -18,6 +20,7 @@ class DrinkReviewModal extends StatefulWidget {
 class _DrinkReviewModalState extends State<DrinkReviewModal> {
   double _rating = 3.0;
   final TextEditingController _reviewController = TextEditingController();
+  bool _showReviewInput = false;
 
   Future<void> _submitReview() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -106,25 +109,13 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                   children: [
                                     Text(
                                       'abv: ${widget.drink.abv}',
-                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                     Row(
                                       children: [
-                                        const Text(
-                                          'rating: ',
-                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
-                                        ),
-                                        Row(
-                                          children: List.generate(5, (starIndex) {
-                                            double currentStarValue = starIndex + 1;
-                                            if (currentStarValue <= widget.drink.averageRating) {
-                                              return const Icon(Icons.star_rounded, size: 15, color: Colors.amber);
-                                            } else if (currentStarValue - 0.5 == widget.drink.averageRating) {
-                                              return const Icon(Icons.star_half_rounded, size: 15, color: Colors.amber);
-                                            } else {
-                                              return const Icon(Icons.star_border_rounded, size: 15, color: Colors.amber);
-                                            }
-                                          }),
+                                        Text(
+                                          'rating: ${widget.drink.averageRating} / 5',
+                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
@@ -175,30 +166,6 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                               )
                             ],
                           ),
-                          const SizedBox(height: 5),
-                          const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                          RatingBar.builder(
-                            initialRating: _rating,
-                            minRating: 1,
-                            glowColor: const Color.fromARGB(255, 243, 52, 4),
-                            glowRadius: 0,
-                            glow: false,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemSize: 30,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star_rate_rounded,
-                              color: Color.fromARGB(255, 247, 119, 87),
-                              size: 10,
-                            ),
-                            onRatingUpdate: (rating) {
-                              setState(() {
-                                _rating = rating;
-                              });
-                            },
-                          ),
                         ],
                       ),
                     ),
@@ -212,42 +179,93 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _reviewController,
-                  decoration: InputDecoration(
-                    labelText: 'Write a review',
-                    floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                    border: const OutlineInputBorder(),
-                    focusedBorder: const OutlineInputBorder(),
-                    alignLabelWithHint: true,
+                const SizedBox(height: 15),
+                Visibility(
+                  visible: !_showReviewInput,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _showReviewInput = !_showReviewInput;
+                      });
+                    },
+                    child: Text(
+                      "Leave a review",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  maxLines: 3,
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                Visibility(
+                  visible: _showReviewInput,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      RatingBar.builder(
+                        initialRating: _rating,
+                        minRating: 1,
+                        glowColor: const Color.fromARGB(255, 243, 52, 4),
+                        glowRadius: 0,
+                        glow: false,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 30,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star_rate_rounded,
+                          color: Color.fromARGB(255, 247, 119, 87),
+                          size: 10,
+                        ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                            _rating = rating;
+                          });
+                        },
                       ),
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary)),
-                      onPressed: _submitReview,
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: _reviewController,
+                        decoration: InputDecoration(
+                          labelText: 'Write a review',
+                          floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                          border: const OutlineInputBorder(),
+                          focusedBorder: const OutlineInputBorder(),
+                          alignLabelWithHint: true,
+                        ),
+                        maxLines: 3,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 05),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _showReviewInput = !_showReviewInput;
+                              });
+                            },
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary)),
+                            onPressed: _submitReview,
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 15),
                 StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).collection('reviews').orderBy('date', descending: true).snapshots(),
                   builder: (context, snapshot) {
@@ -263,7 +281,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                       return const Text('No reviews yet.');
                     }
 
-                    double totalRating = reviews.fold(0.0, (sum, review) => sum + (review['rating'] as num).toDouble());
+                    double totalRating = reviews.fold(0.0, (totalSum, review) => totalSum + (review['rating'] as num).toDouble());
                     double averageRating = totalRating / reviews.length;
                     FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).update({
                       'averageRating': averageRating,
