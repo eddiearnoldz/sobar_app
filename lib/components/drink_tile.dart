@@ -36,7 +36,7 @@ class DrinkTile extends StatelessWidget {
             TextSpan(
               children: [
                 const TextSpan(
-                  text: 'SOBÆR score: ',
+                  text: 'rating: ',
                 ),
                 TextSpan(
                   text: '${drink.averageRating}/5',

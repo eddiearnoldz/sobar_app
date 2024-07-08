@@ -90,15 +90,97 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${widget.drink.name}',
+                            widget.drink.name,
                             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'abv: ${widget.drink.abv}',
+                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'rating: ',
+                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
+                                        ),
+                                        Row(
+                                          children: List.generate(5, (starIndex) {
+                                            double currentStarValue = starIndex + 1;
+                                            if (currentStarValue <= widget.drink.averageRating) {
+                                              return const Icon(Icons.star_rounded, size: 15, color: Colors.amber);
+                                            } else if (currentStarValue - 0.5 == widget.drink.averageRating) {
+                                              return const Icon(Icons.star_half_rounded, size: 15, color: Colors.amber);
+                                            } else {
+                                              return const Icon(Icons.star_border_rounded, size: 15, color: Colors.amber);
+                                            }
+                                          }),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (widget.drink.isVegan)
+                                            Text(
+                                              "vegan",
+                                              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
+                                            ),
+                                          if (widget.drink.calories.isFinite)
+                                            Text(
+                                              "${widget.drink.calories.floor()} cals",
+                                              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          if (widget.drink.isGlutenFree)
+                                            Text(
+                                              "gf",
+                                              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
                           const SizedBox(height: 5),
                           const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                           RatingBar.builder(
                             initialRating: _rating,
                             minRating: 1,
-                            glowColor: Color.fromARGB(255, 243, 52, 4),
+                            glowColor: const Color.fromARGB(255, 243, 52, 4),
                             glowRadius: 0,
                             glow: false,
                             direction: Axis.horizontal,
@@ -191,7 +273,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Previous Reviews: ${reviews.length}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text('Previous Reviews: ${reviews.length}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 5),
                         ListView.builder(
                           controller: scrollController,

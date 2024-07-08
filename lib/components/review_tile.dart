@@ -29,7 +29,7 @@ class ReviewTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           child: ListTile(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             title: Text(review['writtenReview']),
             minVerticalPadding: 5,
             subtitle: Row(
@@ -39,16 +39,16 @@ class ReviewTile extends StatelessWidget {
                 Row(
                   children: [
                     Text('Rating: $rating', style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onPrimary)),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 5),
                     Row(
                       children: List.generate(5, (starIndex) {
                         double currentStarValue = starIndex + 1;
                         if (currentStarValue <= rating) {
-                          return const Icon(Icons.star, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_rounded, size: 12, color: Colors.amber);
                         } else if (currentStarValue - 0.5 == rating) {
-                          return const Icon(Icons.star_half, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_half_rounded, size: 12, color: Colors.amber);
                         } else {
-                          return const Icon(Icons.star_border, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_border_rounded, size: 12, color: Colors.amber);
                         }
                       }),
                     ),
