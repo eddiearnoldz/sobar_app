@@ -6,7 +6,7 @@ class DrinkTile extends StatelessWidget {
   final Drink drink;
   final VoidCallback onTap;
 
-  const DrinkTile({Key? key, required this.drink, required this.onTap}) : super(key: key);
+  const DrinkTile({super.key, required this.drink, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class DrinkTile extends StatelessWidget {
                   text: 'abv: ',
                 ),
                 TextSpan(
-                  text: '${drink.abv}',
+                  text: drink.abv,
                   style: const TextStyle(fontFamily: 'Work Sans', fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
                 ),
               ],

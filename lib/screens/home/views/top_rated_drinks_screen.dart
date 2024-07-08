@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
 import 'package:sobar_app/components/drink_review_modal.dart';
 import 'package:sobar_app/components/drink_tile.dart';
 import 'package:sobar_app/components/drinks_filter_bar.dart';

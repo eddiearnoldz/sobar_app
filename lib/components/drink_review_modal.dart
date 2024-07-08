@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sobar_app/models/drink.dart';
@@ -181,19 +182,42 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                 ),
                 const SizedBox(height: 15),
                 Visibility(
-                  visible: !_showReviewInput,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _showReviewInput = !_showReviewInput;
-                      });
-                    },
-                    child: Text(
-                      "Leave a review",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                    visible: !_showReviewInput,
+                    child: TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                        side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Leave a review",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            size: 14,
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _showReviewInput = !_showReviewInput;
+                        });
+                      },
+                    )),
                 Visibility(
                   visible: _showReviewInput,
                   child: Column(
@@ -249,7 +273,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           ElevatedButton(
@@ -291,7 +315,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Previous Reviews: ${reviews.length}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(' ${reviews.length} ${reviews.length > 1 ? 'reviews' : 'review'}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 5),
                         ListView.builder(
                           controller: scrollController,

@@ -63,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
           body: SafeArea(
             child: SingleChildScrollView(
               reverse: true,
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height / 4),
