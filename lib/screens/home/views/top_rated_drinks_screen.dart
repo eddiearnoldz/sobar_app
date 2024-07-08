@@ -1,13 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/blocs/drink_bloc/drink_bloc.dart';
 import 'package:sobar_app/components/drink_review_modal.dart';
 import 'package:sobar_app/components/drink_tile.dart';
 import 'package:sobar_app/components/drinks_filter_bar.dart';
 import 'package:sobar_app/models/drink.dart';
-import 'package:sobar_app/components/filter_button.dart';
 
 class DrinksScreen extends StatefulWidget {
   const DrinksScreen({super.key});
@@ -20,25 +18,25 @@ class _DrinksScreenState extends State<DrinksScreen> {
   List<Drink> filteredDrinks = [];
   String currentFilter = 'topRated';
 
-  void filterDrinks(DrinkLoaded state) {
+  void filterDrinks(List<Drink> drinks) {
     if (currentFilter == 'alphabetical') {
-      filteredDrinks = List.from(state.drinks)..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks)..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'onlyZero') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.abv == '0.0%'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.abv == '0.0%'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'mostPopular') {
-      filteredDrinks = List.from(state.drinks)..sort((a, b) => b.ratingsCount.compareTo(a.ratingsCount));
+      filteredDrinks = List.from(drinks)..sort((a, b) => b.ratingsCount.compareTo(a.ratingsCount));
     } else if (currentFilter == 'bottle') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'bottle'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.type == 'bottle'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'can') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'can'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.type == 'can'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'wine') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'wine'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.type == 'wine'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'spirit') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'spirit'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.type == 'spirit'))..sort((a, b) => a.name.compareTo(b.name));
     } else if (currentFilter == 'draught') {
-      filteredDrinks = List.from(state.drinks.where((drink) => drink.type == 'draught'))..sort((a, b) => a.name.compareTo(b.name));
+      filteredDrinks = List.from(drinks.where((drink) => drink.type == 'draught'))..sort((a, b) => a.name.compareTo(b.name));
     } else {
-      filteredDrinks = List.from(state.drinks)..sort((a, b) => b.averageRating.compareTo(a.averageRating));
+      filteredDrinks = List.from(drinks)..sort((a, b) => b.averageRating.compareTo(a.averageRating));
     }
   }
 
@@ -67,31 +65,39 @@ class _DrinksScreenState extends State<DrinksScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          BlocBuilder<DrinkBloc, DrinkState>(
-            builder: (context, state) {
-              if (state is DrinkLoading) {
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('drinks').snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is DrinkLoaded) {
-                filterDrinks(state);
-                return ListView.builder(
-                  itemCount: filteredDrinks.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == filteredDrinks.length) {
-                      return const SizedBox(
-                        height: 40,
-                      );
-                    } else {
-                      Drink drink = filteredDrinks[index];
-                      return DrinkTile(
-                        drink: drink,
-                        onTap: () => _showReviewModal(filteredDrinks[index]),
-                      );
-                    }
-                  },
-                );
-              } else {
+              }
+              if (!snapshot.hasData || snapshot.hasError) {
                 return const Center(child: Text('Failed to load drinks'));
               }
+
+              List<Drink> drinks = snapshot.data!.docs.map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                return Drink.fromJson(doc.id, data);
+              }).toList();
+
+              filterDrinks(drinks);
+
+              return ListView.builder(
+                itemCount: filteredDrinks.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == filteredDrinks.length) {
+                    return const SizedBox(
+                      height: 40,
+                    );
+                  } else {
+                    Drink drink = filteredDrinks[index];
+                    return DrinkTile(
+                      drink: drink,
+                      onTap: () => _showReviewModal(filteredDrinks[index]),
+                    );
+                  }
+                },
+              );
             },
           ),
           Positioned(

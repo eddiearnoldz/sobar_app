@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Drink {
   final String name, id, abv, imageUrl, type;
   final bool isVegan, isGlutenFree;
-  final double ratingsCount, averageRating;
+  final double ratingsCount, averageRating, calories;
   List<Review> reviews;
 
   Drink({
@@ -16,6 +16,7 @@ class Drink {
     required this.imageUrl,
     required this.type,
     required this.ratingsCount,
+    required this.calories,
     this.reviews = const [],
   });
 
@@ -25,6 +26,7 @@ class Drink {
         isVegan = json['isVegan'] ?? false,
         isGlutenFree = json['isGlutenFree'] ?? false,
         averageRating = (json['averageRating'] as num).toDouble(),
+        calories = (json['calories'] as num).toDouble(),
         imageUrl = json['imageUrl'],
         type = json['type'],
         ratingsCount = (json['ratingsCount'] as num).toDouble(),
@@ -36,6 +38,7 @@ class Drink {
       'abv': abv,
       'isVegan': isVegan,
       'isGlutenFree': isGlutenFree,
+      'calories': calories,
       'averageRating': averageRating,
       'imageUrl': imageUrl,
       'type': type,
