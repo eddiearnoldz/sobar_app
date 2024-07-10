@@ -38,6 +38,10 @@
 	<string>Main</string>
 	<key>UIRequiresFullScreen</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location for map functionality</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string></string>
 	<key>UISupportedInterfaceOrientations</key>

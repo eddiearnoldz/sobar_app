@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:location/location.dart';
+import 'package:sobar_app/screens/home/views/new_map_screen.dart';
 import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
-import 'package:sobar_app/screens/home/views/map_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
 import 'package:sobar_app/screens/home/views/settings_screen.dart';
 import 'package:sobar_app/utils/location_service.dart';
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
 
   final List<Widget> _screens = [
-    const MapScreen(), // Placeholder for Map Screen
+    NewMapScreen(),
     const DrinksScreen(),
     const NewsletterScreen(),
     const SettingsScreen(),

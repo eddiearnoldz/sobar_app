@@ -21,7 +21,7 @@ class PubBloc extends Bloc<PubEvent, PubState> {
       List<Future<Pub?>> futures = snapshot.docs.map((doc) async {
         try {
           final data = doc.data() as Map<String, dynamic>;
-          return Pub.fromJson(data);
+          return Pub.fromJson(doc.id, data);
         } catch (e) {
           print('Error parsing pub document: ${doc.id}, error: $e');
           return null; // Skip the document if there's an error

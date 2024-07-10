@@ -6,8 +6,8 @@ import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
 
-class MapScreen extends StatelessWidget {
-  const MapScreen({super.key});
+class OldMapScreen extends StatelessWidget {
+  const OldMapScreen({super.key});
 
   Future<Map<String, bool>> getDrinkTypes(Pub pub) async {
     Map<String, bool> drinkTypes = {

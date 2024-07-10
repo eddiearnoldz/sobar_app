@@ -8,6 +8,7 @@ import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/views/welcome_screen.dart';
 import 'package:sobar_app/screens/home/views/home_screen.dart';
+import 'package:sobar_app/utils/api_key_helper.dart';
 
 class MyAppView extends StatelessWidget {
   const MyAppView({super.key});
@@ -47,6 +48,7 @@ class MyAppView extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: ((context, state) {
             if (state.status == AuthenticationStatus.authenticated) {
+              storeApiKeys();
               return MultiBlocProvider(
                 providers: [
                   BlocProvider<SignInBloc>(
