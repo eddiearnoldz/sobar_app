@@ -26,7 +26,7 @@ extension ToBitDescription on Widget {
       logicalSize: logicalSize,
       imageSize: imageSize,
     );
-    return BitmapDescriptor.fromBytes(pngBytes);
+    return BitmapDescriptor.bytes(pngBytes);
   }
 }
 
@@ -58,8 +58,7 @@ Future<Uint8List> createImageFromWidget(
   pipelineOwner.rootNode = renderView;
   renderView.prepareInitialFrame();
 
-  final RenderObjectToWidgetElement<RenderBox> rootElement =
-      RenderObjectToWidgetAdapter<RenderBox>(
+  final RenderObjectToWidgetElement<RenderBox> rootElement = RenderObjectToWidgetAdapter<RenderBox>(
     container: repaintBoundary,
     child: widget,
   ).attachToRenderTree(buildOwner);
@@ -75,8 +74,7 @@ Future<Uint8List> createImageFromWidget(
   pipelineOwner.flushCompositingBits();
   pipelineOwner.flushPaint();
 
-  final ui.Image image = await repaintBoundary.toImage(
-      pixelRatio: imageSize.width / logicalSize.width);
+  final ui.Image image = await repaintBoundary.toImage(pixelRatio: imageSize.width / logicalSize.width);
   final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
 
   return byteData!.buffer.asUint8List();

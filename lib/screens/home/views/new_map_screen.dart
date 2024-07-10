@@ -22,7 +22,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
   final Set<Marker> _markers = <Marker>{};
   GooglePlacesHelper? _placesHelper;
   bool isBlackStyle = true;
-  late BitmapDescriptor customIcon;
+  BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
 
   @override
   void initState() {
