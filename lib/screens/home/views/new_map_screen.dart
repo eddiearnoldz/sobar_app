@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:sobar_app/utils/map_styles.dart';
 import 'package:sobar_app/utils/widget_to_map_icon.dart';
+import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:sobar_app/utils/map_provider.dart';
 
 class NewMapScreen extends StatefulWidget {
   @override
@@ -19,9 +22,7 @@ class NewMapScreen extends StatefulWidget {
 class _NewMapScreenState extends State<NewMapScreen> {
   GoogleMapController? _controller;
   final LatLng _initialPosition = const LatLng(51.5074, -0.1278); // London coordinates
-  final Set<Marker> _markers = <Marker>{};
   GooglePlacesHelper? _placesHelper;
-  bool isBlackStyle = true;
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
 
   @override
@@ -67,31 +68,23 @@ class _NewMapScreenState extends State<NewMapScreen> {
     print('Showing details for pub: ${pub.id}');
   }
 
-  void _toggleMapStyle() {
-    if (_controller != null) {
-      setState(() {
-        isBlackStyle = !isBlackStyle;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final mapProvider = Provider.of<MapProvider>(context);
+
     return Scaffold(
       body: Column(
         children: [
           Flexible(
             flex: 3,
-            child: Stack(children: [
-              BlocBuilder<PubBloc, PubState>(
-                builder: (context, state) {
-                  if (state is PubLoaded) {
-                    // Clear existing markers
-                    _markers.clear();
-                    // Add markers for each pub
-                    for (var pub in state.pubs) {
-                      _markers.add(
-                        Marker(
+            child: Stack(
+              children: [
+                BlocBuilder<PubBloc, PubState>(
+                  builder: (context, pubState) {
+                    if (pubState is PubLoaded) {
+                      // Create markers for each pub
+                      final markers = pubState.pubs.map((pub) {
+                        return Marker(
                           markerId: MarkerId(pub.id),
                           position: LatLng(pub.latitude, pub.longitude),
                           icon: customIcon, // Use the custom icon here
@@ -100,64 +93,90 @@ class _NewMapScreenState extends State<NewMapScreen> {
                             snippet: pub.locationAddress,
                             onTap: () => _showPubDetails(context, pub),
                           ),
-                        ),
-                      );
+                        );
+                      }).toSet();
+                      // Dispatch an event to update markers
+                      context.read<MapBloc>().add(UpdateMarkers(markers));
                     }
-                    return GoogleMap(
-                      zoomControlsEnabled: true,
-                      initialCameraPosition: CameraPosition(target: _initialPosition, zoom: 11),
-                      style: isBlackStyle ? mapStyleBlack : mapStyleSilver,
-                      markers: _markers,
-                      onMapCreated: (controller) {
-                        _controller = controller;
-                        print('Map created');
+                    return BlocBuilder<MapBloc, MapState>(
+                      builder: (context, mapState) {
+                        return GoogleMap(
+                          compassEnabled: true,
+                          myLocationButtonEnabled: true,
+                          myLocationEnabled: true,
+                          zoomControlsEnabled: false,
+                          initialCameraPosition: mapState is MapLoaded
+                              ? mapState.cameraPosition
+                              : CameraPosition(
+                                  target: _initialPosition,
+                                  zoom: 11,
+                                ),
+                          mapType: MapType.normal,
+                          style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
+                          markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
+                          onMapCreated: (controller) {
+                            if (mapProvider.controller == null) {
+                              mapProvider.setController(controller);
+                              context.read<MapBloc>().add(InitializeMap(controller));
+                            }
+                          },
+                          onCameraMove: (position) {
+                            context.read<MapBloc>().add(UpdateCameraPosition(position));
+                          },
+                        );
                       },
                     );
-                  } else if (state is PubLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-              Positioned(
-                top: 10,
-                right: 10,
-                child: FloatingActionButton(
-                  onPressed: _toggleMapStyle,
-                  mini: true,
-                  child: Icon(
-                    isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
-                    size: 20,
+                  },
+                ),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      context.read<MapBloc>().add(ToggleMapStyle());
+                    },
+                    mini: true,
+                    child: BlocBuilder<MapBloc, MapState>(
+                      builder: (context, state) {
+                        if (state is MapLoaded) {
+                          return Icon(
+                            state.isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
+                            size: 20,
+                          );
+                        } else {
+                          return Icon(Icons.brightness_3, size: 20);
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
-            ]),
-          ),
-          Flexible(
-            flex: 1,
-            child: BlocBuilder<PubBloc, PubState>(
-              builder: (context, state) {
-                if (state is PubLoaded) {
-                  return ListView.builder(
-                    itemCount: state.pubs.length,
-                    itemBuilder: (context, index) {
-                      Pub pub = state.pubs[index];
-                      return ListTile(
-                        title: Text(pub.locationName, style: TextStyle(fontFamily: 'Anton')),
-                        subtitle: Text(pub.locationAddress),
-                        onTap: () => _showPubDetails(context, pub),
-                      );
-                    },
-                  );
-                } else if (state is PubLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return const Center(child: Text('Failed to load pubs'));
-                }
-              },
+              ],
             ),
           ),
+          // Flexible(
+          //   flex: 1,
+          //   child: BlocBuilder<PubBloc, PubState>(
+          //     builder: (context, state) {
+          //       if (state is PubLoaded) {
+          //         return ListView.builder(
+          //           itemCount: state.pubs.length,
+          //           itemBuilder: (context, index) {
+          //             Pub pub = state.pubs[index];
+          //             return ListTile(
+          //               title: Text(pub.locationName, style: TextStyle(fontFamily: 'Anton')),
+          //               subtitle: Text(pub.locationAddress),
+          //               onTap: () => _showPubDetails(context, pub),
+          //             );
+          //           },
+          //         );
+          //       } else if (state is PubLoading) {
+          //         return const Center(child: CircularProgressIndicator());
+          //       } else {
+          //         return const Center(child: Text('Failed to load pubs'));
+          //       }
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
