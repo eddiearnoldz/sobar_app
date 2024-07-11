@@ -11,7 +11,7 @@ import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
-import 'package:sobar_app/utils/map_styles.dart';
+import 'package:sobar_app/utils/map_config.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sobar_app/utils/map_provider.dart';
@@ -22,7 +22,7 @@ class NewMapScreen extends StatefulWidget {
 }
 
 class _NewMapScreenState extends State<NewMapScreen> {
-  final LatLng _initialPosition = const LatLng(51.5074, -0.1278); // London coordinates
+  final LatLng _initialPosition = londonCoordinates;
   GooglePlacesHelper? _placesHelper;
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
   String currentFilter = '';
@@ -188,7 +188,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       ? mapState.cameraPosition
                       : CameraPosition(
                           target: _initialPosition,
-                          zoom: 10,
+                          zoom: 11,
                         ),
                   mapType: MapType.normal,
                   markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
@@ -207,7 +207,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
               },
             ),
           ),
-          ToggleMapStyleButton(),
+          const ToggleMapStyleButton(),
           Positioned(
             top: 100,
             left: 10,

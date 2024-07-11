@@ -1,6 +1,7 @@
-import 'dart:ui';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'package:flutter/material.dart';
+const LatLng londonCoordinates = LatLng(51.5074, -0.1278);
+const LatLng losAngelesCoordinates = LatLng(34.0522, -118.2437);
 
 const String mapStyleBlack = '''[
   {
