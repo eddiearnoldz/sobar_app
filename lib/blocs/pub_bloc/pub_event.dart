@@ -9,4 +9,11 @@ abstract class PubEvent extends Equatable {
 
 class LoadPubs extends PubEvent {}
 
-class ResetDrinks extends PubEvent {}
+class FilterPubs extends PubEvent {
+  final String filter;
+
+  const FilterPubs({required this.filter});
+
+  @override
+  List<Object> get props => [filter];
+}

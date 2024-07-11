@@ -2,7 +2,7 @@ part of 'pub_bloc.dart';
 
 abstract class PubState extends Equatable {
   const PubState();
-  
+
   @override
   List<Object> get props => [];
 }
@@ -18,6 +18,15 @@ class PubLoaded extends PubState {
 
   @override
   List<Object> get props => [pubs];
+}
+
+class PubFiltered extends PubState {
+  final List<Pub> filteredPubs;
+
+  const PubFiltered({required this.filteredPubs});
+
+  @override
+  List<Object> get props => [filteredPubs];
 }
 
 class PubError extends PubState {}

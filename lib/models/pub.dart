@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sobar_app/models/drink.dart';
 
 class Pub {
   final String id;
@@ -9,6 +10,7 @@ class Pub {
   final String city;
   final List<DocumentReference> drinks;
   final String? placeId;
+  List<Drink> drinksData; // Store fetched drinks
 
   Pub({
     required this.id,
@@ -19,6 +21,7 @@ class Pub {
     required this.city,
     required this.drinks,
     this.placeId,
+    this.drinksData = const [], // Initialize drinksData
   });
 
   factory Pub.fromJson(String id, Map<String, dynamic> json) {
