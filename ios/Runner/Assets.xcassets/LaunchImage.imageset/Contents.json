@@ -1,15 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "sobar_logo_512.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "sobar_logo_1024.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "sobar_logo_1024.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
