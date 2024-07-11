@@ -24,32 +24,32 @@ class MyAppView extends StatelessWidget {
         title: 'SOBÆR',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: HexColor("#DBDAD9"),
+          primaryColor: HexColor("#FCF4F0"),
           colorScheme: ColorScheme.light(
-            surface: HexColor("#DBDAD9"),
-            onSurface: HexColor("#292829"),
-            primary: HexColor("#DBDAD9"),
-            onPrimary: HexColor("#292829"),
+            surface: HexColor("#FCF4F0"),
+            onSurface: HexColor("#1C1C1C"),
+            primary: HexColor("#FCF4F0"),
+            onPrimary: HexColor("#1C1C1C"),
             secondary: HexColor('#FFFFFF'),
-            onSecondary: HexColor('#DBDAD9'),
+            onSecondary: HexColor('#FCF4F0'),
             error: HexColor("#FB0606"),
           ),
           fontFamily: 'Work Sans',
           focusColor: HexColor("#FBF6C7"),
         ),
         darkTheme: ThemeData(
-          primaryColor: HexColor("#292829"), // Inverted from #DBDAD9
+          primaryColor: HexColor("#1C1C1C"), // Inverted from #FCF4F0
           colorScheme: ColorScheme.dark(
-            surface: HexColor("#292829"), // Inverted from #DBDAD9
-            onSurface: HexColor("#DBDAD9"), // Inverted from #292829
-            primary: HexColor("#292829"), // Inverted from #DBDAD9
-            onPrimary: HexColor("#DBDAD9"), // Inverted from #292829
-            secondary: HexColor('#292829'),
+            surface: HexColor("#1C1C1C"), // Inverted from #FCF4F0
+            onSurface: HexColor("#FCF4F0"), // Inverted from #1C1C1C
+            primary: HexColor("#1C1C1C"), // Inverted from #FCF4F0
+            onPrimary: HexColor("#FCF4F0"), // Inverted from #1C1C1C
+            secondary: HexColor('#1C1C1C'),
             onSecondary: HexColor('#FFFFFF'),
             error: HexColor("#FB0606"), // Kept the same for consistency
           ),
           fontFamily: 'Work Sans',
-          focusColor: HexColor("#292829"), // Dark background for focus color
+          focusColor: HexColor("#1C1C1C"), // Dark background for focus color
         ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {

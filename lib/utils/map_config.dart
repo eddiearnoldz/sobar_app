@@ -186,7 +186,7 @@ const String mapStyleSilver = '''[
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#f5f5f5"
+        "color": "#FCF4F0"
       }
     ]
   },
@@ -202,7 +202,7 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#616161"
+        "color": "#D6C6C3"
       }
     ]
   },
@@ -210,25 +210,34 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.stroke",
     "stylers": [
       {
-        "color": "#f5f5f5"
+        "color": "#FCF4F0"
       }
     ]
   },
   {
-    "featureType": "administrative.land_parcel",
-    "elementType": "labels.text.fill",
-    "stylers": [
-      {
-        "color": "#bdbdbd"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
+    "featureType": "administrative",
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#eeeeee"
+        "color": "#D6C6C3"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.country",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#B3A7A3"
+      }
+    ]
+  },
+  {
+    "featureType": "administrative.locality",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#C5B3AF"
       }
     ]
   },
@@ -237,7 +246,7 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#757575"
+        "color": "#D6C6C3"
       }
     ]
   },
@@ -246,7 +255,7 @@ const String mapStyleSilver = '''[
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#e5e5e5"
+        "color": "#E0D6D3"
       }
     ]
   },
@@ -255,25 +264,43 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#9e9e9e"
+        "color": "#A8A19D"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "color": "#E0D6D3"
       }
     ]
   },
   {
     "featureType": "road",
-    "elementType": "geometry",
+    "elementType": "geometry.fill",
     "stylers": [
       {
-        "color": "#ffffff"
+        "color": "#EDE8E5"
+      }
+    ]
+  },
+  {
+    "featureType": "road",
+    "elementType": "labels.text.fill",
+    "stylers": [
+      {
+        "color": "#B8B0AD"
       }
     ]
   },
   {
     "featureType": "road.arterial",
-    "elementType": "labels.text.fill",
+    "elementType": "geometry",
     "stylers": [
       {
-        "color": "#757575"
+        "color": "#DCD2CF"
       }
     ]
   },
@@ -282,16 +309,16 @@ const String mapStyleSilver = '''[
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#dadada"
+        "color": "#D0C5C2"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "labels.text.fill",
+    "featureType": "road.highway.controlled_access",
+    "elementType": "geometry",
     "stylers": [
       {
-        "color": "#616161"
+        "color": "#C7BABA"
       }
     ]
   },
@@ -300,25 +327,16 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#9e9e9e"
+        "color": "#A8A19D"
       }
     ]
   },
   {
-    "featureType": "transit.line",
-    "elementType": "geometry",
+    "featureType": "transit",
+    "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#e5e5e5"
-      }
-    ]
-  },
-  {
-    "featureType": "transit.station",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "color": "#eeeeee"
+        "color": "#D6C6C3"
       }
     ]
   },
@@ -327,7 +345,7 @@ const String mapStyleSilver = '''[
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#c9c9c9"
+        "color": "#F1ECEB"
       }
     ]
   },
@@ -336,8 +354,9 @@ const String mapStyleSilver = '''[
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#9e9e9e"
+        "color": "#D3CAC8"
       }
     ]
   }
-]''';
+]
+''';

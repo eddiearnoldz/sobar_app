@@ -37,13 +37,15 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
           SizedBox(
             height: 40,
             child: TextField(
+              cursorColor: Theme.of(context).colorScheme.onPrimary,
+              cursorHeight: 15,
               controller: widget.controller,
               focusNode: widget.focusNode,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
                 hintText: 'Search for a drink...',
                 hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                fillColor: Colors.white.withOpacity(widget.isFocused ? 1.0 : 0.6),
+                fillColor: Theme.of(context).colorScheme.primary.withOpacity(widget.isFocused ? 1.0 : 0.6),
                 filled: true,
                 border: OutlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
@@ -71,8 +73,8 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                     onTap: () => widget.onDrinkSelected(drink),
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.8,
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color: _getDrinkColor(drink.type),
                         borderRadius: BorderRadius.circular(10),
@@ -80,13 +82,13 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                       child: Row(
                         children: [
                           Image.network(drink.imageUrl, width: 40, height: 40, fit: BoxFit.contain),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(drink.name, style: TextStyle(color: Colors.white)),
-                              Text(drink.abv, style: TextStyle(color: Colors.white)),
+                              Text(drink.name, style: const TextStyle(color: Colors.white)),
+                              Text(drink.abv, style: const TextStyle(color: Colors.white)),
                             ],
                           ),
                         ],
@@ -104,17 +106,17 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
   Color _getDrinkColor(String type) {
     switch (type) {
       case 'draught':
-        return Colors.purple.withOpacity(0.8);
+        return Colors.purple.withOpacity(0.7);
       case 'bottle':
-        return Colors.red.withOpacity(0.8);
+        return Colors.red.withOpacity(0.7);
       case 'can':
-        return Colors.blue.withOpacity(0.8);
+        return Colors.blue.withOpacity(0.7);
       case 'wine':
-        return Colors.green.withOpacity(0.8);
+        return Colors.green.withOpacity(0.7);
       case 'spirit':
-        return Colors.yellow.withOpacity(0.8);
+        return Colors.yellow.withOpacity(0.7);
       default:
-        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
+        return Theme.of(context).colorScheme.primary.withOpacity(0.7);
     }
   }
 }

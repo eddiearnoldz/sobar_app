@@ -53,12 +53,12 @@ class DrinkTile extends StatelessWidget {
         imageUrl: drink.imageUrl,
         placeholder: (context, url) => Container(
           decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
-          width: 60,
+          width: 40,
           height: 60,
         ),
         errorWidget: (context, url, error) => const Icon(Icons.error),
         height: 60,
-        width: 60,
+        width: 40,
         fit: BoxFit.contain,
       ),
       trailing: Column(
