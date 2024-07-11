@@ -94,9 +94,20 @@ class _NewMapScreenState extends State<NewMapScreen> {
     final pubState = context.read<PubBloc>().state;
     if (pubState is PubLoaded || pubState is PubFiltered) {
       final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
-      final drinks = pubs.expand((pub) => pub.drinksData).toList();
+      final Set<String> uniqueDrinkIds = {};
+      final List<Drink> uniqueDrinks = [];
+
+      for (var pub in pubs) {
+        for (var drink in pub.drinksData) {
+          if (drink.name.toLowerCase().startsWith(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
+            uniqueDrinkIds.add(drink.id);
+            uniqueDrinks.add(drink);
+          }
+        }
+      }
+
       setState(() {
-        filteredDrinks = drinks.where((drink) => drink.name.toLowerCase().startsWith(text.toLowerCase())).toList();
+        filteredDrinks = uniqueDrinks;
       });
     }
   }
@@ -304,6 +315,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 if (filter == mapProvider.currentFilter) {
                   filter = ''; // Reset filter if the same filter is clicked again
                 }
+                _clearSelectedDrink();
                 mapProvider.setCurrentFilter(filter);
                 context.read<PubBloc>().add(FilterPubs(filter: filter));
               },
