@@ -114,8 +114,12 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                     ),
                                     Row(
                                       children: [
+                                        Icon(
+                                          Icons.star,
+                                          color: Color.fromARGB(255, 247, 119, 87),
+                                        ),
                                         Text(
-                                          'rating: ${widget.drink.averageRating} / 5',
+                                          ': ${widget.drink.averageRating}',
                                           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                         ),
                                       ],
@@ -175,7 +179,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                       placeholder: (context, url) => const CircularProgressIndicator(),
                       errorWidget: (context, url, error) => const Icon(Icons.error),
                       width: MediaQuery.of(context).size.width / 5,
-                      height: MediaQuery.of(context).size.width / 5,
+                      height: MediaQuery.of(context).size.width / 3,
                       fit: BoxFit.contain,
                     ),
                   ],

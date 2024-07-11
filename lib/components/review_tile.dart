@@ -44,11 +44,11 @@ class ReviewTile extends StatelessWidget {
                       children: List.generate(5, (starIndex) {
                         double currentStarValue = starIndex + 1;
                         if (currentStarValue <= rating) {
-                          return const Icon(Icons.star_rounded, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_rounded, size: 12, color: Color.fromARGB(255, 247, 119, 87));
                         } else if (currentStarValue - 0.5 == rating) {
-                          return const Icon(Icons.star_half_rounded, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_half_rounded, size: 12, color: Color.fromARGB(255, 247, 119, 87));
                         } else {
-                          return const Icon(Icons.star_border_rounded, size: 12, color: Colors.amber);
+                          return const Icon(Icons.star_border_rounded, size: 12, color: Color.fromARGB(255, 247, 119, 87));
                         }
                       }),
                     ),
