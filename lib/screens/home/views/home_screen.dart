@@ -60,27 +60,29 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            print('Get current location');
-            _getLocation();
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0, bottom: 5),
-            child: Icon(
-              Icons.person_outline_outlined,
-              size: 30,
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-        ),
-        title: SvgPicture.asset('assets/logos/sobar_logo_square.svg', width: MediaQuery.of(context).size.width / 5, color: Theme.of(context).colorScheme.onPrimary),
-        centerTitle: true,
-      ),
+      appBar: currentPageIndex != 0
+          ? AppBar(
+              toolbarHeight: 40,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: GestureDetector(
+                onTap: () {
+                  print('Get current location');
+                  _getLocation();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, bottom: 5),
+                  child: Icon(
+                    Icons.person_outline_outlined,
+                    size: 30,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+              title: SvgPicture.asset('assets/logos/sobar_logo_square.svg', width: MediaQuery.of(context).size.width / 5, color: Theme.of(context).colorScheme.onPrimary),
+              centerTitle: true,
+            )
+          : null,
       backgroundColor: Theme.of(context).colorScheme.primary,
       bottomNavigationBar: BottomAppBar(
         elevation: 3,

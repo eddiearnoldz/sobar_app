@@ -128,7 +128,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   },
                 ),
                 Positioned(
-                  top: 10,
+                  top: 60,
                   right: 10,
                   child: FloatingActionButton(
                     onPressed: () {
