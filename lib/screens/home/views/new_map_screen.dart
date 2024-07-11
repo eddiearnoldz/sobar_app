@@ -1,16 +1,14 @@
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/models/pub.dart';
+import 'package:sobar_app/models/drink.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:sobar_app/utils/map_styles.dart';
-import 'package:sobar_app/utils/widget_to_map_icon.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sobar_app/utils/map_provider.dart';
@@ -25,6 +23,9 @@ class _NewMapScreenState extends State<NewMapScreen> {
   GooglePlacesHelper? _placesHelper;
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
   String currentFilter = '';
+  String searchText = '';
+  List<Drink> filteredDrinks = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -35,16 +36,6 @@ class _NewMapScreenState extends State<NewMapScreen> {
         customIcon = icon;
       });
     });
-  }
-
-  void _filterMarkers(String filter) {
-    if (filter == currentFilter) {
-      filter = ''; // Reset filter if the same filter is clicked again
-    }
-    setState(() {
-      currentFilter = filter;
-    });
-    context.read<PubBloc>().add(FilterPubs(filter: filter));
   }
 
   Future<void> _initializePlaces() async {
@@ -76,6 +67,53 @@ class _NewMapScreenState extends State<NewMapScreen> {
 
   void _showPubDetails(BuildContext context, Pub pub) {
     print('Showing details for pub: ${pub.id}');
+  }
+
+  void _filterMarkers(String filter) {
+    if (filter == currentFilter) {
+      filter = ''; // Reset filter if the same filter is clicked again
+    }
+    setState(() {
+      currentFilter = filter;
+    });
+    context.read<PubBloc>().add(FilterPubs(filter: filter));
+  }
+
+  void _searchDrinks(String text) {
+    setState(() {
+      searchText = text;
+    });
+
+    if (text.isEmpty) {
+      setState(() {
+        filteredDrinks = [];
+      });
+      return;
+    }
+
+    final pubState = context.read<PubBloc>().state;
+    if (pubState is PubLoaded || pubState is PubFiltered) {
+      final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
+      final drinks = pubs.expand((pub) => pub.drinksData).toList();
+      setState(() {
+        filteredDrinks = drinks.where((drink) => drink.name.toLowerCase().startsWith(text.toLowerCase())).toList();
+      });
+    }
+  }
+
+  void _filterPubsByDrink(Drink drink) {
+    final filter = 'drink_${drink.id}';
+    context.read<PubBloc>().add(FilterPubs(filter: filter));
+    Provider.of<MapProvider>(context, listen: false).setSelectedDrink(drink);
+    _searchController.clear();
+    setState(() {
+      filteredDrinks = [];
+    });
+  }
+
+  void _clearSelectedDrink() {
+    Provider.of<MapProvider>(context, listen: false).setSelectedDrink(null);
+    _filterMarkers('');
   }
 
   @override
@@ -157,7 +195,107 @@ class _NewMapScreenState extends State<NewMapScreen> {
             ),
           ),
           Positioned(
-            top: 60,
+            top: 100,
+            left: 10,
+            right: 10,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: TextField(
+                    controller: _searchController,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      hintText: 'Search for a drink...',
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    ),
+                    onChanged: _searchDrinks,
+                  ),
+                ),
+                if (filteredDrinks.isNotEmpty)
+                  SizedBox(
+                    height: 60,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: filteredDrinks.length,
+                      itemBuilder: (context, index) {
+                        final drink = filteredDrinks[index];
+                        return GestureDetector(
+                          onTap: () => _filterPubsByDrink(drink),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            padding: EdgeInsets.all(5),
+                            margin: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: _getDrinkColor(drink.type),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.network(drink.imageUrl, width: 40, height: 40, fit: BoxFit.contain),
+                                SizedBox(width: 10),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(drink.name, style: TextStyle(color: Colors.white)),
+                                    Text(drink.abv, style: TextStyle(color: Colors.white)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          if (mapProvider.selectedDrink != null)
+            Positioned(
+              top: 150,
+              right: 10,
+              child: GestureDetector(
+                onTap: _clearSelectedDrink,
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(mapProvider.selectedDrink!.imageUrl),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 2,
+                      right: 2,
+                      child: Container(
+                        width: 15,
+                        height: 15,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(Icons.close, color: Colors.white, size: 10),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          Positioned(
+            top: 50,
             left: 0,
             right: 0,
             child: MapFilterBar(
@@ -174,5 +312,22 @@ class _NewMapScreenState extends State<NewMapScreen> {
         ],
       ),
     );
+  }
+
+  Color _getDrinkColor(String type) {
+    switch (type) {
+      case 'draught':
+        return Colors.purple.withOpacity(0.8);
+      case 'bottle':
+        return Colors.red.withOpacity(0.8);
+      case 'can':
+        return Colors.blue.withOpacity(0.8);
+      case 'wine':
+        return Colors.green.withOpacity(0.8);
+      case 'spirit':
+        return Colors.yellow.withOpacity(0.8);
+      default:
+        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
+    }
   }
 }

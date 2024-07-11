@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sobar_app/models/drink.dart';
 
 class MapProvider extends ChangeNotifier {
   GoogleMapController? _controller;
@@ -9,11 +10,13 @@ class MapProvider extends ChangeNotifier {
   );
   bool _isBlackStyle = false;
   String _currentFilter = '';
+  Drink? _selectedDrink;
 
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
   bool get isBlackStyle => _isBlackStyle;
   String get currentFilter => _currentFilter;
+  Drink? get selectedDrink => _selectedDrink;
 
   void setController(GoogleMapController controller) {
     _controller = controller;
@@ -32,6 +35,11 @@ class MapProvider extends ChangeNotifier {
 
   void setCurrentFilter(String filter) {
     _currentFilter = filter;
+    notifyListeners();
+  }
+
+  void setSelectedDrink(Drink? drink) {
+    _selectedDrink = drink;
     notifyListeners();
   }
 }

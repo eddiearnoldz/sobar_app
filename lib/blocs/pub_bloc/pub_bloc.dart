@@ -58,6 +58,9 @@ class PubBloc extends Bloc<PubEvent, PubState> {
 
     if (event.filter.isEmpty) {
       filteredPubs = pubsToFilter;
+    } else if (event.filter.startsWith('drink_')) {
+      final drinkId = event.filter.substring(6);
+      filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.id == drinkId)).toList();
     } else {
       switch (event.filter) {
         case 'bottle':
