@@ -188,7 +188,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       ? mapState.cameraPosition
                       : CameraPosition(
                           target: _initialPosition,
-                          zoom: 11,
+                          zoom: 10,
                         ),
                   mapType: MapType.normal,
                   markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
