@@ -1,14 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sobar_app/utils/map_provider.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
+  final MapProvider mapProvider;
   GoogleMapController? _controller;
 
-  MapBloc() : super(MapInitial()) {
+  MapBloc(this.mapProvider) : super(MapInitial()) {
     on<InitializeMap>(_onInitializeMap);
     on<ToggleMapStyle>(_onToggleMapStyle);
     on<UpdateMarkers>(_onUpdateMarkers);
@@ -19,17 +21,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     _controller = event.controller;
     emit(MapLoaded(
       controller: _controller!,
-      cameraPosition: const CameraPosition(
-        target: LatLng(51.5074, -0.1278),
-        zoom: 11,
-      ),
+      cameraPosition: mapProvider.cameraPosition,
+      isBlackStyle: mapProvider.isBlackStyle,
+      markers: const <Marker>{},
     ));
     print('Map initialized with controller: $_controller');
   }
 
   void _onToggleMapStyle(ToggleMapStyle event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
-      emit((state as MapLoaded).copyWith(isBlackStyle: !(state as MapLoaded).isBlackStyle));
+      final newStyle = !(state as MapLoaded).isBlackStyle;
+      mapProvider.updateMapStyle(newStyle);
+      emit((state as MapLoaded).copyWith(isBlackStyle: newStyle));
+      print('Map style toggled to: $newStyle');
     } else {
       print('ToggleMapStyle event received but state is not MapLoaded');
     }
@@ -38,6 +42,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void _onUpdateMarkers(UpdateMarkers event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(markers: event.markers));
+      print('Markers updated: ${event.markers}');
     } else {
       print('UpdateMarkers event received but state is not MapLoaded');
     }
@@ -45,7 +50,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   void _onUpdateCameraPosition(UpdateCameraPosition event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
+      mapProvider.updateCameraPosition(event.cameraPosition);
       emit((state as MapLoaded).copyWith(cameraPosition: event.cameraPosition));
+      print('Camera position updated: ${event.cameraPosition}');
     } else {
       print('UpdateCameraPosition event received but state is not MapLoaded');
     }

@@ -97,14 +97,12 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       }).toSet();
                       // Dispatch an event to update markers
                       context.read<MapBloc>().add(UpdateMarkers(markers));
+                      print('Markers updated in PubLoaded state');
                     }
                     return BlocBuilder<MapBloc, MapState>(
                       builder: (context, mapState) {
                         return GoogleMap(
-                          compassEnabled: true,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          zoomControlsEnabled: false,
+                          zoomControlsEnabled: true,
                           initialCameraPosition: mapState is MapLoaded
                               ? mapState.cameraPosition
                               : CameraPosition(
@@ -112,17 +110,18 @@ class _NewMapScreenState extends State<NewMapScreen> {
                                   zoom: 11,
                                 ),
                           mapType: MapType.normal,
-                          style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
                           markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
                           onMapCreated: (controller) {
                             if (mapProvider.controller == null) {
                               mapProvider.setController(controller);
                               context.read<MapBloc>().add(InitializeMap(controller));
+                              print('Map created and InitializeMap event added');
                             }
                           },
                           onCameraMove: (position) {
                             context.read<MapBloc>().add(UpdateCameraPosition(position));
                           },
+                          style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
                         );
                       },
                     );

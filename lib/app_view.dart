@@ -67,7 +67,7 @@ class MyAppView extends StatelessWidget {
                     create: (context) => DrinkBloc(firestore: FirebaseFirestore.instance)..add(LoadDrinks()),
                   ),
                   BlocProvider<MapBloc>(
-                    create: (context) => MapBloc(),
+                    create: (context) => MapBloc(context.read<MapProvider>()),
                   ),
                 ],
                 child: const HomeScreen(),
