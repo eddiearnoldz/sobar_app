@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sobar_app/models/drink.dart';
+import 'package:sobar_app/utils/map_config.dart';
 
 class MapProvider extends ChangeNotifier {
   GoogleMapController? _controller;
   CameraPosition _cameraPosition = const CameraPosition(
-    target: LatLng(51.5074, -0.1278),
+    target: londonCoordinates,
     zoom: 11,
   );
   bool _isBlackStyle = false;
