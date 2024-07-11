@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
-import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
+import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -36,11 +36,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
   void initState() {
     super.initState();
     _initializePlaces();
-    _loadCustomIcon().then((icon) {
-      setState(() {
-        customIcon = icon;
-      });
-    });
+    _updateCustomIcon(context.read<MapBloc>().state is MapLoaded && (context.read<MapBloc>().state as MapLoaded).isBlackStyle);
     _focusNode.addListener(() {
       setState(() {
         _isFocused = _focusNode.hasFocus;
@@ -74,11 +70,16 @@ class _NewMapScreenState extends State<NewMapScreen> {
     }
   }
 
-  Future<BitmapDescriptor> _loadCustomIcon() async {
-    return await BitmapDescriptor.asset(
+  Future<void> _updateCustomIcon(bool isBlackStyle) async {
+    final assetPath = isBlackStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
+    final icon = await BitmapDescriptor.asset(
+      height: 20,
       const ImageConfiguration(),
-      'assets/icons/coloured_pint.png',
+      assetPath,
     );
+    setState(() {
+      customIcon = icon;
+    });
   }
 
   void _showPubDetails(BuildContext context, Pub pub) {
@@ -155,8 +156,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          BlocBuilder<PubBloc, PubState>(
-            builder: (context, pubState) {
+          BlocListener<PubBloc, PubState>(
+            listener: (context, pubState) {
               if (pubState is PubLoaded || pubState is PubFiltered) {
                 final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
                 final markers = pubs.map((pub) {
@@ -175,35 +176,38 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 context.read<MapBloc>().add(UpdateMarkers(markers));
                 print('Markers updated in PubLoaded or PubFiltered state');
               }
-              return BlocBuilder<MapBloc, MapState>(
-                builder: (context, mapState) {
-                  return GoogleMap(
-                    zoomControlsEnabled: true,
-                    initialCameraPosition: mapState is MapLoaded
-                        ? mapState.cameraPosition
-                        : CameraPosition(
-                            target: _initialPosition,
-                            zoom: 11,
-                          ),
-                    mapType: MapType.normal,
-                    markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
-                    onMapCreated: (controller) {
-                      if (mapProvider.controller == null) {
-                        mapProvider.setController(controller);
-                        context.read<MapBloc>().add(InitializeMap(controller));
-                        print('Map created and InitializeMap event added');
-                      }
-                    },
-                    onCameraMove: (position) {
-                      context.read<MapBloc>().add(UpdateCameraPosition(position));
-                    },
-                    style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
-                  );
-                },
-              );
             },
+            child: BlocBuilder<MapBloc, MapState>(
+              builder: (context, mapState) {
+                if (mapState is MapLoaded) {
+                  _updateCustomIcon(mapState.isBlackStyle);
+                }
+                return GoogleMap(
+                  zoomControlsEnabled: true,
+                  initialCameraPosition: mapState is MapLoaded
+                      ? mapState.cameraPosition
+                      : CameraPosition(
+                          target: _initialPosition,
+                          zoom: 11,
+                        ),
+                  mapType: MapType.normal,
+                  markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
+                  onMapCreated: (controller) {
+                    if (mapProvider.controller == null) {
+                      mapProvider.setController(controller);
+                      context.read<MapBloc>().add(InitializeMap(controller));
+                      print('Map created and InitializeMap event added');
+                    }
+                  },
+                  onCameraMove: (position) {
+                    context.read<MapBloc>().add(UpdateCameraPosition(position));
+                  },
+                  style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
+                );
+              },
+            ),
           ),
-          const ToggleMapStyleButton(),
+          ToggleMapStyleButton(),
           Positioned(
             top: 100,
             left: 10,
@@ -242,22 +246,5 @@ class _NewMapScreenState extends State<NewMapScreen> {
         ],
       ),
     );
-  }
-
-  Color _getDrinkColor(String type) {
-    switch (type) {
-      case 'draught':
-        return Colors.purple.withOpacity(0.8);
-      case 'bottle':
-        return Colors.red.withOpacity(0.8);
-      case 'can':
-        return Colors.blue.withOpacity(0.8);
-      case 'wine':
-        return Colors.green.withOpacity(0.8);
-      case 'spirit':
-        return Colors.yellow.withOpacity(0.8);
-      default:
-        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
-    }
   }
 }
