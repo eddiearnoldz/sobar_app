@@ -137,6 +137,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
             bottom: 70,
             right: 10,
             child: FloatingActionButton(
+              backgroundColor: Colors.white,
               onPressed: () {
                 context.read<MapBloc>().add(ToggleMapStyle());
               },
@@ -160,8 +161,14 @@ class _NewMapScreenState extends State<NewMapScreen> {
             left: 0,
             right: 0,
             child: MapFilterBar(
-              currentFilter: currentFilter,
-              onFilterChanged: _filterMarkers,
+              currentFilter: mapProvider.currentFilter,
+              onFilterChanged: (filter) {
+                if (filter == mapProvider.currentFilter) {
+                  filter = ''; // Reset filter if the same filter is clicked again
+                }
+                mapProvider.setCurrentFilter(filter);
+                context.read<PubBloc>().add(FilterPubs(filter: filter));
+              },
             ),
           ),
         ],

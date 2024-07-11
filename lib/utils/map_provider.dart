@@ -8,10 +8,12 @@ class MapProvider extends ChangeNotifier {
     zoom: 11,
   );
   bool _isBlackStyle = false;
+  String _currentFilter = '';
 
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
   bool get isBlackStyle => _isBlackStyle;
+  String get currentFilter => _currentFilter;
 
   void setController(GoogleMapController controller) {
     _controller = controller;
@@ -25,6 +27,11 @@ class MapProvider extends ChangeNotifier {
 
   void updateMapStyle(bool isBlackStyle) {
     _isBlackStyle = isBlackStyle;
+    notifyListeners();
+  }
+
+  void setCurrentFilter(String filter) {
+    _currentFilter = filter;
     notifyListeners();
   }
 }
