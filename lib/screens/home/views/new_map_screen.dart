@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
+import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
+import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
   String searchText = '';
   List<Drink> filteredDrinks = [];
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  bool _isFocused = false;
 
   @override
   void initState() {
@@ -36,6 +40,17 @@ class _NewMapScreenState extends State<NewMapScreen> {
         customIcon = icon;
       });
     });
+    _focusNode.addListener(() {
+      setState(() {
+        _isFocused = _focusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Future<void> _initializePlaces() async {
@@ -120,11 +135,16 @@ class _NewMapScreenState extends State<NewMapScreen> {
     setState(() {
       filteredDrinks = [];
     });
+    unfocusTextField();
   }
 
   void _clearSelectedDrink() {
     Provider.of<MapProvider>(context, listen: false).setSelectedDrink(null);
     _filterMarkers('');
+  }
+
+  void unfocusTextField() {
+    _focusNode.unfocus();
   }
 
   @override
@@ -209,101 +229,20 @@ class _NewMapScreenState extends State<NewMapScreen> {
             top: 100,
             left: 10,
             right: 10,
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                  child: TextField(
-                    controller: _searchController,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: InputDecoration(
-                      hintText: 'Search for a drink...',
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    ),
-                    onChanged: _searchDrinks,
-                  ),
-                ),
-                if (filteredDrinks.isNotEmpty)
-                  SizedBox(
-                    height: 60,
-                    child: ListView.builder(
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: filteredDrinks.length,
-                      itemBuilder: (context, index) {
-                        final drink = filteredDrinks[index];
-                        return GestureDetector(
-                          onTap: () => _filterPubsByDrink(drink),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: _getDrinkColor(drink.type),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Image.network(drink.imageUrl, width: 40, height: 40, fit: BoxFit.contain),
-                                SizedBox(width: 10),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(drink.name, style: TextStyle(color: Colors.white)),
-                                    Text(drink.abv, style: TextStyle(color: Colors.white)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-              ],
+            child: FilterDrinkTextField(
+              filteredDrinks: filteredDrinks,
+              onSearchChanged: _searchDrinks,
+              onDrinkSelected: _filterPubsByDrink,
+              controller: _searchController,
+              focusNode: _focusNode,
+              isFocused: _isFocused,
+              unfocusTextField: unfocusTextField,
             ),
           ),
           if (mapProvider.selectedDrink != null)
-            Positioned(
-              top: 150,
-              right: 10,
-              child: GestureDetector(
-                onTap: _clearSelectedDrink,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image: NetworkImage(mapProvider.selectedDrink!.imageUrl),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      top: 2,
-                      right: 2,
-                      child: Container(
-                        width: 15,
-                        height: 15,
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(Icons.close, color: Colors.white, size: 10),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            SelectedDrinkFilterClearButton(
+              selectedDrink: mapProvider.selectedDrink!,
+              onClear: _clearSelectedDrink,
             ),
           Positioned(
             top: 50,
