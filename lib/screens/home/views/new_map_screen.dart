@@ -6,6 +6,7 @@ import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
+import 'package:sobar_app/components/toggle_map_style_button.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -202,29 +203,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
               );
             },
           ),
-          Positioned(
-            bottom: 70,
-            right: 10,
-            child: FloatingActionButton(
-              backgroundColor: Colors.white,
-              onPressed: () {
-                context.read<MapBloc>().add(ToggleMapStyle());
-              },
-              mini: true,
-              child: BlocBuilder<MapBloc, MapState>(
-                builder: (context, state) {
-                  if (state is MapLoaded) {
-                    return Icon(
-                      state.isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
-                      size: 20,
-                    );
-                  } else {
-                    return Icon(Icons.brightness_3, size: 20);
-                  }
-                },
-              ),
-            ),
-          ),
+          const ToggleMapStyleButton(),
           Positioned(
             top: 100,
             left: 10,
