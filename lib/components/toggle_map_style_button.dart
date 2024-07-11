@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 
 class ToggleMapStyleButton extends StatelessWidget {
-  const ToggleMapStyleButton({Key? key}) : super(key: key);
+  const ToggleMapStyleButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 70,
+      bottom: 60,
       right: 10,
       child: FloatingActionButton(
         backgroundColor: Colors.white,
@@ -22,6 +22,7 @@ class ToggleMapStyleButton extends StatelessWidget {
               return Icon(
                 state.isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
                 size: 20,
+                color: Theme.of(context).colorScheme.onPrimary,
               );
             } else {
               return Icon(Icons.brightness_3, size: 20);
@@ -32,5 +33,3 @@ class ToggleMapStyleButton extends StatelessWidget {
     );
   }
 }
-
-

@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
+import 'package:sobar_app/components/my_location_button.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -31,6 +33,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool _isFocused = false;
+  GoogleMapController? _controller;
+  final Location _location = Location();
 
   @override
   void initState() {
@@ -184,11 +188,13 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 }
                 return GoogleMap(
                   zoomControlsEnabled: true,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
                   initialCameraPosition: mapState is MapLoaded
                       ? mapState.cameraPosition
                       : CameraPosition(
                           target: _initialPosition,
-                          zoom: 11,
+                          zoom: 12,
                         ),
                   mapType: MapType.normal,
                   markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
@@ -243,6 +249,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
               },
             ),
           ),
+          MyLocationButton(location: _location)
         ],
       ),
     );
