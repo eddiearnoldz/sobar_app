@@ -29,30 +29,30 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     print('Map initialized with controller: $_controller');
   }
 
-void _onToggleMapStyle(ToggleMapStyle event, Emitter<MapState> emit) async {
-  if (state is MapLoaded) {
-    final newStyle = !(state as MapLoaded).isBlackStyle;
-    final newIconPath = newStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
-    final newIcon =  await BitmapDescriptor.asset(
-      height: 20,
-      const ImageConfiguration(),
-      newIconPath,
-    );
+  void _onToggleMapStyle(ToggleMapStyle event, Emitter<MapState> emit) async {
+    if (state is MapLoaded) {
+      final newStyle = !(state as MapLoaded).isBlackStyle;
+      final newIconPath = newStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
+      final newIcon =  await BitmapDescriptor.asset(
+        height: 20,
+        const ImageConfiguration(),
+        newIconPath,
+      );
 
-    mapProvider.updateMapStyle(newStyle);
+      mapProvider.updateMapStyle(newStyle);
 
-    // Update markers with the new icon
-    final updatedMarkers = (state as MapLoaded).markers.map((marker) {
-      return marker.copyWith(iconParam: newIcon);
-    }).toSet();
+      // Update markers with the new icon
+      final updatedMarkers = (state as MapLoaded).markers.map((marker) {
+        return marker.copyWith(iconParam: newIcon);
+      }).toSet();
 
-    emit((state as MapLoaded).copyWith(isBlackStyle: newStyle, markers: updatedMarkers));
-    print('Map style toggled to: $newStyle');
-  } else {
-    print('ToggleMapStyle event received but state is not MapLoaded');
+      emit((state as MapLoaded).copyWith(isBlackStyle: newStyle, markers: updatedMarkers));
+      print('Map style toggled to: $newStyle');
+    } else {
+      print('ToggleMapStyle event received but state is not MapLoaded');
+    }
   }
-}
-
+  
 
   void _onUpdateMarkers(UpdateMarkers event, Emitter<MapState> emit) {
     if (state is MapLoaded) {

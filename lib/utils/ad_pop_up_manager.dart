@@ -2,30 +2,31 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/models/adPopUp.dart';
+import 'package:sobar_app/utils/globals.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdPopupManager {
-  static const String openCountKey = 'app_open_count';
 
   Future<int> getOpenCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getInt(openCountKey));
     return prefs.getInt(openCountKey) ?? 0;
   }
 
   Future<void> incrementOpenCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int currentCount = await getOpenCount();
+
     await prefs.setInt(openCountKey, currentCount + 1);
   }
 
   Future<void> showAdPopupIfNeeded(BuildContext context, AdPopUp adPopUp) async {
     int openCount = await getOpenCount();
-    if (openCount > 0 && adPopUp.isLive) {
-      Future.delayed(const Duration(seconds: 1), () => showAdPopup(context, adPopUp));
+    if (openCount > 0 && adPopUp.isLive && openCount % 5 == 0) {
+      Future.delayed(const Duration(seconds: 8), () => showAdPopup(context, adPopUp));
     }
     await incrementOpenCount();
   }

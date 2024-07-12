@@ -11,6 +11,7 @@ class ToggleMapStyleButton extends StatelessWidget {
       bottom: 60,
       right: 10,
       child: FloatingActionButton(
+        heroTag: 'toggleMapStyleButton',
         backgroundColor: Colors.white,
         onPressed: () {
           context.read<MapBloc>().add(ToggleMapStyle());

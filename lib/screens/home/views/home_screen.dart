@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _getLocation() async {
-    print("running");
     LocationData? locationData = await locationService.getCurrentLocation();
     print("location data: $locationData");
     _showLocationDialog(locationData);

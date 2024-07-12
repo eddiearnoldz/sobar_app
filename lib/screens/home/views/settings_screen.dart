@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:sobar_app/components/my_text_button.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:sobar_app/utils/globals.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -45,8 +47,11 @@ class SettingsScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: MyTextButton(
                   buttonText: 'Sign Out',
-                  onPressed: () {
+                  onPressed: () async {
                     context.read<SignInBloc>().add(SignOutRequired());
+                        final SharedPreferences prefs = await SharedPreferences.getInstance();
+                        await prefs.setInt(openCountKey, 0);
+                        print(prefs.getInt(openCountKey));
                   },
                   padding: 12,
                   backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),

@@ -1,0 +1,1 @@
+const String openCountKey = 'app_open_count';

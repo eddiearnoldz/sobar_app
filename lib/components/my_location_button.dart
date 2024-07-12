@@ -17,6 +17,7 @@ class MyLocationButton extends StatelessWidget {
       bottom: 10,
       right: 10,
       child: FloatingActionButton(
+        heroTag: 'myLocationButton',
         backgroundColor: Colors.white,
         mini: true,
         onPressed: () async {

@@ -201,7 +201,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   mapType: MapType.normal,
                   markers: mapState is MapLoaded ? mapState.markers : <Marker>{},
                   onMapCreated: (controller) {
-                    if (mapProvider.controller == null) {
+                    if (mapProvider.controller == null || mapState is MapInitial) {
                       mapProvider.setController(controller);
                       context.read<MapBloc>().add(InitializeMap(controller));
                       print('Map created and InitializeMap event added');
