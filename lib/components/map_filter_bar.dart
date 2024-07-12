@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sobar_app/utils/globals.dart';
 import 'filter_button.dart';
 
 class MapFilterBar extends StatelessWidget {
@@ -21,31 +22,31 @@ class MapFilterBar extends StatelessWidget {
           children: [
             FilterButton(
               label: 'draught',
-              color: Colors.purple,
+              color: draughtColour,
               isActive: currentFilter == 'draught',
               onPressed: () => onFilterChanged('draught'),
             ),
             FilterButton(
               label: 'bottles',
-              color: Colors.red,
+              color: bottleColour,
               isActive: currentFilter == 'bottle',
               onPressed: () => onFilterChanged('bottle'),
             ),
             FilterButton(
               label: 'cans',
-              color: Colors.blue,
+              color: canColour,
               isActive: currentFilter == 'can',
               onPressed: () => onFilterChanged('can'),
             ),
             FilterButton(
               label: 'wines',
-              color: Colors.green,
+              color: wineColour,
               isActive: currentFilter == 'wine',
               onPressed: () => onFilterChanged('wine'),
             ),
             FilterButton(
               label: 'spirits',
-              color: Colors.yellow,
+              color: spiritColour,
               isActive: currentFilter == 'spirit',
               onPressed: () => onFilterChanged('spirit'),
             ),

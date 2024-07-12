@@ -62,58 +62,45 @@ class OldMapScreen extends StatelessWidget {
                             style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onSecondary),
                           ),
                           trailing: const SizedBox(height: 10),
-                          onTap: () => showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => FractionallySizedBox(
-                              heightFactor: 1,
-                              child: PubDetailsSheet(pub: pub),
-                            ),
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                          ),
+                          onTap: () => {},
                         );
                       } else {
                         Map<String, bool> drinkTypes = snapshot.data!;
                         return ListTile(
-                          title: Text(
-                            pub.locationName,
-                            style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton'),
-                          ),
-                          subtitle: Text(
-                            pub.locationAddress,
-                            style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (drinkTypes['draught']!) ...[
-                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 245, 89, 78)),
-                                const SizedBox(width: 2),
+                            title: Text(
+                              pub.locationName,
+                              style: TextStyle(fontSize: 20, color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton'),
+                            ),
+                            subtitle: Text(
+                              pub.locationAddress,
+                              style: TextStyle(fontSize: 16, color: Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (drinkTypes['draught']!) ...[
+                                  const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 245, 89, 78)),
+                                  const SizedBox(width: 2),
+                                ],
+                                if (drinkTypes['can']!) ...[
+                                  const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 248, 234, 115)),
+                                  const SizedBox(width: 2),
+                                ],
+                                if (drinkTypes['bottle']!) ...[
+                                  const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 91, 177, 248)),
+                                  const SizedBox(width: 2),
+                                ],
+                                if (drinkTypes['wine']!) ...[
+                                  const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 30, 113, 33)),
+                                  const SizedBox(width: 2),
+                                ],
+                                if (drinkTypes['spirit']!) ...[
+                                  const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 215, 115, 228)),
+                                  const SizedBox(width: 2),
+                                ],
                               ],
-                              if (drinkTypes['can']!) ...[
-                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 248, 234, 115)),
-                                const SizedBox(width: 2),
-                              ],
-                              if (drinkTypes['bottle']!) ...[
-                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 91, 177, 248)),
-                                const SizedBox(width: 2),
-                              ],
-                              if (drinkTypes['wine']!) ...[
-                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 30, 113, 33)),
-                                const SizedBox(width: 2),
-                              ],
-                              if (drinkTypes['spirit']!) ...[
-                                const CircleAvatar(radius: 5, backgroundColor: Color.fromARGB(255, 215, 115, 228)),
-                                const SizedBox(width: 2),
-                              ],
-                            ],
-                          ),
-                          onTap: () => showModalBottomSheet(
-                            context: context,
-                            builder: (context) => PubDetailsSheet(pub: pub),
-                            backgroundColor: Theme.of(context).colorScheme.secondary,
-                          ),
-                        );
+                            ),
+                            onTap: () => {});
                       }
                     },
                   );

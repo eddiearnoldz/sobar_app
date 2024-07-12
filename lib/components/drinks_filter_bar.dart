@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sobar_app/components/filter_button.dart';
+import 'package:sobar_app/utils/globals.dart';
 
 class DrinksFilterBar extends StatelessWidget {
   final String currentFilter;
@@ -21,58 +22,58 @@ class DrinksFilterBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FilterButton(
-              label: 'a to z',
-              color: Colors.red,
-              isActive: currentFilter == 'alphabetical',
-              onPressed: () => onFilterChanged('alphabetical'),
-            ),
-            FilterButton(
-              label: '0.0%',
-              color: Colors.blue,
-              isActive: currentFilter == 'onlyZero',
-              onPressed: () => onFilterChanged('onlyZero'),
-            ),
-            FilterButton(
-              label: 'popular',
-              color: Colors.yellow,
-              isActive: currentFilter == 'mostPopular',
-              onPressed: () => onFilterChanged('mostPopular'),
-            ),
-            FilterButton(
-              label: 'top rated',
-              color: Colors.green,
-              isActive: currentFilter == 'topRated',
-              onPressed: () => onFilterChanged('topRated'),
-            ),
-            FilterButton(
               label: 'bottles',
-              color: Colors.orange,
+              color: bottleColour,
               isActive: currentFilter == 'bottle',
               onPressed: () => onFilterChanged('bottle'),
             ),
             FilterButton(
               label: 'cans',
-              color: Colors.purple,
+              color: canColour,
               isActive: currentFilter == 'can',
               onPressed: () => onFilterChanged('can'),
             ),
             FilterButton(
               label: 'wines',
-              color: Colors.pink,
+              color: wineColour,
               isActive: currentFilter == 'wine',
               onPressed: () => onFilterChanged('wine'),
             ),
             FilterButton(
               label: 'spirits',
-              color: Colors.cyan,
+              color: spiritColour,
               isActive: currentFilter == 'spirit',
               onPressed: () => onFilterChanged('spirit'),
             ),
             FilterButton(
               label: 'draught',
-              color: Colors.brown,
+              color: draughtColour,
               isActive: currentFilter == 'draught',
               onPressed: () => onFilterChanged('draught'),
+            ),
+            FilterButton(
+              label: 'a to z',
+              color: Colors.pink,
+              isActive: currentFilter == 'alphabetical',
+              onPressed: () => onFilterChanged('alphabetical'),
+            ),
+            FilterButton(
+              label: '0.0%',
+              color: Colors.teal,
+              isActive: currentFilter == 'onlyZero',
+              onPressed: () => onFilterChanged('onlyZero'),
+            ),
+            FilterButton(
+              label: 'popular',
+              color: Colors.orange,
+              isActive: currentFilter == 'mostPopular',
+              onPressed: () => onFilterChanged('mostPopular'),
+            ),
+            FilterButton(
+              label: 'top rated',
+              color: Colors.indigo,
+              isActive: currentFilter == 'topRated',
+              onPressed: () => onFilterChanged('topRated'),
             ),
           ],
         ),
