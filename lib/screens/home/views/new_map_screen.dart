@@ -122,7 +122,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
 
       for (var pub in pubs) {
         for (var drink in pub.drinksData) {
-          if (drink.name.toLowerCase().startsWith(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
+          if (drink.name.toLowerCase().contains(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
             uniqueDrinkIds.add(drink.id);
             uniqueDrinks.add(drink);
           }

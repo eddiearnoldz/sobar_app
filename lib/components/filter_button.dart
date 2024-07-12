@@ -21,13 +21,16 @@ class FilterButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: color.withOpacity(isActive ? 1 : 0.5),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: isActive ? BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 1) : BorderSide.none,
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 0),
             minimumSize: Size(MediaQuery.of(context).size.width / 5, 28)),
         onPressed: onPressed,
         child: Text(
           label,
-          style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       ),

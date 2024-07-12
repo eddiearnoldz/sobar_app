@@ -85,8 +85,26 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(drink.name, style: const TextStyle(color: Colors.white)),
-                              Text(drink.abv, style: const TextStyle(color: Colors.white)),
+                              Text(drink.name, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600)),
+                              Row(
+                                children: [
+                                  Text(drink.abv, style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  if (drink.isVegan)
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                  if (drink.isVegan) Text('vegan', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  if (drink.isGlutenFree) Text('gf', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  if (drink.isGlutenFree)
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                  if (drink.calories.toString().isNotEmpty) Text('${drink.calories.round().toString()}cals', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                ],
+                              ),
                             ],
                           ),
                         ],
@@ -104,17 +122,17 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
   Color _getDrinkColor(String type) {
     switch (type) {
       case 'draught':
-        return Colors.purple.withOpacity(0.7);
+        return Colors.purple.withOpacity(0.8);
       case 'bottle':
-        return Colors.red.withOpacity(0.7);
+        return Colors.red.withOpacity(0.8);
       case 'can':
-        return Colors.blue.withOpacity(0.7);
+        return Colors.blue.withOpacity(0.8);
       case 'wine':
-        return Colors.green.withOpacity(0.7);
+        return Colors.green.withOpacity(0.8);
       case 'spirit':
-        return Colors.yellow.withOpacity(0.7);
+        return Colors.yellow.withOpacity(0.8);
       default:
-        return Theme.of(context).colorScheme.primary.withOpacity(0.7);
+        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
     }
   }
 }
