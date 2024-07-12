@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:location/location.dart';
+import 'package:sobar_app/models/adPopUp.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
 import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
 import 'package:sobar_app/screens/home/views/settings_screen.dart';
+import 'package:sobar_app/utils/ad_pop_up_manager.dart';
 import 'package:sobar_app/utils/location_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,6 +27,21 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   final LocationService locationService = LocationService();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAdPopup();
+  }
+
+  void _checkAdPopup() async {
+    AdPopUpService adService = AdPopUpService();
+    AdPopUp? adPopUp = await adService.getAdPopUp();
+    if (adPopUp != null) {
+      AdPopupManager adPopupManager = AdPopupManager();
+      await adPopupManager.showAdPopupIfNeeded(context, adPopUp);
+    }
+  }
 
   void _showLocationDialog(LocationData? locationData) {
     showDialog(
