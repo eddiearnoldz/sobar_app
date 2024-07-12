@@ -6,7 +6,7 @@ class ReviewTile extends StatelessWidget {
   final QueryDocumentSnapshot review;
   final Future<String> userNameFuture;
 
-  ReviewTile({required this.review, required this.userNameFuture});
+  const ReviewTile({super.key, required this.review, required this.userNameFuture});
 
   @override
   Widget build(BuildContext context) {

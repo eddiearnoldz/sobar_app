@@ -5,7 +5,7 @@ import 'package:sobar_app/components/my_text_button.dart';
 import 'package:sobar_app/components/my_text_field.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'package:user_repository/user_repository.dart';
-import 'sign_in_screen.dart'; // Import SignInScreen
+// Import SignInScreen
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

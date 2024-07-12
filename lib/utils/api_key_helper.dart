@@ -4,10 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> storeApiKeys() async {
   try {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    User? user = _auth.currentUser;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
     if (user == null) {
-      await _auth.signInAnonymously();
+      await auth.signInAnonymously();
     }
 
     // Fetch iOS API key

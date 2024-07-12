@@ -6,10 +6,10 @@ class MapFilterBar extends StatelessWidget {
   final ValueChanged<String> onFilterChanged;
 
   const MapFilterBar({
-    Key? key,
+    super.key,
     required this.currentFilter,
     required this.onFilterChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

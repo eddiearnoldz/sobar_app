@@ -18,7 +18,7 @@ class GooglePlacesHelper {
 
   Future<String?> getPlaceId(String name, String address) async {
     final String url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-        '?input=${Uri.encodeComponent(name + ' ' + address)}'
+        '?input=${Uri.encodeComponent('$name $address')}'
         '&inputtype=textquery'
         '&fields=place_id'
         '&key=$apiKey';

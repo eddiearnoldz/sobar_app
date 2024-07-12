@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sobar_app/models/drink.dart';
-import 'package:provider/provider.dart';
-import 'package:sobar_app/utils/map_provider.dart';
 
 class FilterDrinkTextField extends StatefulWidget {
   final List<Drink> filteredDrinks;
@@ -13,7 +11,7 @@ class FilterDrinkTextField extends StatefulWidget {
   final Function() unfocusTextField;
 
   const FilterDrinkTextField({
-    Key? key,
+    super.key,
     required this.filteredDrinks,
     required this.onSearchChanged,
     required this.onDrinkSelected,
@@ -21,7 +19,7 @@ class FilterDrinkTextField extends StatefulWidget {
     required this.focusNode,
     required this.isFocused,
     required this.unfocusTextField,
-  }) : super(key: key);
+  });
 
   @override
   _FilterDrinkTextFieldState createState() => _FilterDrinkTextFieldState();

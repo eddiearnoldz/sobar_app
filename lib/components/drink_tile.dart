@@ -77,7 +77,7 @@ class DrinkTile extends StatelessWidget {
           if (drink.calories.isFinite)
             Text(
               "${drink.calories.floor()} cals",
-              style: TextStyle(fontFamily: 'Anton', color: Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
+              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
             ),
         ],
       ),

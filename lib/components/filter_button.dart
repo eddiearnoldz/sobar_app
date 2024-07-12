@@ -7,12 +7,12 @@ class FilterButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const FilterButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.color,
     required this.isActive,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

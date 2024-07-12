@@ -120,7 +120,7 @@ class OldMapScreen extends StatelessWidget {
               ),
             );
           } else {
-            return Center(child: Text('Failed to load pubs'));
+            return const Center(child: Text('Failed to load pubs'));
           }
         },
       ),
@@ -131,7 +131,7 @@ class OldMapScreen extends StatelessWidget {
 class PubDetailsSheet extends StatelessWidget {
   final Pub pub;
 
-  const PubDetailsSheet({Key? key, required this.pub}) : super(key: key);
+  const PubDetailsSheet({super.key, required this.pub});
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class PubDetailsSheet extends StatelessWidget {
       future: _getAllDrinks(pub),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else {
           final drinks = snapshot.data!;
           final drinkGroups = _groupDrinksByType(drinks);
@@ -158,12 +158,12 @@ class PubDetailsSheet extends StatelessWidget {
                         pub.locationName,
                         style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton'),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
                         pub.locationAddress,
                         style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       (!snapshot.hasData || snapshot.data!.isEmpty)
                           ? const Center(child: Text('No low/no drinks found here'))
                           : Column(
@@ -219,8 +219,8 @@ class PubDetailsSheet extends StatelessWidget {
 
     drinkGroups.forEach((type, drinks) {
       if (drinks.isNotEmpty) {
-        sections.add(Text(type, style: TextStyle(fontSize: 14, fontFamily: 'Anton')));
-        sections.add(SizedBox(height: 8));
+        sections.add(Text(type, style: const TextStyle(fontSize: 14, fontFamily: 'Anton')));
+        sections.add(const SizedBox(height: 8));
         sections.addAll(drinks.map((drink) => Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -240,16 +240,16 @@ class PubDetailsSheet extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   '${drink.name} - ABV: ${drink.abv}',
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text('${drink.averageRating}/5', style: TextStyle(color: Theme.of(context).colorScheme.error)),
               ],
             )));
-        sections.add(SizedBox(height: 16));
+        sections.add(const SizedBox(height: 16));
       }
     });
 

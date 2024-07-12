@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleWidget extends StatelessWidget {
@@ -13,14 +11,14 @@ class ArticleWidget extends StatelessWidget {
   final Color color;
 
   const ArticleWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.body,
     required this.imageUrl,
     required this.url,
     required this.imageAlt,
     required this.color,
-  }) : super(key: key);
+  });
 
   void _launchURL(String url) async {
     if (await canLaunch(url)) {
@@ -66,7 +64,7 @@ class ArticleWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Spacer(),
+              const Spacer(),
               Text(
                 imageAlt,
                 style: const TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 12),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sobar_app/models/drink.dart';
-import 'package:sobar_app/utils/map_provider.dart';
 
 class SelectedDrinkFilterClearButton extends StatelessWidget {
   final Drink selectedDrink;
   final Function onClear;
 
   const SelectedDrinkFilterClearButton({
-    Key? key,
+    super.key,
     required this.selectedDrink,
     required this.onClear,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

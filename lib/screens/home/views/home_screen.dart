@@ -8,7 +8,7 @@ import 'package:sobar_app/screens/home/views/settings_screen.dart';
 import 'package:sobar_app/utils/location_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
 
   final List<Widget> _screens = [
-    NewMapScreen(),
+    const NewMapScreen(),
     const DrinksScreen(),
     const NewsletterScreen(),
     const SettingsScreen(),
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : const Text('Failed to get location.'),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -8,7 +8,6 @@ import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_up_bloc/sign_up_bloc.dart'; // Import the SignUpBloc
 import 'package:sobar_app/screens/auth/views/sign_up_screen.dart';
 
-import '../../home/views/home_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

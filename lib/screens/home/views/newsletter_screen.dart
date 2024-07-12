@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sobar_app/components/article_widget.dart';
 import 'package:sobar_app/models/newsletter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,12 +31,12 @@ class NewsletterScreen extends StatelessWidget {
       future: fetchNewsletter(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           print(snapshot.error);
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
-          return Center(child: Text('No data available'));
+          return const Center(child: Text('No data available'));
         } else {
           final newsletter = snapshot.data!;
           return Scaffold(

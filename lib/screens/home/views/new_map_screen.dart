@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:sobar_app/utils/map_provider.dart';
 
 class NewMapScreen extends StatefulWidget {
+  const NewMapScreen({super.key});
+
   @override
   _NewMapScreenState createState() => _NewMapScreenState();
 }
@@ -197,7 +199,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                           zoom: 12,
                         ),
                   mapType: MapType.normal,
-                  markers: mapState is MapLoaded ? mapState.markers : Set<Marker>(),
+                  markers: mapState is MapLoaded ? mapState.markers : <Marker>{},
                   onMapCreated: (controller) {
                     if (mapProvider.controller == null) {
                       mapProvider.setController(controller);

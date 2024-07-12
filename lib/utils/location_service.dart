@@ -19,5 +19,6 @@ class LocationService {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 }

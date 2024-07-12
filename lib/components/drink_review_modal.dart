@@ -9,7 +9,7 @@ import 'package:sobar_app/components/review_tile.dart';
 class DrinkReviewModal extends StatefulWidget {
   final Drink drink;
 
-  const DrinkReviewModal({Key? key, required this.drink}) : super(key: key);
+  const DrinkReviewModal({super.key, required this.drink});
 
   @override
   _DrinkReviewModalState createState() => _DrinkReviewModalState();
@@ -111,7 +111,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                     ),
                                     Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.star,
                                           color: Color.fromARGB(255, 247, 119, 87),
                                         ),

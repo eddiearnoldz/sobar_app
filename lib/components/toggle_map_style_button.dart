@@ -25,7 +25,7 @@ class ToggleMapStyleButton extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               );
             } else {
-              return Icon(Icons.brightness_3, size: 20);
+              return const Icon(Icons.brightness_3, size: 20);
             }
           },
         ),
