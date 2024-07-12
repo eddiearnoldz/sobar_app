@@ -16,7 +16,6 @@ import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
-import 'package:sobar_app/screens/home/views/old_map_screen.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:sobar_app/utils/map_config.dart';
 import 'package:sobar_app/utils/map_provider.dart';
@@ -157,19 +156,41 @@ class _NewMapScreenState extends State<NewMapScreen> {
     _focusNode.unfocus();
   }
 
-  void _showPubDetails(BuildContext context, Pub pub) {
-    setState(() {
-      _isBottomModalOpen = true;
-    });
+  void showPubDetailsSheet(BuildContext context, Pub pub, GooglePlacesHelper placesHelper) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+
+    mapProvider.setBottomModalState(true);
 
     showModalBottomSheet(
       context: context,
-      builder: (context) => PubDetailsSheet(pub: pub),
+      builder: (context) {
+        return Container(
+          height: screenHeight * 0.75, // 3/4 of the screen height
+          child: PubDetailsSheet(pub: pub, placesHelper: placesHelper),
+        );
+      },
+      isScrollControlled: true, // To allow the modal to be full screen if needed
     ).whenComplete(() {
-      setState(() {
-        _isBottomModalOpen = false;
-      });
+      mapProvider.setBottomModalState(false);
     });
+  }
+
+  void _showCustomInfoWindow(Pub pub) {
+    if (mounted) {
+      final mapProvider = Provider.of<MapProvider>(context, listen: false);
+      mapProvider.setSelectedPub(pub);
+    } else {
+      _selectedPub = pub;
+    }
+  }
+
+  void _onCustomInfoWindowTap() {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    if (mapProvider.selectedPub != null) {
+      showPubDetailsSheet(context, mapProvider.selectedPub!, _placesHelper!);
+    }
   }
 
   @override
@@ -184,15 +205,12 @@ class _NewMapScreenState extends State<NewMapScreen> {
               if (pubState is PubLoaded || pubState is PubFiltered) {
                 final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
                 final markers = pubs.map((pub) {
-                  if (pub.locationName == 'Pub on the Park') print(pub.parsedLatitude);
                   return Marker(
                     markerId: MarkerId(pub.id),
                     position: LatLng(pub.parsedLatitude, pub.parsedLongitude),
                     icon: customIcon,
                     onTap: () {
-                      setState(() {
-                        _selectedPub = pub;
-                      });
+                      _showCustomInfoWindow(pub);
                     },
                   );
                 }).toSet();
@@ -226,12 +244,11 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     }
                   },
                   onTap: (_) {
-                    if (_isBottomModalOpen) {
+                    if (mapProvider.isBottomModalOpen) {
                       Navigator.of(context).pop();
+                      mapProvider.setBottomModalState(false);
                     }
-                    setState(() {
-                      _selectedPub = null;
-                    });
+                    mapProvider.setSelectedPub(null);
                   },
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
@@ -241,14 +258,14 @@ class _NewMapScreenState extends State<NewMapScreen> {
               },
             ),
           ),
-          if (_selectedPub != null)
+          if (mapProvider.selectedPub != null || _selectedPub != null)
             Positioned(
               bottom: 10,
               left: 10,
               right: 10,
               child: GestureDetector(
-                onTap: () => _showPubDetails(context, _selectedPub!),
-                child: CustomInfoWindow(pub: _selectedPub!),
+                onTap: _onCustomInfoWindowTap,
+                child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
               ),
             ),
           const ToggleMapStyleButton(),
