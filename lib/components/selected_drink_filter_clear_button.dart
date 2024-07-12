@@ -15,7 +15,7 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: 150,
-      right: 10,
+      left: 10,
       child: GestureDetector(
         onTap: () => onClear(),
         child: Stack(

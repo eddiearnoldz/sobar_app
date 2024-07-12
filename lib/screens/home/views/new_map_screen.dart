@@ -1,22 +1,26 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
+import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
-import 'package:sobar_app/components/map_filter_bar.dart';
+import 'package:sobar_app/components/custom_info_window.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
+import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/components/my_location_button.dart';
+import 'package:sobar_app/components/pub_details_sheet.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
-import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/models/drink.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sobar_app/models/pub.dart';
+import 'package:sobar_app/screens/home/views/old_map_screen.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:sobar_app/utils/map_config.dart';
-import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:sobar_app/utils/map_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NewMapScreen extends StatefulWidget {
   const NewMapScreen({super.key});
@@ -37,6 +41,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
   bool _isFocused = false;
   GoogleMapController? _controller;
   final Location _location = Location();
+  Pub? _selectedPub;
+  bool _isBottomModalOpen = false;
 
   @override
   void initState() {
@@ -86,10 +92,6 @@ class _NewMapScreenState extends State<NewMapScreen> {
     setState(() {
       customIcon = icon;
     });
-  }
-
-  void _showPubDetails(BuildContext context, Pub pub) {
-    print('Showing details for pub: ${pub.id}');
   }
 
   void _filterMarkers(String filter) {
@@ -155,6 +157,21 @@ class _NewMapScreenState extends State<NewMapScreen> {
     _focusNode.unfocus();
   }
 
+  void _showPubDetails(BuildContext context, Pub pub) {
+    setState(() {
+      _isBottomModalOpen = true;
+    });
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => PubDetailsSheet(pub: pub),
+    ).whenComplete(() {
+      setState(() {
+        _isBottomModalOpen = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final mapProvider = Provider.of<MapProvider>(context);
@@ -172,11 +189,11 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     markerId: MarkerId(pub.id),
                     position: LatLng(pub.parsedLatitude, pub.parsedLongitude),
                     icon: customIcon,
-                    infoWindow: InfoWindow(
-                      title: pub.locationName,
-                      snippet: pub.locationAddress,
-                      onTap: () => _showPubDetails(context, pub),
-                    ),
+                    onTap: () {
+                      setState(() {
+                        _selectedPub = pub;
+                      });
+                    },
                   );
                 }).toSet();
 
@@ -208,6 +225,14 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       print('Map created and InitializeMap event added');
                     }
                   },
+                  onTap: (_) {
+                    if (_isBottomModalOpen) {
+                      Navigator.of(context).pop();
+                    }
+                    setState(() {
+                      _selectedPub = null;
+                    });
+                  },
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
                   },
@@ -216,6 +241,16 @@ class _NewMapScreenState extends State<NewMapScreen> {
               },
             ),
           ),
+          if (_selectedPub != null)
+            Positioned(
+              bottom: 10,
+              left: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: () => _showPubDetails(context, _selectedPub!),
+                child: CustomInfoWindow(pub: _selectedPub!),
+              ),
+            ),
           const ToggleMapStyleButton(),
           Positioned(
             top: 100,

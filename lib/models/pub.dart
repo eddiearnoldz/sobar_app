@@ -12,6 +12,13 @@ class Pub {
   final String? placeId;
   List<Drink> drinksData; // Store fetched drinks
 
+    // Flags for drink types
+  bool hasDraught = false;
+  bool hasBottle = false;
+  bool hasCan = false;
+  bool hasWine = false;
+  bool hasSpirit = false;
+
   Pub({
     required this.id,
     required this.locationName,

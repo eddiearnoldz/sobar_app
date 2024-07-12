@@ -8,7 +8,7 @@ class ToggleMapStyleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 60,
+      top: 140,
       right: 10,
       child: FloatingActionButton(
         heroTag: 'toggleMapStyleButton',
