@@ -53,6 +53,9 @@ class _NewMapScreenState extends State<NewMapScreen> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+    // hack to update markers when returing to map
+    _filterMarkers("draught");
+    _filterMarkers("");
   }
 
   @override
