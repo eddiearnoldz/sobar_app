@@ -167,9 +167,10 @@ class _NewMapScreenState extends State<NewMapScreen> {
               if (pubState is PubLoaded || pubState is PubFiltered) {
                 final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
                 final markers = pubs.map((pub) {
+                  if (pub.locationName == 'Pub on the Park') print(pub.parsedLatitude);
                   return Marker(
                     markerId: MarkerId(pub.id),
-                    position: LatLng(pub.latitude, pub.longitude),
+                    position: LatLng(pub.parsedLatitude, pub.parsedLongitude),
                     icon: customIcon,
                     infoWindow: InfoWindow(
                       title: pub.locationName,

@@ -7,29 +7,35 @@ class AvgRatingSpan extends StatelessWidget {
 
   String _processAverageRating(String avRating) {
     if (avRating.endsWith('.0')) {
-      return '${avRating.substring(0, avRating.length - 2)}/5';
+      return ': ${avRating.substring(0, avRating.length - 2)}';
     }
-    return '$avRating/5';
+    return ': $avRating';
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          const TextSpan(
-            text: 'rating: ',
-          ),
+    return Row(
+      children: [
+        const Icon(
+          Icons.star,
+          color: Color.fromARGB(255, 247, 119, 87),
+          size: 15,
+        ),
+        Text.rich(
           TextSpan(
-            text: _processAverageRating(avRating),
-            style: const TextStyle(
-              fontFamily: 'Work Sans',
-              fontStyle: FontStyle.italic,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        ],
-      ),
+            children: [
+              TextSpan(
+                text: _processAverageRating(avRating),
+                style: const TextStyle(
+                  fontFamily: 'Work Sans',
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

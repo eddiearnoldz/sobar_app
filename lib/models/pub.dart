@@ -5,8 +5,8 @@ class Pub {
   final String id;
   final String locationName;
   final String locationAddress;
-  final double latitude;
-  final double longitude;
+  final String latitude;
+  final String longitude;
   final String city;
   final List<DocumentReference> drinks;
   final String? placeId;
@@ -29,19 +29,19 @@ class Pub {
       id: id,
       locationName: json['location_name'] ?? '',
       locationAddress: json['location_address'] ?? '',
-      latitude: _parseDouble(json['latitude']),
-      longitude: _parseDouble(json['longitude']),
+      latitude: json['latitude'].toString(),
+      longitude: json['longitude'].toString(),
       city: json['city'] ?? '',
       drinks: (json['drinks'] as List<dynamic>?)?.map((e) => e as DocumentReference).toList() ?? [],
       placeId: json['place_id'] as String?,
     );
   }
 
-  static double _parseDouble(dynamic value) {
-    if (value is double) return value;
-    if (value is int) return value.toDouble();
-    if (value is String) return double.tryParse(value) ?? 0.0;
-    return 0.0;
+  double get parsedLatitude => _parseDouble(latitude);
+  double get parsedLongitude => _parseDouble(longitude);
+
+  static double _parseDouble(String value) {
+    return double.tryParse(value) ?? 0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -56,3 +56,4 @@ class Pub {
     };
   }
 }
+
