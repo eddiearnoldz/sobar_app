@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sobar_app/models/pub.dart';
+import 'package:sobar_app/utils/globals.dart';
 
 class CustomInfoWindow extends StatelessWidget {
   final Pub pub;
@@ -9,6 +10,7 @@ class CustomInfoWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.onPrimary,
       elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -21,7 +23,7 @@ class CustomInfoWindow extends StatelessWidget {
               children: [
                 Text(
                   pub.locationName,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontFamily: 'Anton', letterSpacing: 1),
                 ),
                 Row(
                   children: _buildDrinkTypeIndicators(),
@@ -30,7 +32,7 @@ class CustomInfoWindow extends StatelessWidget {
             ),
             Text(
               pub.locationAddress,
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
             ),
             SizedBox(height: 8),
           ],
@@ -42,19 +44,19 @@ class CustomInfoWindow extends StatelessWidget {
   List<Widget> _buildDrinkTypeIndicators() {
     List<Widget> indicators = [];
     if (pub.drinksData.any((drink) => drink.type == 'draught')) {
-      indicators.add(_buildIndicator(Colors.purple));
+      indicators.add(_buildIndicator(draughtColour));
     }
     if (pub.drinksData.any((drink) => drink.type == 'bottle')) {
-      indicators.add(_buildIndicator(Colors.red));
+      indicators.add(_buildIndicator(bottleColour));
     }
     if (pub.drinksData.any((drink) => drink.type == 'can')) {
-      indicators.add(_buildIndicator(Colors.blue));
+      indicators.add(_buildIndicator(canColour));
     }
     if (pub.drinksData.any((drink) => drink.type == 'wine')) {
-      indicators.add(_buildIndicator(Colors.green));
+      indicators.add(_buildIndicator(wineColour));
     }
     if (pub.drinksData.any((drink) => drink.type == 'spirit')) {
-      indicators.add(_buildIndicator(Colors.yellow));
+      indicators.add(_buildIndicator(spiritColour));
     }
     return indicators;
   }

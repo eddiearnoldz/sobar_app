@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/components/custom_info_window.dart';
+import 'package:sobar_app/components/favourite_pubs_filter_button.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/components/my_location_button.dart';
@@ -263,9 +264,9 @@ class _NewMapScreenState extends State<NewMapScreen> {
           ),
           if (mapProvider.selectedPub != null || _selectedPub != null)
             Positioned(
-              bottom: 10,
-              left: 10,
-              right: 10,
+              bottom: 5,
+              left: 5,
+              right: 5,
               child: GestureDetector(
                 onTap: _onCustomInfoWindowTap,
                 child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
@@ -307,7 +308,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
               },
             ),
           ),
-          MyLocationButton(location: _location)
+          MyLocationButton(location: _location),
+          const FavouritePubsFilterButton(),
         ],
       ),
     );

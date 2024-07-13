@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sobar_app/components/favourite_pub_button.dart';
+import 'package:sobar_app/components/pub_details_drinks_option_table.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
@@ -34,6 +35,39 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
   Future<Map<String, List<Drink>>> _fetchDrinkGroups(Pub pub) async {
     List<Drink> drinks = await _getAllDrinks(pub);
     return _groupDrinksByType(drinks);
+  }
+
+  Future<List<Drink>> _getAllDrinks(Pub pub) async {
+    List<Drink> drinks = [];
+
+    for (var drinkRef in pub.drinks) {
+      try {
+        DocumentSnapshot snapshot = await drinkRef.get();
+        if (snapshot.exists) {
+          drinks.add(Drink.fromJson(drinkRef.id, snapshot.data() as Map<String, dynamic>));
+        }
+      } catch (e) {
+        print('Error fetching drink: $e');
+      }
+    }
+
+    return drinks;
+  }
+
+  Map<String, List<Drink>> _groupDrinksByType(List<Drink> drinks) {
+    Map<String, List<Drink>> drinkGroups = {
+      'draught': [],
+      'can': [],
+      'bottle': [],
+      'wine': [],
+      'spirit': [],
+    };
+
+    for (var drink in drinks) {
+      drinkGroups[drink.type]?.add(drink);
+    }
+
+    return drinkGroups;
   }
 
   @override
@@ -314,146 +348,11 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
             },
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: ['draught', 'can', 'bottle', 'wine', 'spirit'].map((type) {
-              int index = ['draught', 'can', 'bottle', 'wine', 'spirit'].indexOf(type);
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedPage = index;
-                  });
-                },
-                child: Stack(
-                  children: [
-                    Text('${type}s',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Anton',
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        )),
-                    if (_selectedPage == index)
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          height: 2,
-                          width: 40,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 16),
           Expanded(
-            child: FutureBuilder<Map<String, List<Drink>>>(
-              future: _drinkGroupsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error loading drinks'));
-                } else {
-                  final drinkGroups = snapshot.data!;
-                  final drinksOfType = drinkGroups.values.elementAt(_selectedPage);
-
-                  return AnimatedOpacity(
-                    opacity: 1,
-                    duration: Duration(milliseconds: 500),
-                    child: Visibility(
-                      visible: true,
-                      maintainState: true,
-                      child: drinksOfType.isEmpty
-                          ? Center(child: Text('No ${drinkGroups.keys.elementAt(_selectedPage)}s at this pub yet'))
-                          : ListView.builder(
-                              itemCount: drinksOfType.length,
-                              itemBuilder: (context, index) {
-                                final drink = drinksOfType[index];
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 40,
-                                        width: 40,
-                                        child: CachedNetworkImage(
-                                          imageUrl: drink.imageUrl,
-                                          placeholder: (context, url) => Container(
-                                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
-                                            width: 40,
-                                            height: 40,
-                                          ),
-                                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                                          height: 40,
-                                          width: 40,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            drink.name,
-                                            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                          ),
-                                          Text(
-                                            'abv: ${drink.abv}',
-                                            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                    ),
-                  );
-                }
-              },
-            ),
+            child: PubDetailsDrinksOptionTable(drinkGroupsFuture: _drinkGroupsFuture),
           ),
         ],
       ),
     );
-  }
-
-  Future<List<Drink>> _getAllDrinks(Pub pub) async {
-    List<Drink> drinks = [];
-
-    for (var drinkRef in pub.drinks) {
-      try {
-        DocumentSnapshot snapshot = await drinkRef.get();
-        if (snapshot.exists) {
-          drinks.add(Drink.fromJson(drinkRef.id, snapshot.data() as Map<String, dynamic>));
-        }
-      } catch (e) {
-        print('Error fetching drink: $e');
-      }
-    }
-
-    return drinks;
-  }
-
-  Map<String, List<Drink>> _groupDrinksByType(List<Drink> drinks) {
-    Map<String, List<Drink>> drinkGroups = {
-      'draught': [],
-      'can': [],
-      'bottle': [],
-      'wine': [],
-      'spirit': [],
-    };
-
-    for (var drink in drinks) {
-      drinkGroups[drink.type]?.add(drink);
-    }
-
-    return drinkGroups;
   }
 }

@@ -11,9 +11,10 @@ class LoadPubs extends PubEvent {}
 
 class FilterPubs extends PubEvent {
   final String filter;
+  final List<String>? favouritePubIds;
 
-  const FilterPubs({required this.filter});
+  const FilterPubs({required this.filter, this.favouritePubIds});
 
   @override
-  List<Object> get props => [filter];
+  List<Object> get props => [filter, favouritePubIds ?? []];
 }
