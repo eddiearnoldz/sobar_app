@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:sobar_app/components/my_text_button.dart';
 import 'package:sobar_app/components/my_text_field.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_up_bloc/sign_up_bloc.dart'; // Import the SignUpBloc
@@ -61,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
           body: Stack(children: [
             Positioned.fill(
               child: Image.asset(
-                "assets/backgrounds/sign_in_beer_background.png",
+                "assets/backgrounds/sign_in_background.png",
                 fit: BoxFit.cover,
               ),
             ),
