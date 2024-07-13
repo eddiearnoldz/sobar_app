@@ -18,7 +18,7 @@ class FirebaseUserRepo implements UserRepository {
       if (firebaseUser == null) {
         yield MyUser.empty;
       } else {
-        yield await userCollection.doc(firebaseUser.uid).get().then((value) => MyUser.fromEntity(MyUserEntity.fromJson(value.data()!)));
+        yield await userCollection.doc(firebaseUser.uid).get().then((value) => MyUser.fromEntity(MyUserEntity.fromJson(value.data() ?? {})));
       }
     });
   }
@@ -29,7 +29,7 @@ class FirebaseUserRepo implements UserRepository {
       UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       final firebaseUser = userCredential.user!;
       final userDocument = await userCollection.doc(firebaseUser.uid).get();
-      return MyUser.fromEntity(MyUserEntity.fromJson(userDocument.data()!));
+      return MyUser.fromEntity(MyUserEntity.fromJson(userDocument.data() ?? {}));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
@@ -50,6 +50,7 @@ class FirebaseUserRepo implements UserRepository {
     try {
       UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(email: myUser.email, password: password);
       myUser.userId = user.user!.uid;
+      await userCollection.doc(myUser.userId).set(myUser.toEntity().toJson());
       return myUser;
     } on FirebaseAuthException catch (e) {
       String errorMessage = getFirebaseErrorMessage(e);

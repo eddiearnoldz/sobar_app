@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:sobar_app/components/favourite_pub_button.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
@@ -214,7 +215,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                   width: 3,
                                 ),
                                 Text(
-                                  "directions",
+                                  "route",
                                   style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
@@ -252,13 +253,14 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                   width: 3,
                                 ),
                                 Text(
-                                  "website",
+                                  "site",
                                   style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
                             ),
                           ),
                         ),
+                        FavouriteButton(pub: widget.pub),
                       ],
                     ),
                     if (openingHours != null)

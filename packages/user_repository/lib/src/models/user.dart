@@ -1,25 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:user_repository/src/entities/entities.dart';
 
 class MyUser {
   String userId;
   String email;
   String name;
+  List<String> favourites;
 
+  MyUser({required this.userId, required this.email, required this.name, required this.favourites});
 
-  MyUser({required this.userId, required this.email, required this.name});
-
-  static final empty = MyUser(userId: '', email: '', name: '');
+  static final empty = MyUser(userId: '', email: '', name: '', favourites: []);
 
   MyUserEntity toEntity() {
-    return MyUserEntity(userId: userId, email: email, name: name);
+    return MyUserEntity(
+      userId: userId,
+      email: email,
+      name: name,
+      favourites: favourites,
+    );
   }
 
   static MyUser fromEntity(MyUserEntity entity) {
-    return MyUser(userId: entity.userId, email: entity.email, name: entity.name);
+    return MyUser(
+      userId: entity.userId,
+      email: entity.email,
+      name: entity.name,
+      favourites: entity.favourites,
+    );
   }
 
   @override
   String toString() {
-    return 'MyUser: $userId, $email, $name';
+    return 'MyUser: $userId, $email, $name, ${favourites.length} favourites';
   }
 }

@@ -1,20 +1,32 @@
 
 class MyUserEntity {
-  String userId;
-  String email;
-  String name;
+  final String userId;
+  final String email;
+  final String name;
+  final List<String> favourites;
 
-  MyUserEntity({required this.userId, required this.email, required this.name});
+  MyUserEntity({
+    required this.userId,
+    required this.email,
+    required this.name,
+    required this.favourites,
+  });
 
-  Map<String, Object?> toJson() {
-    return {'userId': userId, 'email': email, 'name': name};
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'email': email,
+      'name': name,
+      'favourites': favourites,
+    };
   }
 
- static MyUserEntity fromJson(Map<String, dynamic> doc) {
-   return MyUserEntity(
-    userId: doc['userId'],
-    email: doc['email'],
-    name: doc['name'],
-   );
- }
+  static MyUserEntity fromJson(Map<String, dynamic> json) {
+    return MyUserEntity(
+      userId: json['userId'],
+      email: json['email'],
+      name: json['name'],
+      favourites: json['favourites'] != null ? List<String>.from(json['favourites']) : [],
+    );
+  }
 }
