@@ -14,7 +14,7 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 150,
+      top: 100,
       left: 10,
       child: GestureDetector(
         onTap: () => onClear(),
@@ -25,7 +25,7 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(50),
                 image: DecorationImage(
                   image: NetworkImage(selectedDrink.imageUrl),
                   fit: BoxFit.contain,
@@ -38,8 +38,8 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
               child: Container(
                 width: 15,
                 height: 15,
-                decoration: const BoxDecoration(
-                  color: Colors.red,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.error,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.close, color: Colors.white, size: 10),

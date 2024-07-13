@@ -50,9 +50,10 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
     return Stack(
       children: [
         Positioned(
-          top: 240,
+          top: 190,
           right: 10,
           child: FloatingActionButton(
+            heroTag: 'favouritePubsFilterButton',
             mini: true,
             onPressed: _toggleFavouriteFilter,
             backgroundColor: Colors.white,

@@ -14,7 +14,7 @@ class MyLocationButton extends StatelessWidget {
     final mapProvider = Provider.of<MapProvider>(context);
 
     return Positioned(
-      top: 190,
+      top: 90,
       right: 10,
       child: FloatingActionButton(
         heroTag: 'myLocationButton',

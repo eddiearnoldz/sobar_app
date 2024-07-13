@@ -274,44 +274,50 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
               ),
             ),
-          const ToggleMapStyleButton(),
-          Positioned(
-            top: 100,
-            left: 10,
-            right: 10,
-            child: FilterDrinkTextField(
-              filteredDrinks: filteredDrinks,
-              onSearchChanged: _searchDrinks,
-              onDrinkSelected: _filterPubsByDrink,
-              controller: _searchController,
-              focusNode: _focusNode,
-              isFocused: _isFocused,
-              unfocusTextField: unfocusTextField,
+          SafeArea(
+            child: Stack(
+              children: [
+                const ToggleMapStyleButton(),
+                Positioned(
+                  top: 50,
+                  left: 10,
+                  right: 10,
+                  child: FilterDrinkTextField(
+                    filteredDrinks: filteredDrinks,
+                    onSearchChanged: _searchDrinks,
+                    onDrinkSelected: _filterPubsByDrink,
+                    controller: _searchController,
+                    focusNode: _focusNode,
+                    isFocused: _isFocused,
+                    unfocusTextField: unfocusTextField,
+                  ),
+                ),
+                if (mapProvider.selectedDrink != null)
+                  SelectedDrinkFilterClearButton(
+                    selectedDrink: mapProvider.selectedDrink!,
+                    onClear: _clearSelectedDrink,
+                  ),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: MapFilterBar(
+                    currentFilter: mapProvider.currentFilter,
+                    onFilterChanged: (filter) {
+                      if (filter == mapProvider.currentFilter) {
+                        filter = ''; // Reset filter if the same filter is clicked again
+                      }
+                      _clearSelectedDrink();
+                      mapProvider.setCurrentFilter(filter);
+                      context.read<PubBloc>().add(FilterPubs(filter: filter));
+                    },
+                  ),
+                ),
+                MyLocationButton(location: _location),
+                const FavouritePubsFilterButton(),
+              ],
             ),
           ),
-          if (mapProvider.selectedDrink != null)
-            SelectedDrinkFilterClearButton(
-              selectedDrink: mapProvider.selectedDrink!,
-              onClear: _clearSelectedDrink,
-            ),
-          Positioned(
-            top: 50,
-            left: 0,
-            right: 0,
-            child: MapFilterBar(
-              currentFilter: mapProvider.currentFilter,
-              onFilterChanged: (filter) {
-                if (filter == mapProvider.currentFilter) {
-                  filter = ''; // Reset filter if the same filter is clicked again
-                }
-                _clearSelectedDrink();
-                mapProvider.setCurrentFilter(filter);
-                context.read<PubBloc>().add(FilterPubs(filter: filter));
-              },
-            ),
-          ),
-          MyLocationButton(location: _location),
-          const FavouritePubsFilterButton(),
         ],
       ),
     );

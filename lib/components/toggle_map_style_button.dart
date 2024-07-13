@@ -22,11 +22,10 @@ class ToggleMapStyleButton extends StatelessWidget {
             if (state is MapLoaded) {
               return Icon(
                 state.isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
-                size: 20,
                 color: Theme.of(context).colorScheme.onPrimary,
               );
             } else {
-              return const Icon(Icons.brightness_3, size: 20);
+              return const Icon(Icons.brightness_3);
             }
           },
         ),
