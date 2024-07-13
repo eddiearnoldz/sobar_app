@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sobar_app/components/favourite_pub_pill.dart';
 import 'package:sobar_app/components/launch_url_pill.dart';
 import 'package:sobar_app/components/opening_hours_table.dart';
@@ -77,25 +79,6 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.pub.locationName,
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                widget.pub.locationAddress,
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
         FutureBuilder<Map<String, dynamic>>(
           future: _placesDetailsFuture,
           builder: (context, snapshot) {
@@ -110,10 +93,46 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
               final photos = details['photos'] ?? [];
               final List<dynamic> openingHours = details['opening_hours']?['weekday_text'] ?? [];
               final website = details['website'];
+              final rating = details['rating'];
+              final ratingTotal = details['user_ratings_total'];
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              flex: 5,
+                              child: Text(
+                                widget.pub.locationName,
+                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: Text(
+                                '${rating}★ (${ratingTotal})',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          widget.pub.locationAddress,
+                          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   if (photos.isNotEmpty)
                     SizedBox(
                       height: MediaQuery.of(context).size.width / 3,
