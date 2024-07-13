@@ -49,7 +49,7 @@ class NewsletterScreen extends StatelessWidget {
                   children: [
                     Text(
                       newsletter.newsletterTitle.toUpperCase(),
-                      style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 30),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontFamily: 'Anton', fontSize: 30),
                     ),
                     const SizedBox(height: 10),
                     ClipRRect(
@@ -69,7 +69,7 @@ class NewsletterScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(newsletter.newsletterIntro, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14)),
+                    Text(newsletter.newsletterIntro, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16)),
                     const SizedBox(height: 15),
                     ArticleWidget(
                       title: newsletter.articleOneTitle,

@@ -40,7 +40,7 @@ class ArticleWidget extends StatelessWidget {
           Text(
             title.toUpperCase(),
             style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.error,
               fontFamily: 'Anton',
               fontSize: 22,
             ),
@@ -67,19 +67,19 @@ class ArticleWidget extends StatelessWidget {
               const Spacer(),
               Text(
                 imageAlt,
-                style: const TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 14),
               ),
             ],
           ),
           const SizedBox(height: 10),
           Text(
             body,
-            style: const TextStyle(fontSize: 14),
+            style: const TextStyle(fontSize: 16),
           ),
           const SizedBox(height: 5),
           Text(
             'Read more',
-            style: TextStyle(color: color.withOpacity(0.8), decoration: TextDecoration.underline, fontSize: 12),
+            style: TextStyle(color: color.withOpacity(0.8), decoration: TextDecoration.underline, fontSize: 14),
           ),
           const SizedBox(height: 30),
         ],

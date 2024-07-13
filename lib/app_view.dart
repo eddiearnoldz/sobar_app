@@ -32,7 +32,7 @@ class MyAppView extends StatelessWidget {
             onPrimary: HexColor("#1C1C1C"),
             secondary: HexColor('#FFFFFF'),
             onSecondary: HexColor('#FCF4F0'),
-            error: HexColor("#FB0606"),
+            error: HexColor("#FE5454"),
           ),
           fontFamily: 'Work Sans',
           focusColor: HexColor("#FBF6C7"),
@@ -46,7 +46,7 @@ class MyAppView extends StatelessWidget {
             onPrimary: HexColor("#FCF4F0"), // Inverted from #1C1C1C
             secondary: HexColor('#1C1C1C'),
             onSecondary: HexColor('#FFFFFF'),
-            error: HexColor("#FB0606"), // Kept the same for consistency
+            error: HexColor("#FE5454"), // Kept the same for consistency
           ),
           fontFamily: 'Work Sans',
           focusColor: HexColor("#1C1C1C"), // Dark background for focus color

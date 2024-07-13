@@ -6,6 +6,6 @@ const String openCountKey = 'app_open_count';
 
 const Color draughtColour = Colors.purple;
 const Color bottleColour = Colors.red;
-const Color canColour = Colors.blue; 
-const Color wineColour = Colors.green; 
-const Color spiritColour = Colors.yellow; 
+const Color canColour = Colors.blue;
+const Color wineColour = Colors.green;
+const Color spiritColour = Colors.amber;

@@ -8,7 +8,7 @@ class MapProvider extends ChangeNotifier {
   GoogleMapController? _controller;
   CameraPosition _cameraPosition = const CameraPosition(
     target: londonCoordinates,
-    zoom: 12,
+    zoom: 13,
   );
   bool _isBlackStyle = false;
   String _currentFilter = '';
