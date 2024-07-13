@@ -5,16 +5,16 @@ import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer';
 
-class FavouriteButton extends StatefulWidget {
+class FavouritePubPill extends StatefulWidget {
   final Pub pub;
 
-  const FavouriteButton({Key? key, required this.pub}) : super(key: key);
+  const FavouritePubPill({Key? key, required this.pub}) : super(key: key);
 
   @override
-  _FavouriteButtonState createState() => _FavouriteButtonState();
+  _FavouritePubPillState createState() => _FavouritePubPillState();
 }
 
-class _FavouriteButtonState extends State<FavouriteButton> {
+class _FavouritePubPillState extends State<FavouritePubPill> {
   bool isFavourite = false;
 
   @override

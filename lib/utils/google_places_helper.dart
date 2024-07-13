@@ -7,10 +7,16 @@ class GooglePlacesHelper {
   GooglePlacesHelper(this.apiKey);
 
   Future<Map<String, dynamic>> getPlaceDetails(String placeId) async {
-    final String url = 'https://maps.googleapis.com/maps/api/place/details/json?placeid=$placeId&key=$apiKey';
+    final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$apiKey';
     final response = await http.get(Uri.parse(url));
+
     if (response.statusCode == 200) {
-      return json.decode(response.body)['result'];
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['status'] == 'OK') {
+        return jsonResponse['result'] ?? {};
+      } else {
+        throw Exception('Failed to load place details: ${jsonResponse['status']}');
+      }
     } else {
       throw Exception('Failed to load place details');
     }

@@ -2,7 +2,9 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:sobar_app/components/favourite_pub_button.dart';
+import 'package:sobar_app/components/favourite_pub_pill.dart';
+import 'package:sobar_app/components/launch_url_pill.dart';
+import 'package:sobar_app/components/opening_hours_table.dart';
 import 'package:sobar_app/components/pub_details_drinks_option_table.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -73,19 +75,28 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.pub.locationName,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            widget.pub.locationAddress,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.pub.locationName,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  widget.pub.locationAddress,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           FutureBuilder<Map<String, dynamic>>(
@@ -94,22 +105,18 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
+                print(snapshot.error);
                 return const Center(child: Text('Error loading place details'));
               } else {
                 final details = snapshot.data!;
                 final phoneNumber = details['formatted_phone_number'];
                 final photos = details['photos'] ?? [];
-                final openingHours = details['opening_hours']?['weekday_text'] ?? [];
+                final List<dynamic> openingHours = details['opening_hours']?['weekday_text'] ?? [];
                 final website = details['website'];
 
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (photos.isEmpty)
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 3,
-                        width: MediaQuery.of(context).size.width,
-                      ),
                     if (photos.isNotEmpty)
                       SizedBox(
                         height: MediaQuery.of(context).size.width / 3,
@@ -145,88 +152,65 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                         ),
                       ),
                     const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: _showOpeningHours ? null : Border.all(color: Theme.of(context).colorScheme.onPrimary),
-                              borderRadius: BorderRadius.circular(5),
-                              color: _showOpeningHours ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
-                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _showOpeningHours = !_showOpeningHours;
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.access_time,
-                                  color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
-                                  size: 15,
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                Text(
-                                  "hours",
-                                  style: TextStyle(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                border: _showOpeningHours ? null : Border.all(color: Theme.of(context).colorScheme.onPrimary),
+                                borderRadius: BorderRadius.circular(5),
+                                color: _showOpeningHours ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
+                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _showOpeningHours = !_showOpeningHours;
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.access_time,
                                     color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+                                    size: 15,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(
+                                    width: 3,
+                                  ),
+                                  Text(
+                                    "hours",
+                                    style: TextStyle(
+                                      color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                          child: GestureDetector(
-                            onTap: () async {
-                              if (phoneNumber != null) {
-                                try {
-                                  if (Platform.isAndroid) {
-                                    launchUrl(Uri.parse(phoneNumber), mode: LaunchMode.externalApplication);
-                                  } else {
-                                    launchUrl(Uri.parse(phoneNumber));
+                          LaunchUrlPill(
+                            icon: Icons.phone,
+                            label: "call",
+                            onPressed: phoneNumber != null
+                                ? () async {
+                                    try {
+                                      if (Platform.isAndroid) {
+                                        launchUrl(Uri.parse(phoneNumber), mode: LaunchMode.externalApplication);
+                                      } else {
+                                        launchUrl(Uri.parse(phoneNumber));
+                                      }
+                                    } catch (e) {
+                                      print("error: $e");
+                                    }
                                   }
-                                } catch (e) {
-                                  print("error: $e");
-                                }
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.phone,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                  size: 15,
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                Text(
-                                  "call",
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                ),
-                              ],
-                            ),
+                                : null,
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                          child: GestureDetector(
-                            onTap: () async {
+                          LaunchUrlPill(
+                            icon: Icons.navigation,
+                            label: "route",
+                            onPressed: () async {
                               String url = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
                               try {
                                 if (Platform.isAndroid) {
@@ -238,108 +222,34 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                 print("error: $e");
                               }
                             },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.navigation,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                  size: 15,
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                Text(
-                                  "route",
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                ),
-                              ],
-                            ),
                           ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (website != null) {
-                                try {
-                                  if (Platform.isAndroid) {
-                                    launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
-                                  } else {
-                                    launchUrl(Uri.parse(website));
+                          LaunchUrlPill(
+                            icon: Icons.public,
+                            label: "site",
+                            onPressed: website != null
+                                ? () {
+                                    try {
+                                      if (Platform.isAndroid) {
+                                        launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
+                                      } else {
+                                        launchUrl(Uri.parse(website));
+                                      }
+                                    } catch (e) {
+                                      print("error: $e");
+                                    }
                                   }
-                                } catch (e) {
-                                  print("error: $e");
-                                }
-                              }
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.public,
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                  size: 15,
-                                ),
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                Text(
-                                  "site",
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                                ),
-                              ],
-                            ),
+                                : null,
                           ),
-                        ),
-                        FavouriteButton(pub: widget.pub),
-                      ],
+                          FavouritePubPill(pub: widget.pub),
+                        ],
+                      ),
                     ),
                     if (openingHours != null)
-                      AnimatedOpacity(
-                        opacity: _showOpeningHours ? 1 : 0,
-                        duration: Duration(milliseconds: 500),
-                        child: Visibility(
-                          visible: _showOpeningHours,
-                          maintainState: true,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Opening Hours: ",
-                                style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.onPrimary),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: openingHours.sublist(0, (openingHours.length / 2).ceil()).map<Widget>((day) {
-                                      return Text(
-                                        day,
-                                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 10),
-                                      );
-                                    }).toList(),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: openingHours.sublist((openingHours.length / 2).ceil()).map<Widget>((day) {
-                                      return Text(
-                                        day,
-                                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 10),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: OpeningHoursTable(
+                          openingHours: openingHours,
+                          showOpeningHours: _showOpeningHours,
                         ),
                       ),
                   ],
@@ -349,7 +259,10 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: PubDetailsDrinksOptionTable(drinkGroupsFuture: _drinkGroupsFuture),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: PubDetailsDrinksOptionTable(drinkGroupsFuture: _drinkGroupsFuture),
+            ),
           ),
         ],
       ),
