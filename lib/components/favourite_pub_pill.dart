@@ -26,8 +26,6 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
   void checkIfFavourite() async {
     final user = context.read<AuthenticationBloc>().state.user;
     if (user != null) {
-      print("running ${user.favourites}");
-      print("pub id ${widget.pub.id}");
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.userId).get();
       final favourites = List<String>.from(userDoc.data()?['favourites'] ?? []);
       if (favourites.contains(widget.pub.id)) {

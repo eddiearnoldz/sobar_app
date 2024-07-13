@@ -22,7 +22,6 @@ class PubDetailsSheet extends StatefulWidget {
 }
 
 class _PubDetailsSheetState extends State<PubDetailsSheet> {
-  int _selectedPage = 0;
   late Future<Map<String, List<Drink>>> _drinkGroupsFuture;
   late Future<Map<String, dynamic>> _placesDetailsFuture;
   bool _showOpeningHours = false;

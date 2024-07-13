@@ -175,6 +175,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
           child: PubDetailsSheet(pub: pub, placesHelper: placesHelper),
         );
       },
+      backgroundColor: Theme.of(context).colorScheme.primary,
       isScrollControlled: true, // To allow the modal to be full screen if needed
     ).whenComplete(() {
       mapProvider.setBottomModalState(false);

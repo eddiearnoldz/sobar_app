@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sobar_app/models/drink.dart';
+import 'package:sobar_app/utils/globals.dart';
 
 class PubDetailsDrinksOptionTable extends StatefulWidget {
   final Future<Map<String, List<Drink>>> drinkGroupsFuture;
@@ -13,6 +14,23 @@ class PubDetailsDrinksOptionTable extends StatefulWidget {
 
 class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTable> {
   int _selectedPage = 0;
+
+  Color _getTypeColor(String type) {
+    switch (type) {
+      case 'draught':
+        return draughtColour;
+      case 'bottle':
+        return bottleColour;
+      case 'can':
+        return canColour;
+      case 'wine':
+        return wineColour;
+      case 'spirit':
+        return spiritColour;
+      default:
+        return Theme.of(context).colorScheme.onPrimary;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +47,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
                 });
               },
               child: Stack(
+                alignment: Alignment.center,
                 children: [
                   Text(
                     '${type}s',
@@ -38,17 +57,16 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
-                  if (_selectedPage == index)
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Container(
-                        height: 2,
-                        width: 40,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                  Positioned(
+                    bottom: 0,
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      height: 2,
+                      width: _selectedPage == index ? MediaQuery.of(context).size.width : 0,
+                      color: _getTypeColor(type),
                     ),
+                  ),
                 ],
               ),
             );
@@ -69,7 +87,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
 
                 return AnimatedOpacity(
                   opacity: 1,
-                  duration: Duration(milliseconds: 500),
+                  duration: Duration(milliseconds: 300),
                   child: Visibility(
                     visible: true,
                     maintainState: true,
