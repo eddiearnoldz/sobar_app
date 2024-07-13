@@ -73,12 +73,16 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
+      initialChildSize: 0.75,
+      minChildSize: 0.4,
+      maxChildSize: 0.75,
       expand: false,
+      snap: true,
       builder: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,

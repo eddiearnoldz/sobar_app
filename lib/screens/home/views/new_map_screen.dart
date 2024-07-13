@@ -169,9 +169,10 @@ class _NewMapScreenState extends State<NewMapScreen> {
 
     showModalBottomSheet(
       context: context,
+      showDragHandle: true,
       builder: (context) {
-        return Container(
-          height: screenHeight * 0.75, // 3/4 of the screen height
+        return SizedBox(
+          height: screenHeight * 0.75,
           child: PubDetailsSheet(pub: pub, placesHelper: placesHelper),
         );
       },

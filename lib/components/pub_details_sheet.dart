@@ -73,198 +73,195 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.pub.locationName,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  widget.pub.locationAddress,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ],
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.pub.locationName,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontFamily: 'Anton', fontSize: 24),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.pub.locationAddress,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+            ],
           ),
-          const SizedBox(height: 16),
-          FutureBuilder<Map<String, dynamic>>(
-            future: _placesDetailsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                print(snapshot.error);
-                return const Center(child: Text('Error loading place details'));
-              } else {
-                final details = snapshot.data!;
-                final phoneNumber = details['formatted_phone_number'];
-                final photos = details['photos'] ?? [];
-                final List<dynamic> openingHours = details['opening_hours']?['weekday_text'] ?? [];
-                final website = details['website'];
+        ),
+        const SizedBox(height: 16),
+        FutureBuilder<Map<String, dynamic>>(
+          future: _placesDetailsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return const Center(child: Text('Error loading place details'));
+            } else {
+              final details = snapshot.data!;
+              final phoneNumber = details['formatted_phone_number'];
+              final photos = details['photos'] ?? [];
+              final List<dynamic> openingHours = details['opening_hours']?['weekday_text'] ?? [];
+              final website = details['website'];
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (photos.isNotEmpty)
-                      SizedBox(
-                        height: MediaQuery.of(context).size.width / 3,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: photos.map<Widget>((photo) {
-                              final photoUrl = 'https://maps.googleapis.com/maps/api/place/photo'
-                                  '?maxwidth=400&photoreference=${photo['photo_reference']}&key=${widget.placesHelper.apiKey}';
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                child: AspectRatio(
-                                  aspectRatio: 3 / 2,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: CachedNetworkImage(
-                                      imageUrl: photoUrl,
-                                      placeholder: (context, url) => Container(
-                                        color: Theme.of(context).colorScheme.primary,
-                                        height: MediaQuery.of(context).size.width / 3,
-                                        width: MediaQuery.of(context).size.width / 2,
-                                      ),
-                                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                                      fit: BoxFit.cover,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (photos.isNotEmpty)
+                    SizedBox(
+                      height: MediaQuery.of(context).size.width / 3,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: photos.map<Widget>((photo) {
+                            final photoUrl = 'https://maps.googleapis.com/maps/api/place/photo'
+                                '?maxwidth=400&photoreference=${photo['photo_reference']}&key=${widget.placesHelper.apiKey}';
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: AspectRatio(
+                                aspectRatio: 3 / 2,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: CachedNetworkImage(
+                                    imageUrl: photoUrl,
+                                    placeholder: (context, url) => Container(
+                                      color: Theme.of(context).colorScheme.primary,
                                       height: MediaQuery.of(context).size.width / 3,
                                       width: MediaQuery.of(context).size.width / 2,
                                     ),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fit: BoxFit.cover,
+                                    height: MediaQuery.of(context).size.width / 3,
+                                    width: MediaQuery.of(context).size.width / 2,
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                border: _showOpeningHours ? null : Border.all(color: Theme.of(context).colorScheme.onPrimary),
-                                borderRadius: BorderRadius.circular(5),
-                                color: _showOpeningHours ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
-                            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _showOpeningHours = !_showOpeningHours;
-                                });
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.access_time,
-                                    color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
-                                    size: 15,
-                                  ),
-                                  const SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text(
-                                    "hours",
-                                    style: TextStyle(
-                                      color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
-                                    ),
-                                  ),
-                                ],
                               ),
-                            ),
-                          ),
-                          LaunchUrlPill(
-                            icon: Icons.phone,
-                            label: "call",
-                            onPressed: phoneNumber != null
-                                ? () async {
-                                    try {
-                                      if (Platform.isAndroid) {
-                                        launchUrl(Uri.parse(phoneNumber), mode: LaunchMode.externalApplication);
-                                      } else {
-                                        launchUrl(Uri.parse(phoneNumber));
-                                      }
-                                    } catch (e) {
-                                      print("error: $e");
-                                    }
-                                  }
-                                : null,
-                          ),
-                          LaunchUrlPill(
-                            icon: Icons.navigation,
-                            label: "route",
-                            onPressed: () async {
-                              String url = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
-                              try {
-                                if (Platform.isAndroid) {
-                                  launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-                                } else {
-                                  launchUrl(Uri.parse(url));
-                                }
-                              } catch (e) {
-                                print("error: $e");
-                              }
-                            },
-                          ),
-                          LaunchUrlPill(
-                            icon: Icons.public,
-                            label: "site",
-                            onPressed: website != null
-                                ? () {
-                                    try {
-                                      if (Platform.isAndroid) {
-                                        launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
-                                      } else {
-                                        launchUrl(Uri.parse(website));
-                                      }
-                                    } catch (e) {
-                                      print("error: $e");
-                                    }
-                                  }
-                                : null,
-                          ),
-                          FavouritePubPill(pub: widget.pub),
-                        ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
-                    if (openingHours != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: OpeningHoursTable(
-                          openingHours: openingHours,
-                          showOpeningHours: _showOpeningHours,
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              border: _showOpeningHours ? null : Border.all(color: Theme.of(context).colorScheme.onPrimary),
+                              borderRadius: BorderRadius.circular(5),
+                              color: _showOpeningHours ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
+                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showOpeningHours = !_showOpeningHours;
+                              });
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.access_time,
+                                  color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+                                  size: 15,
+                                ),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  "hours",
+                                  style: TextStyle(
+                                    color: _showOpeningHours ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
+                        LaunchUrlPill(
+                          icon: Icons.phone,
+                          label: "call",
+                          onPressed: phoneNumber != null
+                              ? () async {
+                                  try {
+                                    if (Platform.isAndroid) {
+                                      launchUrl(Uri.parse(phoneNumber), mode: LaunchMode.externalApplication);
+                                    } else {
+                                      launchUrl(Uri.parse(phoneNumber));
+                                    }
+                                  } catch (e) {
+                                    print("error: $e");
+                                  }
+                                }
+                              : null,
+                        ),
+                        LaunchUrlPill(
+                          icon: Icons.navigation,
+                          label: "route",
+                          onPressed: () async {
+                            String url = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
+                            try {
+                              if (Platform.isAndroid) {
+                                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                              } else {
+                                launchUrl(Uri.parse(url));
+                              }
+                            } catch (e) {
+                              print("error: $e");
+                            }
+                          },
+                        ),
+                        LaunchUrlPill(
+                          icon: Icons.public,
+                          label: "site",
+                          onPressed: website != null
+                              ? () {
+                                  try {
+                                    if (Platform.isAndroid) {
+                                      launchUrl(Uri.parse(website), mode: LaunchMode.externalApplication);
+                                    } else {
+                                      launchUrl(Uri.parse(website));
+                                    }
+                                  } catch (e) {
+                                    print("error: $e");
+                                  }
+                                }
+                              : null,
+                        ),
+                        FavouritePubPill(pub: widget.pub),
+                      ],
+                    ),
+                  ),
+                  if (openingHours != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: OpeningHoursTable(
+                        openingHours: openingHours,
+                        showOpeningHours: _showOpeningHours,
                       ),
-                  ],
-                );
-              }
-            },
+                    ),
+                ],
+              );
+            }
+          },
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: PubDetailsDrinksOptionTable(drinkGroupsFuture: _drinkGroupsFuture),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: PubDetailsDrinksOptionTable(drinkGroupsFuture: _drinkGroupsFuture),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
