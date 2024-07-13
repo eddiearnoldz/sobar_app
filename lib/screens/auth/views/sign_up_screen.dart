@@ -58,22 +58,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Form(
+          body: Stack(children: [
+            Positioned.fill(
+              child: Image.asset(
+                "assets/backgrounds/sign_in_beer_background.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned.fill(
+                child: Container(
+              color: Colors.black.withOpacity(0.5),
+            )),
+            Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Form(
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(height: MediaQuery.of(context).size.height / 4),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: MyTextField(
                           controller: emailController,
-                          hintText: 'Email',
+                          hintText: 'email',
                           obscureText: false,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
@@ -93,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: MyTextField(
                           controller: passwordController,
-                          hintText: 'Password',
+                          hintText: 'password',
                           obscureText: obscurePassword,
                           keyboardType: TextInputType.text,
                           validator: (value) {
@@ -126,12 +137,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: MyTextField(
                           controller: nameController,
-                          hintText: 'Name',
+                          hintText: 'name',
                           obscureText: false,
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please fill in the name field';
+                              return 'please fill in the name field';
                             }
                             return null;
                           },
@@ -139,23 +150,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 20),
                       !signUpRequired
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              child: MyTextButton(
-                                buttonText: 'Sign Up',
-                                onPressed: () {
-                                  FocusScope.of(context).unfocus();
-                                  if (_formKey.currentState!.validate()) {
-                                    MyUser myUser = MyUser.empty;
-                                    myUser.email = emailController.text;
-                                    myUser.name = nameController.text;
-                                    setState(() {
-                                      context.read<SignUpBloc>().add(SignUpRequired(myUser, passwordController.text));
-                                    });
-                                  }
-                                },
-                                padding: 12,
-                                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.surface),
+                          ? ElevatedButton(
+                              onPressed: () {
+                                FocusScope.of(context).unfocus();
+                                if (_formKey.currentState!.validate()) {
+                                  MyUser myUser = MyUser.empty;
+                                  myUser.email = emailController.text;
+                                  myUser.name = nameController.text;
+                                  setState(() {
+                                    context.read<SignUpBloc>().add(SignUpRequired(myUser, passwordController.text));
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                              ),
+                              child: Text(
+                                'sign up',
+                                style: TextStyle(fontFamily: 'Anton', fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
                               ),
                             )
                           : const CircularProgressIndicator(),
@@ -166,13 +179,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                         child: RichText(
                           text: TextSpan(
-                            text: 'Already registered? ',
+                            text: 'already registered? ',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             children: const <TextSpan>[
                               TextSpan(
-                                text: 'Sign in',
+                                text: 'sign in',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -181,13 +194,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-              ),
-            ),
-          ),
+              ],
+            ))
+          ]),
         ),
       ),
     );

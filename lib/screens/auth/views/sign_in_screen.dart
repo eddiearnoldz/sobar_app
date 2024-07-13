@@ -58,121 +58,127 @@ class _SignInScreenState extends State<SignInScreen> {
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
-          body: SafeArea(
-            child: SingleChildScrollView(
-              reverse: true,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height / 4),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: MyTextField(
-                            controller: emailController,
-                            hintText: 'Email',
-                            obscureText: false,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please fill in the email field';
-                              } else if (!RegExp(
-                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                              ).hasMatch(value)) {
-                                return 'Please enter a valid email';
-                              }
+          body: Stack(children: [
+            Positioned.fill(
+              child: Image.asset(
+                "assets/backgrounds/sign_in_beer_background.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+            Positioned.fill(
+                child: Container(
+              color: Colors.black.withOpacity(0.5),
+            )),
+            Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: MyTextField(
+                          controller: emailController,
+                          hintText: 'email',
+                          obscureText: false,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please fill in the email field';
+                            } else if (!RegExp(
+                              r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                            ).hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: MyTextField(
+                          controller: passwordController,
+                          hintText: 'password',
+                          obscureText: obscurePassword,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please fill in the password field';
+                            } else {
                               return null;
+                            }
+                          },
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                                if (obscurePassword) {
+                                  iconPassword = CupertinoIcons.eye_fill;
+                                } else {
+                                  iconPassword = CupertinoIcons.eye_slash;
+                                }
+                              });
                             },
+                            icon: Icon(iconPassword),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: MyTextField(
-                            controller: passwordController,
-                            hintText: 'Password',
-                            obscureText: obscurePassword,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please fill in the password field';
-                              } else {
-                                return null;
-                              }
-                            },
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  obscurePassword = !obscurePassword;
-                                  if (obscurePassword) {
-                                    iconPassword = CupertinoIcons.eye_fill;
-                                  } else {
-                                    iconPassword = CupertinoIcons.eye_slash;
-                                  }
-                                });
+                      ),
+                      const SizedBox(height: 20),
+                      !signInRequired
+                          ? ElevatedButton(
+                              onPressed: () => {
+                                FocusScope.of(context).unfocus(),
+                                if (_formKey.currentState!.validate()) {context.read<SignInBloc>().add(SignInRequired(emailController.text, passwordController.text))},
                               },
-                              icon: Icon(iconPassword),
-                            ),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                              ),
+                              child: Text(
+                                'sign in',
+                                style: TextStyle(fontFamily: 'Anton', fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
+                              ),
+                            )
+                          : const CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => SignUpBloc(context.read<AuthenticationBloc>().userRepository),
+                          child: const SignUpScreen(),
+                        ),
+                      ),
+                    );
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'not registered yet? ',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      children: const <TextSpan>[
+                        TextSpan(
+                          text: 'sign up',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        !signInRequired
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                child: MyTextButton(
-                                  buttonText: 'Sign In',
-                                  onPressed: () {
-                                    FocusScope.of(context).unfocus();
-                                    if (_formKey.currentState!.validate()) {
-                                      context.read<SignInBloc>().add(SignInRequired(emailController.text, passwordController.text));
-                                    }
-                                  },
-                                  padding: 12,
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.surface),
-                                ),
-                              )
-                            : const CircularProgressIndicator(),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) => SignUpBloc(context.read<AuthenticationBloc>().userRepository),
-                            child: const SignUpScreen(),
-                          ),
-                        ),
-                      );
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Not registered yet? ',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        children: const <TextSpan>[
-                          TextSpan(
-                            text: 'Sign up',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
+                ),
+              ],
+            ))
+          ]),
         ),
       ),
     );

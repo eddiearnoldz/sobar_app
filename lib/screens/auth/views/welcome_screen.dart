@@ -37,7 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              "assets/backgrounds/black_bottle_background.png",
+              "assets/backgrounds/welcome_background.png",
               fit: BoxFit.cover,
             ),
           ),
@@ -73,9 +73,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const Spacer(flex: 2),
                 ElevatedButton(
                   onPressed: () => _navigateToSignIn(context),
                   style: ElevatedButton.styleFrom(
