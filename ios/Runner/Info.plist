@@ -30,7 +30,7 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This helps us pinpoint your location to show the closest pubs</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>This helps us pinpoint your location to show the closest pubs</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
