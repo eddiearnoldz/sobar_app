@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: currentPageIndex != 0
           ? AppBar(
               toolbarHeight: 40,
-              backgroundColor: Colors.transparent,
+              backgroundColor: Theme.of(context).colorScheme.primary,
               elevation: 0,
               title: SvgPicture.asset('assets/logos/sobar_logo_square.svg', width: MediaQuery.of(context).size.width / 5, color: Theme.of(context).colorScheme.onPrimary),
               centerTitle: true,

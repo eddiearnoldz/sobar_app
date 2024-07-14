@@ -41,53 +41,55 @@ class NewsletterScreen extends StatelessWidget {
           final newsletter = snapshot.data!;
           return Scaffold(
             backgroundColor: Theme.of(context).colorScheme.primary,
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      newsletter.newsletterTitle.toUpperCase(),
-                      style: TextStyle(color: Theme.of(context).colorScheme.error, fontFamily: 'Anton', fontSize: 30),
-                    ),
-                    const SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: CachedNetworkImage(
-                        imageUrl: newsletter.mainImageUrl,
-                        placeholder: (context, url) => Container(
-                          decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        newsletter.newsletterTitle.toUpperCase(),
+                        style: TextStyle(color: Theme.of(context).colorScheme.error, fontFamily: 'Anton', fontSize: 30),
+                      ),
+                      const SizedBox(height: 10),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: CachedNetworkImage(
+                          imageUrl: newsletter.mainImageUrl,
+                          placeholder: (context, url) => Container(
+                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
+                            height: MediaQuery.of(context).size.width,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
                           height: MediaQuery.of(context).size.width,
                           width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                          fadeInDuration: const Duration(milliseconds: 300),
                         ),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                        height: MediaQuery.of(context).size.width,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                        fadeInDuration: const Duration(milliseconds: 300),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(newsletter.newsletterIntro, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16)),
-                    const SizedBox(height: 15),
-                    ArticleWidget(
-                      title: newsletter.articleOneTitle,
-                      body: newsletter.articleOneBody,
-                      imageUrl: newsletter.articleOneImageUrl,
-                      url: newsletter.articleOneUrl,
-                      imageAlt: newsletter.articleOneImageAlt,
-                      color: Colors.red,
-                    ),
-                    ArticleWidget(
-                      title: newsletter.articleTwoTitle,
-                      body: newsletter.articleTwoBody,
-                      imageUrl: newsletter.articleTwoImageUrl,
-                      url: newsletter.articleTwoUrl,
-                      imageAlt: newsletter.articleTwoImageAlt,
-                      color: Colors.blue,
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Text(newsletter.newsletterIntro, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16)),
+                      const SizedBox(height: 15),
+                      ArticleWidget(
+                        title: newsletter.articleOneTitle,
+                        body: newsletter.articleOneBody,
+                        imageUrl: newsletter.articleOneImageUrl,
+                        url: newsletter.articleOneUrl,
+                        imageAlt: newsletter.articleOneImageAlt,
+                        color: Colors.red,
+                      ),
+                      ArticleWidget(
+                        title: newsletter.articleTwoTitle,
+                        body: newsletter.articleTwoBody,
+                        imageUrl: newsletter.articleTwoImageUrl,
+                        url: newsletter.articleTwoUrl,
+                        imageAlt: newsletter.articleTwoImageAlt,
+                        color: Colors.blue,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
