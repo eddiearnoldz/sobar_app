@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/globals.dart';
 
@@ -21,12 +23,19 @@ class CustomInfoWindow extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  pub.locationName,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontFamily: 'Anton', letterSpacing: 1),
+                Flexible(
+                  flex: 4,
+                  child: Text(
+                    pub.locationName,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontFamily: 'Anton', letterSpacing: 1),
+                  ),
                 ),
-                Row(
-                  children: _buildDrinkTypeIndicators(),
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: _buildDrinkTypeIndicators(),
+                  ),
                 ),
               ],
             ),

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sobar_app/components/favourite_pub_pill.dart';
@@ -10,6 +9,7 @@ import 'package:sobar_app/components/opening_hours_table.dart';
 import 'package:sobar_app/components/pub_details_drinks_option_table.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
+import 'package:sobar_app/utils/globals.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -83,15 +83,34 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
           future: _placesDetailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height / 4,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              );
             } else if (snapshot.hasError) {
               print(snapshot.error);
-              return const Center(child: Text('Error loading place details'));
+              return Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height / 5,
+                  child: const Center(
+                    child: Text('Error loading place details'),
+                  ),
+                ),
+              );
             } else {
               final details = snapshot.data!;
               final phoneNumber = details['formatted_phone_number'];
               final photos = details['photos'] ?? [];
               final List<dynamic> openingHours = details['opening_hours']?['weekday_text'] ?? [];
+              final openNow = details['opening_hours']?['open_now'] ?? false;
               final website = details['website'];
               final rating = details['rating'];
               final ratingTotal = details['user_ratings_total'];
@@ -107,6 +126,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
                               flex: 5,
@@ -117,9 +137,21 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                             ),
                             Flexible(
                               flex: 2,
-                              child: Text(
-                                '${rating}★ (${ratingTotal})',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '${rating}★ (${ratingTotal})',
+                                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16),
+                                  ),
+                                  Text(
+                                    openNow ? 'open' : 'closed',
+                                    style: TextStyle(
+                                      color: openNow ? wineColour : bottleColour,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],

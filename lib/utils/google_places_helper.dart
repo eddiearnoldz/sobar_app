@@ -8,7 +8,7 @@ class GooglePlacesHelper {
 
   Future<Map<String, dynamic>> getPlaceDetails(String placeId) async {
     // Specify the fields you need
-    const fields = 'formatted_phone_number,photos,opening_hours/weekday_text,website,rating,user_ratings_total';
+    const fields = 'formatted_phone_number,photos,opening_hours/weekday_text,opening_hours/open_now,website,rating,user_ratings_total';
     final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=$fields&key=$apiKey';
     final response = await http.get(Uri.parse(url));
 

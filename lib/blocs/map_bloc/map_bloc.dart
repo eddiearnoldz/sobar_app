@@ -33,7 +33,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     if (state is MapLoaded) {
       final newStyle = !(state as MapLoaded).isBlackStyle;
       final newIconPath = newStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
-      final newIcon =  await BitmapDescriptor.asset(
+      final newIcon = await BitmapDescriptor.asset(
         height: 20,
         const ImageConfiguration(),
         newIconPath,
@@ -52,7 +52,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       print('ToggleMapStyle event received but state is not MapLoaded');
     }
   }
-  
 
   void _onUpdateMarkers(UpdateMarkers event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
@@ -67,7 +66,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     if (state is MapLoaded) {
       mapProvider.updateCameraPosition(event.cameraPosition);
       emit((state as MapLoaded).copyWith(cameraPosition: event.cameraPosition));
-      print('Camera position updated: ${event.cameraPosition}');
     } else {
       print('UpdateCameraPosition event received but state is not MapLoaded');
     }
