@@ -4,10 +4,42 @@ import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:sobar_app/utils/map_provider.dart';
 
-class MyLocationButton extends StatelessWidget {
+class MyLocationButton extends StatefulWidget {
   const MyLocationButton({super.key, required this.location});
 
   final Location location;
+
+  @override
+  _MyLocationButtonState createState() => _MyLocationButtonState();
+}
+
+class _MyLocationButtonState extends State<MyLocationButton> {
+  @override
+  void initState() {
+    super.initState();
+    _checkLocationPermission();
+  }
+
+  Future<void> _checkLocationPermission() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await widget.location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await widget.location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await widget.location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await widget.location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +53,22 @@ class MyLocationButton extends StatelessWidget {
         backgroundColor: Colors.white,
         mini: true,
         onPressed: () async {
-          print("running my location");
-          var locationData = await location.getLocation();
-          print(locationData);
-          if (mapProvider.controller != null) {
-            mapProvider.controller?.animateCamera(CameraUpdate.newLatLngZoom(LatLng(locationData.latitude!, locationData.longitude!), 15));
-          } else {
-            print("Map controller is not yet initialized");
+          print("Running my location");
+          try {
+            var locationData = await widget.location.getLocation();
+            print(locationData);
+            if (mapProvider.controller != null) {
+              mapProvider.controller?.animateCamera(
+                CameraUpdate.newLatLngZoom(
+                  LatLng(locationData.latitude!, locationData.longitude!), 
+                  15,
+                ),
+              );
+            } else {
+              print("Map controller is not yet initialized");
+            }
+          } catch (e) {
+            print("Error getting location: $e");
           }
         },
         child: Icon(
