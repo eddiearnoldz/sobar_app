@@ -70,6 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       appBar: currentPageIndex != 0
           ? AppBar(
               toolbarHeight: 40,

@@ -204,6 +204,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
     final mapProvider = Provider.of<MapProvider>(context);
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           BlocListener<PubBloc, PubState>(

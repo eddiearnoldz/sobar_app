@@ -98,21 +98,21 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                               Text(drink.name, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600)),
                               Row(
                                 children: [
-                                  Text(drink.abv, style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  Text('abv:${drink.abv}', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                   if (drink.isVegan)
                                     const SizedBox(
                                       width: 5,
                                     ),
-                                  if (drink.isVegan) Text('vegan', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  if (drink.isVegan) Text(' *vegan', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  if (drink.isGlutenFree) Text('gf', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  if (drink.isGlutenFree) Text(' *gf', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                   if (drink.isGlutenFree)
                                     const SizedBox(
                                       width: 5,
                                     ),
-                                  if (drink.calories.toString().isNotEmpty) Text('${drink.calories.round().toString()}cals', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+                                  if (drink.calories.toString().isNotEmpty) Text(' *${drink.calories.round().toString()}cals', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                 ],
                               ),
                             ],
