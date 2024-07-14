@@ -50,7 +50,7 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
     return Stack(
       children: [
         Positioned(
-          top: 190,
+          top: 140,
           right: 10,
           child: FloatingActionButton(
             heroTag: 'favouritePubsFilterButton',

@@ -233,7 +233,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 return GoogleMap(
                   zoomControlsEnabled: true,
                   myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
+                  myLocationButtonEnabled: true,
                   initialCameraPosition: mapState is MapLoaded
                       ? mapState.cameraPosition
                       : CameraPosition(
@@ -280,7 +280,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 const ToggleMapStyleButton(),
                 Positioned(
                   top: 50,
-                  left: 10,
+                  left: 0,
                   right: 10,
                   child: FilterDrinkTextField(
                     filteredDrinks: filteredDrinks,
@@ -313,7 +313,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     },
                   ),
                 ),
-                MyLocationButton(location: _location),
+                // MyLocationButton(location: _location),
                 const FavouritePubsFilterButton(),
               ],
             ),

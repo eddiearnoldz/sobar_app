@@ -31,38 +31,48 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
     return GestureDetector(
       onTap: widget.unfocusTextField,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 40,
-            child: TextField(
-              cursorColor: Theme.of(context).colorScheme.onPrimary,
-              cursorHeight: 15,
-              controller: widget.controller,
-              focusNode: widget.focusNode,
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                hintText: 'Search for a drink...',
-                hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                fillColor: Theme.of(context).colorScheme.primary.withOpacity(widget.isFocused ? 1.0 : 0.6),
-                filled: true,
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
-                  borderRadius: BorderRadius.circular(5),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: TextField(
+                cursorColor: Theme.of(context).colorScheme.onPrimary,
+                cursorHeight: 15,
+                controller: widget.controller,
+                focusNode: widget.focusNode,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  hintText: 'Search for a drink...',
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                  fillColor: Theme.of(context).colorScheme.primary.withOpacity(widget.isFocused ? 1.0 : 0.6),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10),
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                onChanged: (value) {
+                  widget.onSearchChanged(value);
+                  if (value.isEmpty) {
+                    widget.unfocusTextField();
+                  }
+                },
               ),
-              onChanged: widget.onSearchChanged,
             ),
           ),
           if (widget.filteredDrinks.isNotEmpty)
             SizedBox(
               height: 60,
+              width: MediaQuery.of(context).size.width - 56,
               child: ListView.builder(
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.only(left: 10),
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.filteredDrinks.length,
                 itemBuilder: (context, index) {
@@ -70,9 +80,9 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                   return GestureDetector(
                     onTap: () => widget.onDrinkSelected(drink),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.8,
+                      width: MediaQuery.of(context).size.width - 86,
                       padding: const EdgeInsets.all(5),
-                      margin: const EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(top: 5, right: 5),
                       decoration: BoxDecoration(
                         color: _getDrinkColor(drink.type),
                         borderRadius: BorderRadius.circular(10),
