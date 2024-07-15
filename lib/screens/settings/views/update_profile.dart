@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -14,13 +15,18 @@ class UpdateProfileScreen extends StatefulWidget {
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
 }
 
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final User? user = FirebaseAuth.instance.currentUser;
   bool _isEditing = false;
   String _displayName = '';
   String _appVersion = '';
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  final List<Widget> _listItems = [];
+  final Duration _initialDelayTime = const Duration(milliseconds: 0);
+  final Duration _itemSlideTime = const Duration(milliseconds: 250);
+  final Duration _staggerTime = const Duration(milliseconds: 250);
 
   @override
   void initState() {
@@ -30,6 +36,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       _nameController.text = _displayName;
     }
     _getAppVersion();
+    _loadListItems();
   }
 
   Future<void> _getAppVersion() async {
@@ -114,238 +121,277 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     });
   }
 
+  Future<void> _loadListItems() async {
+    await Future.delayed(_initialDelayTime);
+
+    final items = [
+      _buildButton(
+        context: context,
+        title: 'sign out',
+        color: wineColour,
+        onTap: _showSignOutConfirmationDialog,
+        fontSize: 50,
+      ),
+      _buildButton(
+        context: context,
+        title: 'delete account',
+        color: bottleColour,
+        onTap: _showDeleteConfirmationDialog,
+        fontSize: 40,
+      ),
+    ];
+
+    for (var i = 0; i < items.length; i++) {
+      await Future.delayed(_staggerTime);
+      _listItems.add(items[i]);
+      _listKey.currentState?.insertItem(_listItems.length - 1);
+    }
+  }
+
+  Widget _buildButton({
+    required BuildContext context,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+    double fontSize = 25,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 7.5),
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontFamily: 'Anton', fontSize: fontSize, color: Theme.of(context).colorScheme.onPrimary),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        onPopInvoked: (result) async {
-          _refreshUser();
-          return Future.value();
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            title: const Text(
-              'Update Profile',
-              style: TextStyle(
-                fontFamily: 'Anton',
-                letterSpacing: 1,
-              ),
-            ),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded),
-              onPressed: () {
-                _refreshUser();
-                Navigator.pop(context);
-              },
+      onPopInvoked: (result) async {
+        _refreshUser();
+        return Future.value();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          title: const Text(
+            'Update Profile',
+            style: TextStyle(
+              fontFamily: 'Anton',
+              letterSpacing: 1,
             ),
           ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              _refreshUser();
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        color: Theme.of(context).colorScheme.primary,
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'name: ',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              _displayName,
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: Icon(
+                                _isEditing ? Icons.close : Icons.edit,
+                                color: _isEditing ? bottleColour : canColour,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isEditing = !_isEditing;
+                                  if (!_isEditing) {
+                                    _nameController.text = _displayName;
+                                  }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (_isEditing)
                         Container(
                           color: Theme.of(context).colorScheme.primary,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'name: ',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                _displayName,
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const Spacer(),
-                              IconButton(
-                                icon: Icon(
-                                  _isEditing ? Icons.close : Icons.edit,
-                                  color: _isEditing ? bottleColour : canColour,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _isEditing = !_isEditing;
-                                    if (!_isEditing) {
-                                      _nameController.text = _displayName;
-                                    }
-                                  });
+                              TextFormField(
+                                controller: _nameController,
+                                decoration: InputDecoration(
+                                    labelText: 'Name',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                                    ),
+                                    floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a name';
+                                  }
+                                  return null;
                                 },
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 3, horizontal: 5)),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(4.0),
+                                          side: BorderSide(color: bottleColour, width: 1.0),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isEditing = false;
+                                        _nameController.text = _displayName;
+                                      });
+                                    },
+                                    child: Text(
+                                      'cancel',
+                                      style: TextStyle(color: bottleColour, fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  TextButton(
+                                    style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 3, horizontal: 5)),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(4.0),
+                                          side: const BorderSide(color: wineColour, width: 1.0),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (_formKey.currentState?.validate() ?? false) {
+                                        _updateUserName();
+                                      }
+                                    },
+                                    child: const Text(
+                                      'submit',
+                                      style: TextStyle(color: wineColour, fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                        if (_isEditing)
-                          Container(
-                            color: Theme.of(context).colorScheme.primary,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextFormField(
-                                  controller: _nameController,
-                                  decoration: InputDecoration(
-                                      labelText: 'Name',
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                        borderSide: const BorderSide(),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                        borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                        borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
-                                      ),
-                                      floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a name';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  children: [
-                                    TextButton(
-                                      style: ButtonStyle(
-                                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 3, horizontal: 5)),
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(4.0),
-                                            side: BorderSide(color: bottleColour, width: 1.0),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isEditing = false;
-                                          _nameController.text = _displayName;
-                                        });
-                                      },
-                                      child: Text(
-                                        'cancel',
-                                        style: TextStyle(color: bottleColour, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    TextButton(
-                                      style: ButtonStyle(
-                                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 3, horizontal: 5)),
-                                        shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(4.0),
-                                            side: const BorderSide(color: wineColour, width: 1.0),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        if (_formKey.currentState?.validate() ?? false) {
-                                          _updateUserName();
-                                        }
-                                      },
-                                      child: const Text(
-                                        'submit',
-                                        style: TextStyle(color: wineColour, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'email: ',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        ' ${user?.email ?? ''}',
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'app Version: ',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        _appVersion,
+                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                SizedBox(
+                  height: 160,
+                  child: AnimatedList(
+                    key: _listKey,
+                    initialItemCount: _listItems.length,
+                    itemBuilder: (context, index, animation) {
+                      final beginOffset = index % 2 == 0 ? const Offset(-1, 0) : const Offset(1, 0);
+                      return SlideTransition(
+                        position: animation.drive(
+                          Tween<Offset>(begin: beginOffset, end: Offset.zero).chain(
+                            CurveTween(curve: Curves.fastEaseInToSlowEaseOut),
                           ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'email: ',
-                          style: const TextStyle(fontSize: 16),
                         ),
-                        Text(
-                          ' ${user?.email ?? ''}',
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                        child: _listItems[index],
+                      );
+                    },
                   ),
-                  const SizedBox(height: 10),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    child: Row(
-                      children: [
-                        const Text(
-                          'app Version: ',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          _appVersion,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: _showSignOutConfirmationDialog,
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: wineColour,
-                      ),
-                      child: Text(
-                        "sign out",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontFamily: 'Anton', fontSize: 50, color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  GestureDetector(
-                    onTap: _showDeleteConfirmationDialog,
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 00),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: bottleColour,
-                      ),
-                      child: Text(
-                        "delete account",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontFamily: 'Anton', fontSize: 40, color: Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
