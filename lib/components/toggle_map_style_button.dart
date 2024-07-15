@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 
 class ToggleMapStyleButton extends StatelessWidget {
@@ -20,10 +21,17 @@ class ToggleMapStyleButton extends StatelessWidget {
         child: BlocBuilder<MapBloc, MapState>(
           builder: (context, state) {
             if (state is MapLoaded) {
-              return Icon(
-                state.isBlackStyle ? Icons.brightness_3 : Icons.brightness_5,
-                color: Theme.of(context).colorScheme.onPrimary,
-              );
+              return state.isBlackStyle
+                  ? Icon(
+                      Icons.brightness_3,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/icon_sun.svg",
+                      height: 30,
+                      width: 30,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    );
             } else {
               return const Icon(Icons.brightness_3);
             }
