@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sobar_app/components/favourite_pub_pill.dart';
 import 'package:sobar_app/components/launch_url_pill.dart';
@@ -288,12 +289,14 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                           icon: Icons.navigation,
                           label: "route",
                           onPressed: () async {
-                            String url = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
+                            MapsLauncher.launchCoordinates(double.parse(widget.pub.latitude), double.parse(widget.pub.longitude), widget.pub.locationName);
+                            String urlAnroid = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
+                            String urlIos = 'http://maps.apple.com/?ll=${widget.pub.latitude},${widget.pub.longitude}';
                             try {
                               if (Platform.isAndroid) {
-                                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                                launchUrl(Uri.parse(urlAnroid), mode: LaunchMode.externalNonBrowserApplication);
                               } else {
-                                launchUrl(Uri.parse(url));
+                                launchUrl(Uri.parse(urlIos), mode: LaunchMode.externalNonBrowserApplication);
                               }
                             } catch (e) {
                               print("error: $e");
