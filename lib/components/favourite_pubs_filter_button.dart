@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sobar_app/utils/map_provider.dart';
 
 class FavouritePubsFilterButton extends StatefulWidget {
   const FavouritePubsFilterButton({Key? key}) : super(key: key);
@@ -21,27 +22,30 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.userId).get();
       final favourites = List<String>.from(userDoc.data()?['favourites'] ?? []);
 
+      final mapProvider = context.read<MapProvider>();
+
       if (isFilterActive) {
-        if (mounted) context.read<PubBloc>().add(const FilterPubs(filter: ''));
+        mapProvider.removeFilter('favourites');
         setState(() {
           isFilterActive = false;
           hasNoFavourites = false;
         });
       } else {
         if (favourites.isNotEmpty) {
-          if (mounted) context.read<PubBloc>().add(FilterPubs(filter: '', favouritePubIds: favourites));
+          mapProvider.addFilter('favourites');
           setState(() {
             isFilterActive = true;
             hasNoFavourites = false;
           });
         } else {
-          if (mounted) context.read<PubBloc>().add(const FilterPubs(filter: ''));
           setState(() {
             isFilterActive = true;
             hasNoFavourites = true;
           });
         }
       }
+
+      context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters, favouritePubIds: favourites));
     }
   }
 

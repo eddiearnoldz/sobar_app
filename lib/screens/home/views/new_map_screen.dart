@@ -33,7 +33,6 @@ class _NewMapScreenState extends State<NewMapScreen> {
   GooglePlacesHelper? _placesHelper;
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor selectedIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
-  String currentFilter = '';
   String searchText = '';
   List<Drink> filteredDrinks = [];
   final TextEditingController _searchController = TextEditingController();
@@ -54,9 +53,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
         _isFocused = _focusNode.hasFocus;
       });
     });
-    // hack to update markers when returing to map
-    _filterMarkers("draught");
-    _filterMarkers("");
+    _applyFilters();
   }
 
   @override
@@ -107,14 +104,21 @@ class _NewMapScreenState extends State<NewMapScreen> {
     });
   }
 
+  void _applyFilters() {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters));
+  }
+
   void _filterMarkers(String filter) {
-    if (filter == currentFilter) {
-      filter = ''; // Reset filter if the same filter is clicked again
-    }
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
     setState(() {
-      currentFilter = filter;
+      if (mapProvider.currentFilters.contains(filter)) {
+        mapProvider.removeFilter(filter);
+      } else {
+        mapProvider.addFilter(filter);
+      }
     });
-    context.read<PubBloc>().add(FilterPubs(filter: filter));
+    _applyFilters();
   }
 
   void _searchDrinks(String text) {
@@ -152,7 +156,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
 
   void _filterPubsByDrink(Drink drink) {
     final filter = 'drink_${drink.id}';
-    context.read<PubBloc>().add(FilterPubs(filter: filter));
+    context.read<PubBloc>().add(FilterPubs(filters: [filter]));
     Provider.of<MapProvider>(context, listen: false).setSelectedDrink(drink);
     _searchController.clear();
     setState(() {
@@ -163,7 +167,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
 
   void _clearSelectedDrink() {
     Provider.of<MapProvider>(context, listen: false).setSelectedDrink(null);
-    _filterMarkers('');
+    _applyFilters();
   }
 
   void unfocusTextField() {
@@ -280,7 +284,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       ? mapState.cameraPosition
                       : CameraPosition(
                           target: _initialPosition,
-                          zoom: 13,
+                          zoom: 9,
                         ),
                   mapType: MapType.normal,
                   markers: mapState is MapLoaded ? mapState.markers : <Marker>{},
@@ -348,14 +352,9 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   left: 0,
                   right: 0,
                   child: MapFilterBar(
-                    currentFilter: mapProvider.currentFilter,
+                    currentFilter: mapProvider.currentFilters.join(', '),
                     onFilterChanged: (filter) {
-                      if (filter == mapProvider.currentFilter) {
-                        filter = ''; // Reset filter if the same filter is clicked again
-                      }
-                      _clearSelectedDrink();
-                      mapProvider.setCurrentFilter(filter);
-                      context.read<PubBloc>().add(FilterPubs(filter: filter));
+                      _filterMarkers(filter);
                     },
                   ),
                 ),

@@ -54,37 +54,35 @@ class PubBloc extends Bloc<PubEvent, PubState> {
 
   void _onFilterPubs(FilterPubs event, Emitter<PubState> emit) {
     List<Pub> pubsToFilter = originalPubs;
-    List<Pub> filteredPubs;
+    List<Pub> filteredPubs = pubsToFilter;
 
-    if (event.favouritePubIds != null && event.favouritePubIds!.isNotEmpty) {
-      filteredPubs = pubsToFilter.where((pub) => event.favouritePubIds!.contains(pub.id)).toList();
-    } else if (event.filter.isEmpty) {
-      filteredPubs = pubsToFilter;
-    } else if (event.filter.startsWith('drink_')) {
-      final drinkId = event.filter.substring(6);
-      filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.id == drinkId)).toList();
-    } else {
-      switch (event.filter) {
-        case 'bottle':
-          filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.type == 'bottle')).toList();
-          break;
-        case 'can':
-          filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.type == 'can')).toList();
-          break;
-        case 'wine':
-          filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.type == 'wine')).toList();
-          break;
-        case 'spirit':
-          filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.type == 'spirit')).toList();
-          break;
-        case 'draught':
-          filteredPubs = pubsToFilter.where((pub) => pub.drinksData.any((drink) => drink.type == 'draught')).toList();
-          break;
-        default:
-          filteredPubs = pubsToFilter;
-          break;
+    for (var filter in event.filters) {
+      if (filter.startsWith('drink_')) {
+        final drinkId = filter.substring(6);
+        filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.id == drinkId)).toList();
+      } else {
+        switch (filter) {
+          case 'bottle':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'bottle')).toList();
+            break;
+          case 'can':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'can')).toList();
+            break;
+          case 'wine':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'wine')).toList();
+            break;
+          case 'spirit':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'spirit')).toList();
+            break;
+          case 'draught':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'draught')).toList();
+            break;
+          default:
+            break;
+        }
       }
     }
+
     emit(PubFiltered(filteredPubs: filteredPubs));
   }
 }

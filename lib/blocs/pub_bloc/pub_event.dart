@@ -10,11 +10,11 @@ abstract class PubEvent extends Equatable {
 class LoadPubs extends PubEvent {}
 
 class FilterPubs extends PubEvent {
-  final String filter;
+  final List<String> filters;
   final List<String>? favouritePubIds;
 
-  const FilterPubs({required this.filter, this.favouritePubIds});
+  const FilterPubs({required this.filters, this.favouritePubIds});
 
   @override
-  List<Object> get props => [filter, favouritePubIds ?? []];
+  List<Object> get props => [filters, favouritePubIds ?? []];
 }

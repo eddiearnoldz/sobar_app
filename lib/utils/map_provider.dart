@@ -8,10 +8,10 @@ class MapProvider extends ChangeNotifier {
   GoogleMapController? _controller;
   CameraPosition _cameraPosition = const CameraPosition(
     target: londonCoordinates,
-    zoom: 13,
+    zoom: 9,
   );
   bool _isBlackStyle = false;
-  String _currentFilter = '';
+  List<String> _currentFilters = [];
   Drink? _selectedDrink;
   Pub? _selectedPub;
   bool _isBottomModalOpen = false;
@@ -21,7 +21,7 @@ class MapProvider extends ChangeNotifier {
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
   bool get isBlackStyle => _isBlackStyle;
-  String get currentFilter => _currentFilter;
+  List<String> get currentFilters => _currentFilters;
   Drink? get selectedDrink => _selectedDrink;
   Pub? get selectedPub => _selectedPub;
   bool get isBottomModalOpen => _isBottomModalOpen;
@@ -43,8 +43,22 @@ class MapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCurrentFilter(String filter) {
-    _currentFilter = filter;
+  void addFilter(String filter) {
+    if (!_currentFilters.contains(filter)) {
+      _currentFilters.add(filter);
+      notifyListeners();
+    }
+  }
+
+  void removeFilter(String filter) {
+    if (_currentFilters.contains(filter)) {
+      _currentFilters.remove(filter);
+      notifyListeners();
+    }
+  }
+
+  void clearFilters() {
+    _currentFilters.clear();
     notifyListeners();
   }
 
