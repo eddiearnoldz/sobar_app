@@ -132,7 +132,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
               right: 5,
               child: GestureDetector(
                 onTap: _controller.onCustomInfoWindowTap,
-                child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
+                child:
+                    FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: 0.85, child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!)),
               ),
             ),
           SafeArea(
