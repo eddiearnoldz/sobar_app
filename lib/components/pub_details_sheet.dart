@@ -274,9 +274,9 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                               ? () async {
                                   try {
                                     if (Platform.isAndroid) {
-                                      launchUrl(Uri.parse(phoneNumber), mode: LaunchMode.externalApplication);
+                                      launchUrl(Uri.parse('tel:$phoneNumber'), mode: LaunchMode.externalApplication);
                                     } else {
-                                      launchUrl(Uri.parse(phoneNumber));
+                                      launchUrl(Uri.parse('tel:$phoneNumber'));
                                     }
                                   } catch (e) {
                                     print("error: $e");
