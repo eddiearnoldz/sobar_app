@@ -298,8 +298,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       mapProvider.setBottomModalState(false);
                     }
                     mapProvider.setSelectedPub(null);
-                    mapProvider.setSelectedMarkerId(null); // Deselect the marker on map tap
-                    // Trigger marker update
+                    mapProvider.setSelectedMarkerId(null);
+                    _updateMarker(null);
                     setState(() {});
                   },
                   onCameraMove: (position) {
