@@ -5,6 +5,7 @@ class MyUser {
   String userId;
   String email;
   String name;
+  bool admin;
   List<String> favourites;
 
   MyUser({
@@ -12,15 +13,17 @@ class MyUser {
     required this.email,
     required this.name,
     required this.favourites,
+    required this.admin,
   });
 
-  static final empty = MyUser(userId: '', email: '', name: '', favourites: []);
+  static final empty = MyUser(userId: '', email: '', name: '', favourites: [], admin: false);
 
   MyUserEntity toEntity() {
     return MyUserEntity(
       userId: userId,
       email: email,
       name: name,
+      admin: admin,
       favourites: favourites,
     );
   }
@@ -31,6 +34,7 @@ class MyUser {
       email: entity.email,
       name: entity.name,
       favourites: entity.favourites,
+      admin: entity.admin,
     );
   }
 
@@ -38,18 +42,20 @@ class MyUser {
     String? userId,
     String? email,
     String? name,
+    bool? admin,
     List<String>? favourites,
   }) {
     return MyUser(
       userId: userId ?? this.userId,
       email: email ?? this.email,
       name: name ?? this.name,
+      admin: admin ?? this.admin,
       favourites: favourites ?? this.favourites,
     );
   }
 
   @override
   String toString() {
-    return 'MyUser: $userId, $email, $name, ${favourites.length} favourites';
+    return 'MyUser: $userId, $email, $name, $admin, ${favourites.length} favourites';
   }
 }

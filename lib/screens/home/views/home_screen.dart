@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:location/location.dart';
 import 'package:sobar_app/models/adPopUp.dart';
+import 'package:sobar_app/screens/home/views/admin_screen.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
 import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
 import 'package:sobar_app/screens/home/views/settings_screen.dart';
 import 'package:sobar_app/utils/ad_pop_up_manager.dart';
 import 'package:sobar_app/utils/location_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
+  bool isAdmin = false; // Track if the user is an admin
 
   final List<Widget> _screens = [
     const NewMapScreen(),
@@ -32,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _checkAdPopup();
+    _checkAdminStatus(); // Check if the user is an admin
   }
 
   void _checkAdPopup() async {
@@ -40,6 +45,19 @@ class _HomeScreenState extends State<HomeScreen> {
     if (adPopUp != null) {
       AdPopupManager adPopupManager = AdPopupManager();
       await adPopupManager.showAdPopupIfNeeded(context, adPopUp);
+    }
+  }
+
+  Future<void> _checkAdminStatus() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      setState(() {
+        isAdmin = userDoc['admin'] ?? false;
+        if (isAdmin) {
+          _screens.add(const AdminScreen());
+        }
+      });
     }
   }
 
@@ -120,6 +138,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 30,
                 ),
                 index: 3),
+            if (isAdmin)
+              buildBottomBarItem(
+                icon: SvgPicture.asset(
+                  "assets/icons/icon_tool.svg", // Replace with your admin icon
+                  color: currentPageIndex == 4 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
+                  height: 30,
+                  width: 30,
+                ),
+                index: 4,
+              ),
           ],
         ),
       ),
