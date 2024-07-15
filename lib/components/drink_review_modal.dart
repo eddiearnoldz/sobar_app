@@ -46,7 +46,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
       }
 
       await _updateAverageRating();
-      Navigator.of(context).pop();
+      FocusScope.of(context).unfocus();
     }
   }
 
@@ -74,8 +74,8 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       initialChildSize: 0.75,
-      minChildSize: 0.4,
-      maxChildSize: 0.75,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
       expand: false,
       snap: true,
       builder: (context, scrollController) {
@@ -322,17 +322,13 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                       children: [
                         Text(' ${reviews.length} ${reviews.length > 1 ? 'reviews' : 'review'}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 5),
-                        ListView.builder(
-                          controller: scrollController,
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            var review = snapshot.data!.docs[index];
+                        Column(
+                          children: reviews.map((review) {
                             return ReviewTile(
                               review: review,
                               userNameFuture: _getUserName(review['userRef']),
                             );
-                          },
+                          }).toList(),
                         ),
                       ],
                     );
