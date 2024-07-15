@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,7 +76,22 @@ class MyAppView extends StatelessWidget {
             } else if (state.status == AuthenticationStatus.unauthenticated) {
               return const WelcomeScreen();
             } else {
-              return Container();
+              return Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                child: Center(
+                  widthFactor: double.infinity,
+                  heightFactor: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset("assets/logos/sobar_logo_title.svg", width: MediaQuery.of(context).size.width / 2),
+                    ],
+                  ),
+                ),
+              );
             }
           },
         ),
