@@ -151,7 +151,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       children: [
                         Container(
                           color: Theme.of(context).colorScheme.primary,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Row(
                             children: [
                               const Text(
@@ -183,7 +183,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         if (_isEditing)
                           Container(
                             color: Theme.of(context).colorScheme.primary,
-                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -297,18 +297,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ),
                     child: Row(
                       children: [
-                        Text(
+                        const Text(
                           'app Version: ',
-                          style: const TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16),
                         ),
                         Text(
-                          '$_appVersion',
+                          _appVersion,
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: _showSignOutConfirmationDialog,
                     child: Container(
