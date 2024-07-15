@@ -11,7 +11,6 @@ import 'package:sobar_app/components/custom_info_window.dart';
 import 'package:sobar_app/components/favourite_pubs_filter_button.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
-import 'package:sobar_app/components/my_location_button.dart';
 import 'package:sobar_app/components/pub_details_sheet.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
@@ -301,6 +300,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     mapProvider.setSelectedMarkerId(null);
                     _updateMarker(null);
                     setState(() {});
+                    FocusScope.of(context).unfocus();
                   },
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
