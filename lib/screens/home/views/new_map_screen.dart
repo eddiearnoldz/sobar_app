@@ -33,6 +33,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
   final LatLng _initialPosition = londonCoordinates;
   GooglePlacesHelper? _placesHelper;
   BitmapDescriptor customIcon = BitmapDescriptor.defaultMarker;
+  BitmapDescriptor selectedIcon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
   String currentFilter = '';
   String searchText = '';
   List<Drink> filteredDrinks = [];
@@ -88,12 +89,22 @@ class _NewMapScreenState extends State<NewMapScreen> {
   Future<void> _updateCustomIcon(bool isBlackStyle) async {
     final assetPath = isBlackStyle ? 'assets/icons/coloured_pint.png' : 'assets/icons/coloured_pint_reversed.png';
     final icon = await BitmapDescriptor.asset(
-      height: 20,
+      height: 30,
       const ImageConfiguration(),
       assetPath,
     );
     setState(() {
       customIcon = icon;
+    });
+
+    const selectedAssetPath = "assets/icons/icon_selected_pint.png";
+    final selectedIcon = await BitmapDescriptor.asset(
+      height: 30,
+      const ImageConfiguration(),
+      selectedAssetPath,
+    );
+    setState(() {
+      this.selectedIcon = selectedIcon;
     });
   }
 
@@ -199,6 +210,33 @@ class _NewMapScreenState extends State<NewMapScreen> {
     }
   }
 
+  void _updateMarker(String? markerId) {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    final mapState = context.read<MapBloc>().state;
+    if (mapState is MapLoaded) {
+      final markers = mapState.markers;
+      final previousMarkerId = mapProvider.previousSelectedMarkerId;
+
+      if (previousMarkerId != null) {
+        final previousMarker = markers.firstWhere(
+          (marker) => marker.markerId.value == previousMarkerId,
+          orElse: () => Marker(markerId: MarkerId('')),
+        );
+        final updatedPreviousMarker = previousMarker.copyWith(iconParam: customIcon);
+        context.read<MapBloc>().add(UpdateMarker(updatedPreviousMarker));
+      }
+
+      if (markerId != null) {
+        final marker = markers.firstWhere(
+          (marker) => marker.markerId.value == markerId,
+          orElse: () => Marker(markerId: MarkerId('')),
+        );
+        final updatedMarker = marker.copyWith(iconParam: selectedIcon);
+        context.read<MapBloc>().add(UpdateMarker(updatedMarker));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mapProvider = Provider.of<MapProvider>(context);
@@ -213,12 +251,15 @@ class _NewMapScreenState extends State<NewMapScreen> {
               if (pubState is PubLoaded || pubState is PubFiltered) {
                 final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
                 final markers = pubs.map((pub) {
+                  final isSelected = pub.id == mapProvider.selectedMarkerId;
                   return Marker(
                     markerId: MarkerId(pub.id),
                     position: LatLng(pub.parsedLatitude, pub.parsedLongitude),
-                    icon: customIcon,
+                    icon: isSelected ? selectedIcon : customIcon,
                     onTap: () {
+                      mapProvider.setSelectedMarkerId(pub.id);
                       _showCustomInfoWindow(pub);
+                      _updateMarker(pub.id);
                     },
                   );
                 }).toSet();
@@ -257,6 +298,9 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       mapProvider.setBottomModalState(false);
                     }
                     mapProvider.setSelectedPub(null);
+                    mapProvider.setSelectedMarkerId(null); // Deselect the marker on map tap
+                    // Trigger marker update
+                    setState(() {});
                   },
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
@@ -315,7 +359,6 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     },
                   ),
                 ),
-                // MyLocationButton(location: _location),
                 const FavouritePubsFilterButton(),
               ],
             ),

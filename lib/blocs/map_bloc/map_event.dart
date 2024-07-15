@@ -27,6 +27,15 @@ class UpdateMarkers extends MapEvent {
   List<Object> get props => [markers];
 }
 
+class UpdateMarker extends MapEvent {
+  final Marker marker;
+
+  const UpdateMarker(this.marker);
+
+  @override
+  List<Object> get props => [marker];
+}
+
 class UpdateCameraPosition extends MapEvent { // Add this event
   final CameraPosition cameraPosition;
 

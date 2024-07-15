@@ -15,6 +15,8 @@ class MapProvider extends ChangeNotifier {
   Drink? _selectedDrink;
   Pub? _selectedPub;
   bool _isBottomModalOpen = false;
+  String? _selectedMarkerId;
+  String? _previousSelectedMarkerId;
 
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
@@ -23,6 +25,8 @@ class MapProvider extends ChangeNotifier {
   Drink? get selectedDrink => _selectedDrink;
   Pub? get selectedPub => _selectedPub;
   bool get isBottomModalOpen => _isBottomModalOpen;
+  String? get selectedMarkerId => _selectedMarkerId;
+  String? get previousSelectedMarkerId => _previousSelectedMarkerId;
 
   void setController(GoogleMapController controller) {
     _controller = controller;
@@ -56,6 +60,12 @@ class MapProvider extends ChangeNotifier {
 
   void setBottomModalState(bool isOpen) {
     _isBottomModalOpen = isOpen;
+    notifyListeners();
+  }
+
+  void setSelectedMarkerId(String? markerId) {
+    _previousSelectedMarkerId = _selectedMarkerId;
+    _selectedMarkerId = markerId;
     notifyListeners();
   }
 }

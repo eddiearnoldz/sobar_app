@@ -16,6 +16,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<ToggleMapStyle>(_onToggleMapStyle);
     on<UpdateMarkers>(_onUpdateMarkers);
     on<UpdateCameraPosition>(_onUpdateCameraPosition);
+    on<UpdateMarker>(_onUpdateMarker);
   }
 
   void _onInitializeMap(InitializeMap event, Emitter<MapState> emit) {
@@ -59,6 +60,22 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       print('Markers updated: ${event.markers}');
     } else {
       print('UpdateMarkers event received but state is not MapLoaded');
+    }
+  }
+
+  void _onUpdateMarker(UpdateMarker event, Emitter<MapState> emit) {
+    if (state is MapLoaded) {
+      final updatedMarkers = (state as MapLoaded).markers.map((marker) {
+        if (marker.markerId == event.marker.markerId) {
+          return event.marker;
+        }
+        return marker;
+      }).toSet();
+
+      emit((state as MapLoaded).copyWith(markers: updatedMarkers));
+      print('Marker updated: ${event.marker}');
+    } else {
+      print('UpdateMarker event received but state is not MapLoaded');
     }
   }
 
