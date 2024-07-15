@@ -64,15 +64,19 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
           ),
         ),
         if (isFilterActive && hasNoFavourites)
-          Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Container(
-                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Add some pubs to your favourite list',
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: _toggleFavouriteFilter,
+            child: Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(5),
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 20,
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    "You haven't ♥️ any venues yet so your list is empty. use the ♥️ button on the venue info sheet to start adding",
+                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sobar_app/components/favourite_pub_pill.dart';
 import 'package:sobar_app/components/launch_url_pill.dart';
 import 'package:sobar_app/components/opening_hours_table.dart';
@@ -84,14 +85,42 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height / 4,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[500]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[500]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -171,7 +200,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: photos.map<Widget>((photo) {
+                          children: photos.take(3).map<Widget>((photo) {
                             final photoUrl = 'https://maps.googleapis.com/maps/api/place/photo'
                                 '?maxwidth=400&photoreference=${photo['photo_reference']}&key=${widget.placesHelper.apiKey}';
                             return Padding(

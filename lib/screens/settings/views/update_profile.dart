@@ -25,7 +25,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> _listItems = [];
   final Duration _initialDelayTime = const Duration(milliseconds: 0);
-  final Duration _itemSlideTime = const Duration(milliseconds: 250);
   final Duration _staggerTime = const Duration(milliseconds: 250);
 
   @override
