@@ -1,4 +1,3 @@
-
 class MyUserEntity {
   final String userId;
   final String email;
@@ -23,9 +22,9 @@ class MyUserEntity {
 
   static MyUserEntity fromJson(Map<String, dynamic> json) {
     return MyUserEntity(
-      userId: json['userId'],
-      email: json['email'],
-      name: json['name'],
+      userId: json['userId'] ?? '',
+      email: json['email'] ?? '',
+      name: json['name'] ?? '',
       favourites: json['favourites'] != null ? List<String>.from(json['favourites']) : [],
     );
   }

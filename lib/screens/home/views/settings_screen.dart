@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:sobar_app/screens/settings/views/update_profile.dart';
 import 'package:sobar_app/screens/settings/views/useful_links_screen.dart';
 import 'package:sobar_app/utils/globals.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,12 +22,21 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   final Duration _itemSlideTime = const Duration(milliseconds: 250);
   final Duration _staggerTime = const Duration(milliseconds: 250);
   bool _showTitle = false;
+  User? user;
 
   @override
   void initState() {
     super.initState();
     _loadListItems();
     _fadeInTitle();
+    _refreshUser();
+  }
+
+  Future<void> _refreshUser() async {
+    user = FirebaseAuth.instance.currentUser;
+    await user?.reload();
+    user = FirebaseAuth.instance.currentUser;
+    setState(() {});
   }
 
   Future<void> _fadeInTitle() async {
@@ -40,7 +47,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   }
 
   Future<void> _sendEmail() async {
-    print("creating email");
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: 'sobær-app-info@me.com',
@@ -83,28 +89,18 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
       ),
       _buildMenuTile(
         context: context,
-        title: 'update profile',
+        title: 'profile',
         color: spiritColour,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const UpdateProfileScreen())).then((value) => _refreshUser());
+        },
       ),
       _buildMenuTile(
         context: context,
         title: 'did we miss one?',
         color: wineColour,
         onTap: _sendEmail,
-      ),
-      _buildMenuTile(
-          context: context,
-          title: 'SigN OuT',
-          color: bottleColour,
-          onTap: () async {
-            context.read<SignInBloc>().add(SignOutRequired());
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
-            await prefs.setInt(openCountKey, 0);
-            print(prefs.getInt(openCountKey));
-          },
-          fontSize: 50,
-          marginTop: true),
+      )
     ];
 
     for (var i = 0; i < items.length; i++) {
@@ -141,8 +137,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthenticationBloc>().state.user;
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
@@ -157,7 +151,7 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18),
               children: <TextSpan>[
                 TextSpan(
-                  text: '${user?.name}' ?? 'bello',
+                  text: '${user?.displayName}' ?? 'bello',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimary,

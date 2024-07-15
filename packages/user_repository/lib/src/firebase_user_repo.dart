@@ -45,12 +45,18 @@ class FirebaseUserRepo implements UserRepository {
     }
   }
 
-  @override
+ @override
   Future<MyUser> signUp(MyUser myUser, String password) async {
     try {
-      UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(email: myUser.email, password: password);
-      myUser.userId = user.user!.uid;
-      await userCollection.doc(myUser.userId).set(myUser.toEntity().toJson());
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: myUser.email, password: password);
+      User? user = userCredential.user;
+      if (user != null) {
+        await user.updateDisplayName(myUser.name);
+        await user.reload(); // Reload the user to apply changes
+
+        myUser = myUser.copyWith(userId: user.uid);
+        await userCollection.doc(user.uid).set(myUser.toEntity().toJson());
+      }
       return myUser;
     } on FirebaseAuthException catch (e) {
       String errorMessage = getFirebaseErrorMessage(e);

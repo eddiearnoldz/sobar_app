@@ -1,0 +1,44 @@
+import 'package:flutter/material.dart';
+
+class DeleteConfirmationDialog extends StatelessWidget {
+  final VoidCallback onConfirm;
+
+  const DeleteConfirmationDialog({Key? key, required this.onConfirm}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text(
+        'had enough?',
+        style: TextStyle(fontFamily: 'Anton'),
+        textAlign: TextAlign.center,
+      ),
+      content: const Text(
+        'Are you sure you want to delete your account? You will not be able to retrieve your profile.',
+        textAlign: TextAlign.center,
+      ),
+      actionsAlignment: MainAxisAlignment.center,
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text(
+            'cancel',
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            onConfirm();
+          },
+          child: Text(
+            'delete',
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+        ),
+      ],
+    );
+  }
+}

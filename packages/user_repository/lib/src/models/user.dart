@@ -7,7 +7,12 @@ class MyUser {
   String name;
   List<String> favourites;
 
-  MyUser({required this.userId, required this.email, required this.name, required this.favourites});
+  MyUser({
+    required this.userId,
+    required this.email,
+    required this.name,
+    required this.favourites,
+  });
 
   static final empty = MyUser(userId: '', email: '', name: '', favourites: []);
 
@@ -26,6 +31,20 @@ class MyUser {
       email: entity.email,
       name: entity.name,
       favourites: entity.favourites,
+    );
+  }
+
+  MyUser copyWith({
+    String? userId,
+    String? email,
+    String? name,
+    List<String>? favourites,
+  }) {
+    return MyUser(
+      userId: userId ?? this.userId,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      favourites: favourites ?? this.favourites,
     );
   }
 
