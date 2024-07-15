@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:maps_launcher/maps_launcher.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sobar_app/components/favourite_pub_pill.dart';
 import 'package:sobar_app/components/launch_url_pill.dart';
@@ -14,6 +13,7 @@ import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/globals.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 class PubDetailsSheet extends StatefulWidget {
   final Pub pub;
@@ -289,17 +289,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                           icon: Icons.navigation,
                           label: "route",
                           onPressed: () async {
-                            String urlAnroid = 'https://www.google.com/maps/search/?api=1&query=${widget.pub.latitude},${widget.pub.longitude}';
-                            String urlIos = 'http://maps.apple.com/?ll=${widget.pub.latitude},${widget.pub.longitude}';
-                            try {
-                              if (Platform.isAndroid) {
-                                launchUrl(Uri.parse(urlAnroid), mode: LaunchMode.externalNonBrowserApplication);
-                              } else {
-                                launchUrl(Uri.parse(urlIos), mode: LaunchMode.externalNonBrowserApplication);
-                              }
-                            } catch (e) {
-                              print("error: $e");
-                            }
+                            _showMapOptions(context);
                           },
                         ),
                         LaunchUrlPill(
@@ -345,5 +335,68 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
         ),
       ],
     );
+  }
+
+  void _showMapOptions(BuildContext context) async {
+    final availableMaps = await MapLauncher.installedMaps;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white.withOpacity(0.8),
+      builder: (context) {
+        return FractionallySizedBox(
+          widthFactor: 0.98,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(widget.pub.locationAddress, textAlign: TextAlign.center),
+                const SizedBox(height: 10),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ...availableMaps.map((map) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              _launchMap(map.mapType);
+                            },
+                            title: Text(
+                              'Open in ${map.mapName}',
+                              style: TextStyle(color: canColour, fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const Divider(
+                            color: Colors.white,
+                          ), // Add a divider between each ListTile
+                        ],
+                      );
+                    })
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _launchMap(MapType mapType) async {
+    try {
+      await MapLauncher.showDirections(
+        mapType: mapType,
+        destination: Coords(double.parse(widget.pub.latitude), double.parse(widget.pub.longitude)),
+        destinationTitle: widget.pub.locationAddress,
+      );
+    } catch (e) {
+      print("error: $e");
+    }
   }
 }
