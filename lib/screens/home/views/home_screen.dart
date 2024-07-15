@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:location/location.dart';
 import 'package:sobar_app/models/adPopUp.dart';
-import 'package:sobar_app/screens/home/views/admin_screen.dart';
+import 'package:sobar_app/screens/admin/admin_screen.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
 import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _checkAdPopup();
-    _checkAdminStatus(); // Check if the user is an admin
+    _checkAdminStatus();
   }
 
   void _checkAdPopup() async {
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (isAdmin)
               buildBottomBarItem(
                 icon: SvgPicture.asset(
-                  "assets/icons/icon_tool.svg", // Replace with your admin icon
+                  "assets/icons/icon_tool.svg",
                   color: currentPageIndex == 4 ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.5),
                   height: 30,
                   width: 30,

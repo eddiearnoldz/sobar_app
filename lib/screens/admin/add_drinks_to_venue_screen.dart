@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+class AddDrinksToVenueScreen extends StatelessWidget {
+  const AddDrinksToVenueScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Screen'),
+        title: const Text('Add Drinks to Venue'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: const Center(
         child: Text(
-          'Admin Screen',
+          'Add Drinks to Venue',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
