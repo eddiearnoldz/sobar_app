@@ -289,8 +289,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                           icon: Icons.navigation,
                           label: "route",
                           onPressed: () async {
-                            MapsLauncher.launchCoordinates(double.parse(widget.pub.latitude), double.parse(widget.pub.longitude), widget.pub.locationName);
-                            String urlAnroid = 'https://www.google.com/maps/dir/?api=1&destination=${widget.pub.latitude},${widget.pub.longitude}';
+                            String urlAnroid = 'https://www.google.com/maps/search/?api=1&query=${widget.pub.latitude},${widget.pub.longitude}';
                             String urlIos = 'http://maps.apple.com/?ll=${widget.pub.latitude},${widget.pub.longitude}';
                             try {
                               if (Platform.isAndroid) {
