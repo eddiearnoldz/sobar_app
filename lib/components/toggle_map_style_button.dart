@@ -22,14 +22,14 @@ class ToggleMapStyleButton extends StatelessWidget {
           builder: (context, state) {
             if (state is MapLoaded) {
               return state.isBlackStyle
-                  ? Icon(
-                      Icons.brightness_3,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    )
-                  : SvgPicture.asset(
+                  ? SvgPicture.asset(
                       "assets/icons/icon_sun.svg",
                       height: 30,
                       width: 30,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    )
+                  : Icon(
+                      Icons.brightness_3,
                       color: Theme.of(context).colorScheme.onPrimary,
                     );
             } else {

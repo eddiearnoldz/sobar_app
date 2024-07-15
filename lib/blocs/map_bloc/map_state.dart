@@ -13,29 +13,29 @@ class MapLoaded extends MapState {
   final GoogleMapController controller;
   final Set<Marker> markers;
   final bool isBlackStyle;
-  final CameraPosition cameraPosition; // Add this line
+  final CameraPosition cameraPosition;
 
   const MapLoaded({
     required this.controller,
     this.markers = const {},
     this.isBlackStyle = false,
-    required this.cameraPosition, // Add this line
+    required this.cameraPosition,
   });
 
   MapLoaded copyWith({
     GoogleMapController? controller,
     Set<Marker>? markers,
     bool? isBlackStyle,
-    CameraPosition? cameraPosition, // Add this line
+    CameraPosition? cameraPosition,
   }) {
     return MapLoaded(
       controller: controller ?? this.controller,
       markers: markers ?? this.markers,
       isBlackStyle: isBlackStyle ?? this.isBlackStyle,
-      cameraPosition: cameraPosition ?? this.cameraPosition, // Add this line
+      cameraPosition: cameraPosition ?? this.cameraPosition,
     );
   }
 
   @override
-  List<Object?> get props => [controller, markers, isBlackStyle, cameraPosition]; // Add this line
+  List<Object?> get props => [controller, markers, isBlackStyle, cameraPosition];
 }

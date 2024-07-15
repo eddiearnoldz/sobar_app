@@ -87,7 +87,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
   }
 
   Future<void> _updateCustomIcon(bool isBlackStyle) async {
-    final assetPath = isBlackStyle ? 'assets/icons/coloured_pint.png' : 'assets/icons/coloured_pint_reversed.png';
+    final assetPath = isBlackStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
     final icon = await BitmapDescriptor.asset(
       height: 30,
       const ImageConfiguration(),
@@ -305,7 +305,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
                   },
-                  style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleSilver : mapStyleBlack,
+                  style: mapState is MapLoaded && mapState.isBlackStyle ? mapStyleBlack : mapStyleSilver,
                 );
               },
             ),
