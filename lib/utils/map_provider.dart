@@ -8,7 +8,7 @@ class MapProvider extends ChangeNotifier {
   GoogleMapController? _controller;
   CameraPosition _cameraPosition = const CameraPosition(
     target: londonCoordinates,
-    zoom: 9,
+    zoom: 12,
   );
   bool _isBlackStyle = false;
   List<String> _currentFilters = [];
@@ -17,6 +17,7 @@ class MapProvider extends ChangeNotifier {
   bool _isBottomModalOpen = false;
   String? _selectedMarkerId;
   String? _previousSelectedMarkerId;
+  List<Drink> _searchResults = [];
 
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
@@ -27,6 +28,7 @@ class MapProvider extends ChangeNotifier {
   bool get isBottomModalOpen => _isBottomModalOpen;
   String? get selectedMarkerId => _selectedMarkerId;
   String? get previousSelectedMarkerId => _previousSelectedMarkerId;
+  List<Drink> get searchResults => _searchResults;
 
   void setController(GoogleMapController controller) {
     _controller = controller;
@@ -57,11 +59,6 @@ class MapProvider extends ChangeNotifier {
     }
   }
 
-  void clearFilters() {
-    _currentFilters.clear();
-    notifyListeners();
-  }
-
   void setSelectedDrink(Drink? drink) {
     _selectedDrink = drink;
     notifyListeners();
@@ -80,6 +77,11 @@ class MapProvider extends ChangeNotifier {
   void setSelectedMarkerId(String? markerId) {
     _previousSelectedMarkerId = _selectedMarkerId;
     _selectedMarkerId = markerId;
+    notifyListeners();
+  }
+
+  void setSearchResults(List<Drink> drinks) {
+    _searchResults = drinks;
     notifyListeners();
   }
 }
