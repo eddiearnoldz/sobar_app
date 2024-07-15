@@ -67,7 +67,7 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
               ),
             ),
           ),
-          if (widget.filteredDrinks.isNotEmpty)
+          if (widget.controller.text.isNotEmpty && widget.filteredDrinks.isNotEmpty)
             SizedBox(
               height: 60,
               width: MediaQuery.of(context).size.width - 56,
@@ -132,17 +132,17 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
   Color _getDrinkColor(String type) {
     switch (type) {
       case 'draught':
-        return Colors.purple.withOpacity(0.8);
+        return Colors.purple.withOpacity(0.9);
       case 'bottle':
-        return Colors.red.withOpacity(0.8);
+        return Colors.red.withOpacity(0.9);
       case 'can':
-        return Colors.blue.withOpacity(0.8);
+        return Colors.blue.withOpacity(0.9);
       case 'wine':
-        return Colors.green.withOpacity(0.8);
+        return Colors.green.withOpacity(0.9);
       case 'spirit':
-        return Colors.yellow.withOpacity(0.8);
+        return Colors.yellow.withOpacity(0.9);
       default:
-        return Theme.of(context).colorScheme.primary.withOpacity(0.8);
+        return Theme.of(context).colorScheme.primary.withOpacity(0.9);
     }
   }
 }

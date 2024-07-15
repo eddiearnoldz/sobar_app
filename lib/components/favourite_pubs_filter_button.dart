@@ -30,6 +30,7 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
           isFilterActive = false;
           hasNoFavourites = false;
         });
+        context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters, favouritePubIds: null));
       } else {
         if (favourites.isNotEmpty) {
           mapProvider.addFilter('favourites');
@@ -37,6 +38,7 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
             isFilterActive = true;
             hasNoFavourites = false;
           });
+          context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters, favouritePubIds: favourites));
         } else {
           setState(() {
             isFilterActive = true;
@@ -44,8 +46,6 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
           });
         }
       }
-
-      context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters, favouritePubIds: favourites));
     }
   }
 
@@ -78,7 +78,7 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
                   color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    "You haven't ♥️ any venues yet so your list is empty. use the ♥️ button on the venue info sheet to start adding",
+                    "You haven't ♥️ any venues yet so your list is empty. Use the ♥️ button on the venue info sheet to start adding.",
                     style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16, fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
                   ),
                 ),

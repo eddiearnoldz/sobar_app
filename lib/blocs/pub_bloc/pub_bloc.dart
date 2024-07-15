@@ -56,6 +56,10 @@ class PubBloc extends Bloc<PubEvent, PubState> {
     List<Pub> pubsToFilter = originalPubs;
     List<Pub> filteredPubs = pubsToFilter;
 
+    if (event.favouritePubIds != null && event.favouritePubIds!.isNotEmpty) {
+      filteredPubs = filteredPubs.where((pub) => event.favouritePubIds!.contains(pub.id)).toList();
+    }
+
     for (var filter in event.filters) {
       if (filter.startsWith('drink_')) {
         final drinkId = filter.substring(6);

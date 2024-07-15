@@ -63,6 +63,7 @@ class MapScreenController {
   void applyFilters() {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     context.read<PubBloc>().add(FilterPubs(filters: mapProvider.currentFilters));
+    reinitializeMarkers();
   }
 
   void filterMarkers(String filter) {

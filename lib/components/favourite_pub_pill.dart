@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -23,15 +24,18 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
     checkIfFavourite();
   }
 
-  void checkIfFavourite() async {
-    final user = context.read<AuthenticationBloc>().state.user;
-    if (user != null) {
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.userId).get();
-      final favourites = List<String>.from(userDoc.data()?['favourites'] ?? []);
-      if (favourites.contains(widget.pub.id)) {
-        setState(() {
-          isFavourite = true;
-        });
+  Future<void> checkIfFavourite() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null && widget.pub.id.isNotEmpty) {
+      final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      final favouriteDoc = await userDoc.get();
+      if (favouriteDoc.exists) {
+        final favourites = favouriteDoc.data()?['favourites'] ?? [];
+        if (favourites.contains(widget.pub.id)) {
+          setState(() {
+            isFavourite = true;
+          });
+        }
       }
     }
   }
@@ -40,10 +44,15 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
     final user = context.read<AuthenticationBloc>().state.user;
     if (user != null) {
       final pubRef = FirebaseFirestore.instance.collection('pubs').doc(widget.pub.id);
-      await updateUserFavourites(user.userId, pubRef, !isFavourite);
-      setState(() {
-        isFavourite = !isFavourite;
-      });
+      if (pubRef.id.isNotEmpty) {
+        await updateUserFavourites(user.userId, pubRef, !isFavourite);
+        print(pubRef.id);
+        setState(() {
+          isFavourite = !isFavourite;
+        });
+      } else {
+        log('Pub reference ID is empty');
+      }
     }
   }
 
@@ -80,7 +89,7 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
           children: [
             Icon(
               isFavourite ? Icons.favorite : Icons.favorite_border,
-              color: isFavourite ? Color.fromARGB(255, 247, 119, 87) : Theme.of(context).colorScheme.onPrimary,
+              color: isFavourite ? const Color.fromARGB(255, 247, 119, 87) : Theme.of(context).colorScheme.onPrimary,
               size: 15,
             ),
             const SizedBox(width: 3),
