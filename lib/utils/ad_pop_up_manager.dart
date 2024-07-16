@@ -10,7 +10,6 @@ import 'package:sobar_app/utils/globals.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdPopupManager {
-
   Future<int> getOpenCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -48,10 +47,11 @@ class AdPopupManager {
               alignment: Alignment.center,
               child: Text(
                 adPopUp.adTitle,
-                style: const TextStyle(fontSize: 24, fontFamily: 'Anton'),
+                style: const TextStyle(fontSize: 28, fontFamily: 'Anton'),
                 textAlign: TextAlign.center,
               ),
             ),
+            titlePadding: EdgeInsets.only(top: 16),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -61,27 +61,22 @@ class AdPopupManager {
                     imageUrl: adPopUp.adImage,
                     placeholder: (context, url) => Container(
                       decoration: BoxDecoration(color: HexColor('#F8F48F'), borderRadius: BorderRadius.circular(2)),
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width - 32,
                     ),
                     errorWidget: (context, url, error) => const Icon(Icons.error),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.width - 32,
-                    fadeInDuration: const Duration(milliseconds: 200),
                     fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
                 Text(
                   adPopUp.adSubheader,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, height: 1.2),
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.2),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(adPopUp.adBody, style: const TextStyle(fontSize: 12, height: 1.2)),
+                Text(adPopUp.adBody, style: const TextStyle(fontSize: 14, height: 1.2)),
               ],
             ),
             actions: [
@@ -118,8 +113,8 @@ class AdPopupManager {
             actionsAlignment: MainAxisAlignment.center,
           ),
           Positioned(
-            top: 15,
-            right: 5,
+            top: 25,
+            right: 16,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).pop();
