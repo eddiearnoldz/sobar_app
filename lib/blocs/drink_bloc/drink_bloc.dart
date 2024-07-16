@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sobar_app/models/drink.dart';
@@ -23,7 +25,7 @@ class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
           final data = doc.data() as Map<String, dynamic>;
           return Drink.fromJson(doc.id, data);
         } catch (e) {
-          print('Error parsing drink document: ${doc.id}, error: $e');
+          log('Error parsing drink document: ${doc.id}, error: $e');
           return null; // Skip the document if there's an error
         }
       }).toList();
@@ -31,7 +33,7 @@ class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
       List<Drink> drinks = (await Future.wait(futures)).whereType<Drink>().toList();
       emit(DrinkLoaded(drinks: drinks));
     } catch (e) {
-      print("Error loading drinks: $e");
+      log("Error loading drinks: $e");
       emit(DrinkError());
     }
   }

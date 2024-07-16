@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,7 +53,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
           drinks.add(Drink.fromJson(drinkRef.id, snapshot.data() as Map<String, dynamic>));
         }
       } catch (e) {
-        print('Error fetching drink: $e');
+        log('Error fetching drink: $e');
       }
     }
 
@@ -126,7 +127,6 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                 ),
               );
             } else if (snapshot.hasError) {
-              print(snapshot.error);
               return Center(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height / 5,
@@ -171,7 +171,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '${rating}★ (${ratingTotal})',
+                                    'rating★ (ratingTotal)',
                                     style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16),
                                   ),
                                   Text(
@@ -240,7 +240,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                               border: _showOpeningHours ? null : Border.all(color: Theme.of(context).colorScheme.onPrimary),
                               borderRadius: BorderRadius.circular(5),
                               color: _showOpeningHours ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.primary),
-                          padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
@@ -304,7 +304,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                       launchUrl(Uri.parse(website));
                                     }
                                   } catch (e) {
-                                    print("error: $e");
+                                    log("error: $e");
                                   }
                                 }
                               : null,
@@ -396,7 +396,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
         destinationTitle: widget.pub.locationAddress,
       );
     } catch (e) {
-      print("error: $e");
+      log("error: $e");
     }
   }
 }

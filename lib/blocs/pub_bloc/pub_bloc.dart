@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -38,7 +40,7 @@ class PubBloc extends Bloc<PubEvent, PubState> {
 
           return pub;
         } catch (e) {
-          print('Error parsing pub document: ${doc.id}, error: $e');
+          log('Error parsing pub document: ${doc.id}, error: $e');
           return null; // Skip the document if there's an error
         }
       }).toList();
@@ -47,7 +49,7 @@ class PubBloc extends Bloc<PubEvent, PubState> {
       originalPubs = pubs;
       emit(PubLoaded(pubs: pubs));
     } catch (e) {
-      print('Error loading pubs: $e');
+      log('Error loading pubs: $e');
       emit(PubError());
     }
   }

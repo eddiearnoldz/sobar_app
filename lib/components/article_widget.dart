@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class ArticleWidget extends StatelessWidget {
         launchUrl(Uri.parse(url));
       }
     } catch (e) {
-      print("error: $e");
+      log("error: $e");
     }
   }
 

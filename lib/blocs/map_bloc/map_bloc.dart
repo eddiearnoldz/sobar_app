@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +29,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       isBlackStyle: mapProvider.isBlackStyle,
       markers: const <Marker>{},
     ));
-    print('Map initialized with controller: $_controller');
+    log('Map initialized with controller: $_controller');
   }
 
   void _onToggleMapStyle(ToggleMapStyle event, Emitter<MapState> emit) async {
@@ -48,18 +50,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       }).toSet();
 
       emit((state as MapLoaded).copyWith(isBlackStyle: newStyle, markers: updatedMarkers));
-      print('Map style toggled to: $newStyle');
+      log('Map style toggled to: $newStyle');
     } else {
-      print('ToggleMapStyle event received but state is not MapLoaded');
+      log('ToggleMapStyle event received but state is not MapLoaded');
     }
   }
 
   void _onUpdateMarkers(UpdateMarkers event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(markers: event.markers));
-      print('Markers updated: ${event.markers}');
+      log('Markers updated: ${event.markers}');
     } else {
-      print('UpdateMarkers event received but state is not MapLoaded');
+      log('UpdateMarkers event received but state is not MapLoaded');
     }
   }
 
@@ -73,9 +75,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       }).toSet();
 
       emit((state as MapLoaded).copyWith(markers: updatedMarkers));
-      print('Marker updated: ${event.marker}');
+      log('Marker updated: ${event.marker}');
     } else {
-      print('UpdateMarker event received but state is not MapLoaded');
+      log('UpdateMarker event received but state is not MapLoaded');
     }
   }
 
@@ -84,7 +86,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       mapProvider.updateCameraPosition(event.cameraPosition);
       emit((state as MapLoaded).copyWith(cameraPosition: event.cameraPosition));
     } else {
-      print('UpdateCameraPosition event received but state is not MapLoaded');
+      log('UpdateCameraPosition event received but state is not MapLoaded');
     }
   }
 }

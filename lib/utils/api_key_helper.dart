@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,9 +27,9 @@ Future<void> storeApiKeys() async {
     await prefs.setString('google_maps_api_key_ios', googleMapsApiKeyIos);
     await prefs.setString('google_maps_api_key_android', googleMapsApiKeyAndroid);
 
-    print('Stored iOS API key: $googleMapsApiKeyIos');
-    print('Stored Android API key: $googleMapsApiKeyAndroid');
+    log('Stored iOS API key: $googleMapsApiKeyIos');
+    log('Stored Android API key: $googleMapsApiKeyAndroid');
   } catch (e) {
-    print('Error: $e');
+    log('Error: $e');
   }
 }
