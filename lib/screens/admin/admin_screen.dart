@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sobar_app/components/admin_option_tile.dart';
+import 'package:sobar_app/screens/admin/add_drink_screen.dart';
 import 'package:sobar_app/utils/globals.dart';
 import 'package:sobar_app/screens/admin/add_venue_screen.dart';
 import 'package:sobar_app/screens/admin/add_drinks_to_venue_screen.dart';
@@ -29,7 +30,7 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
     final items = [
       AdminOptionTile(
         title: 'add drinks to a venue',
-        iconPath: "assets/icons/icon_pint_outline.svg",
+        iconPath: "assets/icons/icon_two_pints.svg",
         color: wineColour,
         onTap: () => _navigateToAddDrinksToVenue(context),
       ),
@@ -38,6 +39,12 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
         iconPath: "assets/icons/icon_venue.svg",
         color: bottleColour,
         onTap: () => _navigateToAddVenue(context),
+      ),
+      AdminOptionTile(
+        title: 'add a drink to the database',
+        iconPath: "assets/icons/icon_pint_outline.svg",
+        color: canColour,
+        onTap: () => _navigateToAddDrink(context),
       ),
     ];
 
@@ -54,6 +61,10 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
 
   void _navigateToAddVenue(BuildContext context) {
     Navigator.of(context).push(_createRoute(const AddVenueScreen()));
+  }
+
+  void _navigateToAddDrink(BuildContext context) {
+    Navigator.of(context).push(_createRoute(const AddDrinkScreen()));
   }
 
   Route _createRoute(Widget screen) {
