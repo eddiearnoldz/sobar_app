@@ -2,7 +2,7 @@ part of 'drink_bloc.dart';
 
 abstract class DrinkState extends Equatable {
   const DrinkState();
-  
+
   @override
   List<Object> get props => [];
 }

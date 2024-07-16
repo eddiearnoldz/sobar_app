@@ -21,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
-  bool isAdmin = false; // Track if the user is an admin
+  bool isAdmin = false;
 
   final List<Widget> _screens = [
     const NewMapScreen(),
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
           overlayColor: Colors.transparent,
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Use minimal space
+          mainAxisSize: MainAxisSize.min,
           children: [
             icon,
           ],
