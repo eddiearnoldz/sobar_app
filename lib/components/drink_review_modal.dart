@@ -73,268 +73,270 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.75,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
+      initialChildSize: 0.5,
+      minChildSize: 0.3,
+      maxChildSize: 0.9,
       expand: false,
       snap: true,
       builder: (context, scrollController) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.drink.name,
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'abv: ${widget.drink.abv}',
-                                      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.star,
-                                          color: Color.fromARGB(255, 247, 119, 87),
-                                        ),
-                                        Text(
-                                          ': ${widget.drink.averageRating}',
-                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          if (widget.drink.isVegan)
-                                            Text(
-                                              "vegan",
-                                              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
-                                            ),
-                                          if (widget.drink.calories.isFinite)
-                                            Text(
-                                              "${widget.drink.calories.floor()} cals",
-                                              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          if (widget.drink.isGlutenFree)
-                                            Text(
-                                              "gf",
-                                              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    CachedNetworkImage(
-                      imageUrl: widget.drink.imageUrl,
-                      placeholder: (context, url) => const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                      width: MediaQuery.of(context).size.width / 5,
-                      height: MediaQuery.of(context).size.width / 3,
-                      fit: BoxFit.contain,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                Visibility(
-                    visible: !_showReviewInput,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
-                        foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                        side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                      ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Leave a review",
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios_outlined,
-                            size: 14,
-                          )
-                        ],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _showReviewInput = !_showReviewInput;
-                        });
-                      },
-                    )),
-                Visibility(
-                  visible: _showReviewInput,
-                  child: Column(
+        return SafeArea(
+          child: SingleChildScrollView(
+            controller: scrollController,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                      RatingBar.builder(
-                        initialRating: _rating,
-                        minRating: 1,
-                        glowColor: const Color.fromARGB(255, 243, 52, 4),
-                        glowRadius: 0,
-                        glow: false,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 30,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star_rate_rounded,
-                          color: Color.fromARGB(255, 247, 119, 87),
-                          size: 10,
-                        ),
-                        onRatingUpdate: (rating) {
-                          setState(() {
-                            _rating = rating;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      TextField(
-                        controller: _reviewController,
-                        decoration: InputDecoration(
-                          labelText: 'Write a review',
-                          floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                          border: const OutlineInputBorder(),
-                          focusedBorder: const OutlineInputBorder(),
-                          alignLabelWithHint: true,
-                        ),
-                        maxLines: 3,
-                      ),
-                      const SizedBox(height: 05),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                _showReviewInput = !_showReviewInput;
-                              });
-                            },
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.drink.name,
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary)),
-                            onPressed: _submitReview,
-                            child: Text(
-                              'Submit',
-                              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                            const SizedBox(
+                              height: 5,
                             ),
-                          ),
-                        ],
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'abv: ${widget.drink.abv}',
+                                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.star,
+                                            color: Color.fromARGB(255, 247, 119, 87),
+                                          ),
+                                          Text(
+                                            ': ${widget.drink.averageRating}',
+                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            if (widget.drink.isVegan)
+                                              Text(
+                                                "vegan",
+                                                style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
+                                              ),
+                                            if (widget.drink.calories.isFinite)
+                                              Text(
+                                                "${widget.drink.calories.floor()} cals",
+                                                style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            if (widget.drink.isGlutenFree)
+                                              Text(
+                                                "gf",
+                                                style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      CachedNetworkImage(
+                        imageUrl: widget.drink.imageUrl,
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        width: MediaQuery.of(context).size.width / 5,
+                        height: MediaQuery.of(context).size.width / 3,
+                        fit: BoxFit.contain,
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 15),
-                StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).collection('reviews').orderBy('date', descending: true).snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.data!.docs.isEmpty) {
-                      return const Text('No reviews yet.');
-                    }
-
-                    var reviews = snapshot.data!.docs;
-                    if (reviews.isEmpty) {
-                      return const Text('No reviews yet.');
-                    }
-
-                    double totalRating = reviews.fold(0.0, (totalSum, review) => totalSum + (review['rating'] as num).toDouble());
-                    double averageRating = totalRating / reviews.length;
-                    FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).update({
-                      'averageRating': averageRating,
-                      'ratingsCount': reviews.length.toDouble(),
-                    });
-
-                    return Column(
+                  const SizedBox(height: 15),
+                  Visibility(
+                      visible: !_showReviewInput,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                          foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                          side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          ),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Leave a review",
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios_outlined,
+                              size: 14,
+                            )
+                          ],
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _showReviewInput = !_showReviewInput;
+                          });
+                        },
+                      )),
+                  Visibility(
+                    visible: _showReviewInput,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(' ${reviews.length} ${reviews.length > 1 ? 'reviews' : 'review'}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 5),
-                        Column(
-                          children: reviews.map((review) {
-                            return ReviewTile(
-                              review: review,
-                              userNameFuture: _getUserName(review['userRef']),
-                            );
-                          }).toList(),
+                        const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        RatingBar.builder(
+                          initialRating: _rating,
+                          minRating: 1,
+                          glowColor: const Color.fromARGB(255, 243, 52, 4),
+                          glowRadius: 0,
+                          glow: false,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 30,
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star_rate_rounded,
+                            color: Color.fromARGB(255, 247, 119, 87),
+                            size: 10,
+                          ),
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              _rating = rating;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 15),
+                        TextField(
+                          controller: _reviewController,
+                          decoration: InputDecoration(
+                            labelText: 'Write a review',
+                            floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(),
+                            alignLabelWithHint: true,
+                          ),
+                          maxLines: 3,
+                        ),
+                        const SizedBox(height: 05),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _showReviewInput = !_showReviewInput;
+                                });
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary)),
+                              onPressed: _submitReview,
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    );
-                  },
-                ),
-              ],
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).collection('reviews').orderBy('date', descending: true).snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.data!.docs.isEmpty) {
+                        return const Text('No reviews yet.');
+                      }
+
+                      var reviews = snapshot.data!.docs;
+                      if (reviews.isEmpty) {
+                        return const Text('No reviews yet.');
+                      }
+
+                      double totalRating = reviews.fold(0.0, (totalSum, review) => totalSum + (review['rating'] as num).toDouble());
+                      double averageRating = totalRating / reviews.length;
+                      FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).update({
+                        'averageRating': averageRating,
+                        'ratingsCount': reviews.length.toDouble(),
+                      });
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(' ${reviews.length} ${reviews.length > 1 ? 'reviews' : 'review'}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 5),
+                          Column(
+                            children: reviews.map((review) {
+                              return ReviewTile(
+                                review: review,
+                                userNameFuture: _getUserName(review['userRef']),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
