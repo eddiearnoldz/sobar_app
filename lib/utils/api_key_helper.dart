@@ -6,6 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> storeApiKeys() async {
   try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Check if API keys are already stored
+    String? storedIosApiKey = prefs.getString('google_maps_api_key_ios');
+    String? storedAndroidApiKey = prefs.getString('google_maps_api_key_android');
+
+    if (storedIosApiKey != null && storedAndroidApiKey != null) {
+      log('iOS API key already stored: $storedIosApiKey');
+      log('Android API key already stored: $storedAndroidApiKey');
+      return; // Keys are already stored, exit the function
+    }
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     User? user = auth.currentUser;
     if (user == null) {
@@ -23,7 +35,6 @@ Future<void> storeApiKeys() async {
     final googleMapsApiKeyAndroid = resultsAndroid.data['apiKey'];
 
     // Store API keys in SharedPreferences
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('google_maps_api_key_ios', googleMapsApiKeyIos);
     await prefs.setString('google_maps_api_key_android', googleMapsApiKeyAndroid);
 

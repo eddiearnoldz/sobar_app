@@ -59,7 +59,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void _onUpdateMarkers(UpdateMarkers event, Emitter<MapState> emit) {
     if (state is MapLoaded) {
       emit((state as MapLoaded).copyWith(markers: event.markers));
-      log('Markers updated: ${event.markers}');
     } else {
       log('UpdateMarkers event received but state is not MapLoaded');
     }

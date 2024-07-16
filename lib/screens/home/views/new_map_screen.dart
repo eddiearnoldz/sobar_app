@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -9,6 +9,9 @@ import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
 import 'package:sobar_app/components/custom_info_window.dart';
 import 'package:sobar_app/components/favourite_pubs_filter_button.dart';
 import 'package:sobar_app/components/filter_drink_text_field.dart';
+import 'package:sobar_app/components/filter_pub_text_field.dart';
+import 'package:sobar_app/components/filtered_drinks_results_list.dart';
+import 'package:sobar_app/components/filtered_pubs_results_list.dart';
 import 'package:sobar_app/components/map_filter_bar.dart';
 import 'package:sobar_app/components/selected_drink_filter_clear_button.dart';
 import 'package:sobar_app/components/toggle_map_style_button.dart';
@@ -26,9 +29,12 @@ class NewMapScreen extends StatefulWidget {
 
 class _NewMapScreenState extends State<NewMapScreen> {
   final LatLng _initialPosition = londonCoordinates;
-  final TextEditingController _searchController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
-  bool _isFocused = false;
+  final TextEditingController _drinkSearchController = TextEditingController();
+  final TextEditingController _pubSearchController = TextEditingController();
+  final FocusNode _drinkFocusNode = FocusNode();
+  final FocusNode _pubFocusNode = FocusNode();
+  bool _isDrinkFocused = false;
+  bool _isPubFocused = false;
   Pub? _selectedPub;
   late MapScreenController _controller;
 
@@ -40,16 +46,22 @@ class _NewMapScreenState extends State<NewMapScreen> {
       await _controller.updateCustomIcon(context.read<MapBloc>().state is MapLoaded && (context.read<MapBloc>().state as MapLoaded).isBlackStyle);
       _controller.reinitializeMarkers();
     });
-    _focusNode.addListener(() {
+    _drinkFocusNode.addListener(() {
       setState(() {
-        _isFocused = _focusNode.hasFocus;
+        _isDrinkFocused = _drinkFocusNode.hasFocus;
+      });
+    });
+    _pubFocusNode.addListener(() {
+      setState(() {
+        _isPubFocused = _pubFocusNode.hasFocus;
       });
     });
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    _drinkFocusNode.dispose();
+    _pubFocusNode.dispose();
     super.dispose();
   }
 
@@ -113,11 +125,16 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       Navigator.of(context).pop();
                       mapProvider.setBottomModalState(false);
                     }
-                    mapProvider.setSelectedPub(null);
-                    mapProvider.setSelectedMarkerId(null);
-                    _controller.updateMarker(null);
-                    setState(() {});
-                    FocusScope.of(context).unfocus();
+                    if (mapProvider.selectedMarkerId != null) {
+                      log('Map tapped. Resetting previous marker.');
+                      _controller.updateMarker(null); // Update marker with null to reset the previous marker
+                      mapProvider.setSelectedPub(null);
+                      // Ensure previousMarkerId is updated correctly
+                      mapProvider.setSelectedMarkerId(null);
+                      mapProvider.setPreviousSelectedMarkerId(null);
+                      setState(() {});
+                      FocusScope.of(context).unfocus();
+                    }
                   },
                   onCameraMove: (position) {
                     context.read<MapBloc>().add(UpdateCameraPosition(position));
@@ -134,8 +151,11 @@ class _NewMapScreenState extends State<NewMapScreen> {
               right: 5,
               child: GestureDetector(
                 onTap: _controller.onCustomInfoWindowTap,
-                child:
-                    FractionallySizedBox(alignment: Alignment.centerLeft, widthFactor: 0.85, child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!)),
+                child: FractionallySizedBox(
+                  alignment: Alignment.centerLeft,
+                  widthFactor: 0.85,
+                  child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
+                ),
               ),
             ),
           SafeArea(
@@ -146,20 +166,55 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   top: 50,
                   left: 0,
                   right: 10,
-                  child: FilterDrinkTextField(
-                    filteredDrinks: mapProvider.searchResults,
-                    onSearchChanged: _controller.searchDrinks,
-                    onDrinkSelected: _controller.filterPubsByDrink,
-                    controller: _searchController,
-                    focusNode: _focusNode,
-                    isFocused: _isFocused,
-                    unfocusTextField: _controller.unfocusTextField,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: FilterDrinkTextField(
+                          filteredDrinks: mapProvider.drinkSearchResults,
+                          onSearchChanged: _controller.searchDrinks,
+                          onDrinkSelected: _controller.filterPubsByDrink,
+                          controller: _drinkSearchController,
+                          focusNode: _drinkFocusNode,
+                          isFocused: _isDrinkFocused,
+                          unfocusTextField: _controller.unfocusTextField,
+                        ),
+                      ),
+                      Expanded(
+                        child: FilterPubTextField(
+                          filteredPubs: mapProvider.pubSearchResults,
+                          onSearchChanged: _controller.searchPubs,
+                          controller: _pubSearchController,
+                          focusNode: _pubFocusNode,
+                          isFocused: _isPubFocused,
+                          unfocusTextField: _controller.unfocusTextField,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                if (mapProvider.drinkSearchResults.isNotEmpty)
+                  Positioned(
+                    top: 95, // Adjust this value as needed to ensure it appears below the text fields
+                    left: 0,
+                    right: 60,
+                    child: FilterDrinkResultsList(
+                      filteredDrinks: mapProvider.drinkSearchResults,
+                      onDrinkSelected: _controller.filterPubsByDrink,
+                    ),
+                  ),
+                if (mapProvider.pubSearchResults.isNotEmpty)
+                  Positioned(
+                    top: 95, // Adjust this value as needed to ensure it appears below the text fields
+                    left: 0,
+                    right: 60,
+                    child: FilterPubResultsList(filteredPubs: mapProvider.pubSearchResults, onPubSelected: _controller.onPubSelected, pubSearchController: _pubSearchController),
+                  ),
                 if (mapProvider.selectedDrink != null)
                   SelectedDrinkFilterClearButton(
                     selectedDrink: mapProvider.selectedDrink!,
                     onClear: _controller.clearSelectedDrink,
+                    drinkSearchController: _drinkSearchController,
                   ),
                 Positioned(
                   top: 0,

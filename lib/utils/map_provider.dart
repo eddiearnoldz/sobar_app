@@ -17,7 +17,8 @@ class MapProvider extends ChangeNotifier {
   bool _isBottomModalOpen = false;
   String? _selectedMarkerId;
   String? _previousSelectedMarkerId;
-  List<Drink> _searchResults = [];
+  List<Drink> _drinkSearchResults = [];
+  List<Pub> _pubSearchResults = [];
 
   GoogleMapController? get controller => _controller;
   CameraPosition get cameraPosition => _cameraPosition;
@@ -28,7 +29,8 @@ class MapProvider extends ChangeNotifier {
   bool get isBottomModalOpen => _isBottomModalOpen;
   String? get selectedMarkerId => _selectedMarkerId;
   String? get previousSelectedMarkerId => _previousSelectedMarkerId;
-  List<Drink> get searchResults => _searchResults;
+  List<Drink> get drinkSearchResults => _drinkSearchResults;
+  List<Pub> get pubSearchResults => _pubSearchResults;
 
   void setController(GoogleMapController controller) {
     _controller = controller;
@@ -75,13 +77,25 @@ class MapProvider extends ChangeNotifier {
   }
 
   void setSelectedMarkerId(String? markerId) {
-    _previousSelectedMarkerId = _selectedMarkerId;
-    _selectedMarkerId = markerId;
+    if (markerId != _selectedMarkerId) {
+      _previousSelectedMarkerId = _selectedMarkerId;
+      _selectedMarkerId = markerId;
+      notifyListeners();
+    }
+  }
+
+  void setDrinkSearchResults(List<Drink> drinks) {
+    _drinkSearchResults = drinks;
     notifyListeners();
   }
 
-  void setSearchResults(List<Drink> drinks) {
-    _searchResults = drinks;
+  void setPubSearchResults(List<Pub> pubs) {
+    _pubSearchResults = pubs;
+    notifyListeners();
+  }
+
+  void setPreviousSelectedMarkerId(String? markerId) {
+    _previousSelectedMarkerId = markerId;
     notifyListeners();
   }
 }

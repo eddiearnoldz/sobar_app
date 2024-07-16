@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sobar_app/models/drink.dart';
+import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/map_provider.dart';
 
-class FilterDrinkTextField extends StatefulWidget {
-  final List<Drink> filteredDrinks;
+class FilterPubTextField extends StatefulWidget {
+  final List<Pub> filteredPubs;
   final Function(String) onSearchChanged;
-  final Function(Drink) onDrinkSelected;
   final TextEditingController controller;
   final FocusNode focusNode;
   final bool isFocused;
   final Function() unfocusTextField;
 
-  const FilterDrinkTextField({
+  const FilterPubTextField({
     super.key,
-    required this.filteredDrinks,
+    required this.filteredPubs,
     required this.onSearchChanged,
-    required this.onDrinkSelected,
     required this.controller,
     required this.focusNode,
     required this.isFocused,
@@ -24,10 +22,10 @@ class FilterDrinkTextField extends StatefulWidget {
   });
 
   @override
-  _FilterDrinkTextFieldState createState() => _FilterDrinkTextFieldState();
+  _FilterPubTextFieldState createState() => _FilterPubTextFieldState();
 }
 
-class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
+class _FilterPubTextFieldState extends State<FilterPubTextField> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -41,13 +39,10 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
             cursorColor: Theme.of(context).colorScheme.onPrimary,
             cursorHeight: 15,
             controller: widget.controller,
-            onTap: () {
-              Provider.of<MapProvider>(context, listen: false).setPubSearchResults([]);
-            },
             focusNode: widget.focusNode,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
-              hintText: 'search drinks...',
+              hintText: 'search venues...',
               hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
               fillColor: Theme.of(context).colorScheme.primary.withOpacity(widget.isFocused ? 1.0 : 0.8),
               filled: true,
@@ -65,8 +60,11 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
               widget.onSearchChanged(value);
               if (value.isEmpty) {
                 widget.unfocusTextField();
-                Provider.of<MapProvider>(context, listen: false).setDrinkSearchResults([]);
+                Provider.of<MapProvider>(context, listen: false).setPubSearchResults([]);
               }
+            },
+            onTap: () {
+              Provider.of<MapProvider>(context, listen: false).setDrinkSearchResults([]);
             },
           ),
         ),

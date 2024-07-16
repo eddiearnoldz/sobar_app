@@ -77,35 +77,34 @@ class MapScreenController {
     applyFilters();
   }
 
-  void searchDrinks(String text) {
-    final pubState = context.read<PubBloc>().state;
-    List<Drink> uniqueDrinks = [];
-    Set<String> uniqueDrinkIds = {};
-
-    if (pubState is PubLoaded || pubState is PubFiltered) {
-      final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
-      for (var pub in pubs) {
-        for (var drink in pub.drinksData) {
-          if (drink.name.toLowerCase().contains(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
-            uniqueDrinkIds.add(drink.id);
-            uniqueDrinks.add(drink);
-          }
-        }
-      }
-    }
-
-    Provider.of<MapProvider>(context, listen: false).setSearchResults(uniqueDrinks);
-  }
-
   void filterPubsByDrink(Drink drink) {
     final filter = 'drink_${drink.id}';
     context.read<PubBloc>().add(FilterPubs(filters: [filter]));
     Provider.of<MapProvider>(context, listen: false).setSelectedDrink(drink);
+    Provider.of<MapProvider>(context, listen: false).setDrinkSearchResults([]);
   }
 
-  void clearSelectedDrink() {
+  void clearSelectedDrink(TextEditingController drinkSearchController) {
     Provider.of<MapProvider>(context, listen: false).setSelectedDrink(null);
+    drinkSearchController.clear();
     applyFilters();
+    unfocusTextField();
+  }
+
+  void onPubSelected(Pub pub, TextEditingController pubSearchController) {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    mapProvider.setSelectedPub(pub);
+    mapProvider.setSelectedMarkerId(pub.id); // Ensure selected marker ID is set
+    updateMarker(pub.id);
+    showCustomInfoWindow(pub);
+    unfocusTextField();
+    pubSearchController.clear();
+    mapProvider.setPubSearchResults([]);
+
+    // Center the camera on the selected pub's coordinates
+    mapProvider.controller?.animateCamera(
+      CameraUpdate.newLatLngZoom(LatLng(pub.parsedLatitude, pub.parsedLongitude), 15),
+    );
   }
 
   void unfocusTextField() {
@@ -150,11 +149,14 @@ class MapScreenController {
   void updateMarker(String? markerId) {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapState = context.read<MapBloc>().state;
+
     if (mapState is MapLoaded) {
       final markers = mapState.markers;
       final previousMarkerId = mapProvider.previousSelectedMarkerId;
 
-      if (previousMarkerId != null) {
+
+      // If there is a previous marker and it's not the same as the new marker, update it to customIcon
+      if (previousMarkerId != null && previousMarkerId != markerId) {
         final previousMarker = markers.firstWhere(
           (marker) => marker.markerId.value == previousMarkerId,
           orElse: () => const Marker(markerId: MarkerId('')),
@@ -163,6 +165,7 @@ class MapScreenController {
         context.read<MapBloc>().add(UpdateMarker(updatedPreviousMarker));
       }
 
+      // If there is a new marker, update it to selectedIcon
       if (markerId != null) {
         final marker = markers.firstWhere(
           (marker) => marker.markerId.value == markerId,
@@ -170,6 +173,14 @@ class MapScreenController {
         );
         final updatedMarker = marker.copyWith(iconParam: selectedIcon);
         context.read<MapBloc>().add(UpdateMarker(updatedMarker));
+
+        // Set the new marker as both selected and previous marker
+        mapProvider.setSelectedMarkerId(markerId);
+        mapProvider.setPreviousSelectedMarkerId(markerId);
+      } else {
+        // If markerId is null, reset the previous marker as well
+        mapProvider.setSelectedMarkerId(previousMarkerId);
+        mapProvider.setPreviousSelectedMarkerId(previousMarkerId);
       }
     }
   }
@@ -195,5 +206,37 @@ class MapScreenController {
 
       context.read<MapBloc>().add(UpdateMarkers(markers));
     }
+  }
+
+  void searchPubs(String text) {
+    final pubState = context.read<PubBloc>().state;
+    List<Pub> filteredPubs = [];
+
+    if (pubState is PubLoaded || pubState is PubFiltered) {
+      final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
+      filteredPubs = pubs.where((pub) => pub.locationName.toLowerCase().contains(text.toLowerCase())).toList();
+    }
+
+    Provider.of<MapProvider>(context, listen: false).setPubSearchResults(filteredPubs);
+  }
+
+  void searchDrinks(String text) {
+    final pubState = context.read<PubBloc>().state;
+    List<Drink> uniqueDrinks = [];
+    Set<String> uniqueDrinkIds = {};
+
+    if (pubState is PubLoaded || pubState is PubFiltered) {
+      final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
+      for (var pub in pubs) {
+        for (var drink in pub.drinksData) {
+          if (drink.name.toLowerCase().contains(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
+            uniqueDrinkIds.add(drink.id);
+            uniqueDrinks.add(drink);
+          }
+        }
+      }
+    }
+
+    Provider.of<MapProvider>(context, listen: false).setDrinkSearchResults(uniqueDrinks);
   }
 }

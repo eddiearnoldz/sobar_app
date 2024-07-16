@@ -4,11 +4,13 @@ import 'package:sobar_app/models/drink.dart';
 class SelectedDrinkFilterClearButton extends StatelessWidget {
   final Drink selectedDrink;
   final Function onClear;
+  final TextEditingController drinkSearchController;
 
   const SelectedDrinkFilterClearButton({
     super.key,
     required this.selectedDrink,
     required this.onClear,
+    required this.drinkSearchController,
   });
 
   @override
@@ -17,7 +19,7 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
       top: 100,
       left: 10,
       child: GestureDetector(
-        onTap: () => onClear(),
+        onTap: () => onClear(drinkSearchController),
         child: Stack(
           children: [
             Container(
