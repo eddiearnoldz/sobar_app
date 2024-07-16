@@ -150,6 +150,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                       borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
+                  cursorColor: Theme.of(context).colorScheme.onPrimary,
                 ),
               if (filteredPubs.isNotEmpty && _pubController.text.isNotEmpty)
                 Expanded(
@@ -158,7 +159,18 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                     itemBuilder: (context, index) {
                       final pub = filteredPubs[index];
                       return ListTile(
-                        title: Text(pub.locationName),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              pub.locationName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              pub.locationAddress,
+                            ),
+                          ],
+                        ),
                         onTap: () => _selectPub(pub),
                       );
                     },
@@ -183,6 +195,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                       borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
+                  cursorColor: Theme.of(context).colorScheme.onPrimary,
                 ),
                 if (filteredDrinks.isNotEmpty)
                   Expanded(
@@ -191,7 +204,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                       itemBuilder: (context, index) {
                         final drink = filteredDrinks[index];
                         return ListTile(
-                          contentPadding: EdgeInsets.all(0),
+                          contentPadding: const EdgeInsets.all(0),
                           title: Row(
                             children: [
                               Expanded(
@@ -227,7 +240,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                 if (drinks.isNotEmpty) ...[
                   const Text(
                     'current drinks selection:',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   Expanded(
                     child: ListView.builder(
@@ -246,7 +259,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                               ),
                               Text(
                                 ' - ${drink.type.toUpperCase()}',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

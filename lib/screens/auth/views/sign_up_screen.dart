@@ -48,6 +48,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Theme.of(context).colorScheme.surface),
               ),
+              duration: const Duration(seconds: 5),
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }

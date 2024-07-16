@@ -78,7 +78,7 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
                 itemBuilder: (context, index) {
                   final drink = widget.filteredDrinks[index];
                   return GestureDetector(
-                    onTap: () => widget.onDrinkSelected(drink),
+                    onTap: () => {widget.onDrinkSelected(drink), widget.controller.clear()},
                     child: Container(
                       width: MediaQuery.of(context).size.width - 86,
                       padding: const EdgeInsets.all(5),

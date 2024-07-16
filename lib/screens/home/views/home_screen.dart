@@ -61,30 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showLocationDialog(LocationData? locationData) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Current Location'),
-          content: locationData != null
-              ? Text(
-                  'Latitude: ${locationData.latitude}\nLongitude: ${locationData.longitude}',
-                )
-              : const Text('Failed to get location.'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

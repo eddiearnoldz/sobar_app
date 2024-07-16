@@ -70,7 +70,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update user name: $e')),
+        SnackBar(
+          content: Text('Failed to update user name: $e'),
+          duration: const Duration(seconds: 5),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
       );
     }
   }
@@ -83,7 +87,11 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
       Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete account: $e')),
+        SnackBar(
+          content: Text('Failed to delete account: $e'),
+          duration: const Duration(seconds: 5),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
       );
     }
   }

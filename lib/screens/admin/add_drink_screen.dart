@@ -65,12 +65,13 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
         _clearForm();
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
+          SnackBar(
+            content: const Text(
               'failed to add drink',
               textAlign: TextAlign.center,
             ),
-            duration: Duration(seconds: 5),
+            duration: const Duration(seconds: 5),
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -93,7 +94,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Drink Name',
+                  labelText: 'drink name',
                   labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
@@ -110,7 +111,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
               TextFormField(
                 controller: _abvController,
                 decoration: InputDecoration(
-                  labelText: 'ABV',
+                  labelText: 'abv',
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -125,9 +126,9 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                 ),
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
-                    return 'Please enter the ABV with % e.g. 0.5%';
+                    return 'please enter the abv with % e.g. 0.5%';
                   } else if (!value!.endsWith('%')) {
-                    return 'ABV must end with a % sign';
+                    return 'abv must end with a % sign';
                   }
                   return null;
                 },
@@ -138,7 +139,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
               TextFormField(
                 controller: _caloriesController,
                 decoration: InputDecoration(
-                  labelText: 'Calories',
+                  labelText: 'calories',
                   labelStyle: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -154,16 +155,16 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
-                    return 'Please enter the calories';
+                    return 'please enter the calories';
                   } else if (double.tryParse(value!) == null) {
-                    return 'Please enter a valid number';
+                    return 'please enter a valid number';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               const Text(
-                'Type',
+                'type',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
@@ -201,7 +202,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                 children: [
                   Expanded(
                     child: CheckboxListTile(
-                      title: const Text('Vegan'),
+                      title: const Text('vegan'),
                       value: _isVegan,
                       onChanged: (value) {
                         setState(() {
@@ -212,7 +213,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                   ),
                   Expanded(
                     child: CheckboxListTile(
-                      title: const Text('Gluten Free'),
+                      title: const Text('gluten free'),
                       value: _isGlutenFree,
                       onChanged: (value) {
                         setState(() {
@@ -230,7 +231,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                   ElevatedButton(
                     onPressed: _clearForm,
                     child: Text(
-                      'Clear',
+                      'clear',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
@@ -240,7 +241,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                   ElevatedButton(
                     onPressed: _submitDrink,
                     child: Text(
-                      'Submit',
+                      'submit',
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),

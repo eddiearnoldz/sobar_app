@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/models/drink.dart';
 
 class Pub {
-  final String id;
+  String id;
   final String locationName;
   final String locationAddress;
   final String latitude;
@@ -10,9 +10,9 @@ class Pub {
   final String city;
   final List<DocumentReference> drinks;
   final String? placeId;
-  List<Drink> drinksData; // Store fetched drinks
+  List<Drink> drinksData;
 
-    // Flags for drink types
+  // Flags for drink types
   bool hasDraught = false;
   bool hasBottle = false;
   bool hasCan = false;
@@ -20,7 +20,7 @@ class Pub {
   bool hasSpirit = false;
 
   Pub({
-    required this.id,
+    this.id = "",
     required this.locationName,
     required this.locationAddress,
     required this.latitude,
@@ -63,4 +63,3 @@ class Pub {
     };
   }
 }
-

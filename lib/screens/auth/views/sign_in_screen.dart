@@ -46,6 +46,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.labelMedium!.copyWith(color: Theme.of(context).colorScheme.surface),
               ),
+              duration: const Duration(seconds: 5),
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }

@@ -26,7 +26,7 @@ class GooglePlacesHelper {
 
   Future<String?> getPlaceId(String name, String address) async {
     final String url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-        '?input=${Uri.encodeComponent('$name $address')}'
+        '?input=${Uri.encodeComponent('${name},${address}')}'
         '&inputtype=textquery'
         '&fields=place_id'
         '&key=$apiKey';
@@ -40,11 +40,28 @@ class GooglePlacesHelper {
         print('Found placeId: ${results[0]['place_id']} for $name, $address'); // Debug log
         return results[0]['place_id'];
       } else {
-        print('No candidates found for $name, $address'); // Debug log
+        print('No candidates found for  $name, $address'); // Debug log
       }
     } else {
-      print('Failed to fetch placeId for $name, $address: ${response.body}'); // Debug log
+      print('Failed to fetch placeId for  $name, $address: ${response.body}'); // Debug log
     }
     return null;
+  }
+
+  Future<Map<String, dynamic>> getPlaceDetailsForNewVenue(String placeId) async {
+    const fields = 'name,formatted_address,geometry,place_id,vicinity';
+    final url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&fields=$fields&key=$apiKey';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['status'] == 'OK') {
+        return jsonResponse['result'] ?? {};
+      } else {
+        throw Exception('Failed to load place details: ${jsonResponse['status']}');
+      }
+    } else {
+      throw Exception('Failed to load place details');
+    }
   }
 }
