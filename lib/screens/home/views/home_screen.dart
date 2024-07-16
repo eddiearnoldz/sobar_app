@@ -4,7 +4,7 @@ import 'package:location/location.dart';
 import 'package:sobar_app/models/adPopUp.dart';
 import 'package:sobar_app/screens/admin/admin_screen.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
-import 'package:sobar_app/screens/home/views/top_rated_drinks_screen.dart';
+import 'package:sobar_app/screens/home/views/drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
 import 'package:sobar_app/screens/home/views/settings_screen.dart';
 import 'package:sobar_app/utils/ad_pop_up_manager.dart';

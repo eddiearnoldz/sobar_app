@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sobar_app/screens/settings/views/missing_drinks_screen.dart';
 import 'package:sobar_app/screens/settings/views/update_profile.dart';
 import 'package:sobar_app/screens/settings/views/useful_links_screen.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -19,7 +20,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> _listItems = [];
   final Duration _initialDelayTime = const Duration(milliseconds: 0);
-  final Duration _itemSlideTime = const Duration(milliseconds: 250);
   final Duration _staggerTime = const Duration(milliseconds: 250);
   bool _showTitle = false;
   User? user;
@@ -44,32 +44,6 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
     setState(() {
       _showTitle = true;
     });
-  }
-
-  Future<void> _sendEmail() async {
-    final Uri emailUri = Uri(
-      scheme: 'mailto',
-      path: 'sobær-app-info@me.com',
-      query: _encodeQueryParameters(<String, String>{
-        'subject': 'Missing Drink on SOBÆR App',
-        'body':
-            'Hey looks like my new favourite pub has a drink that SOBÆR doesn\'t have on the map yet. Could you please add it?\n\nDRINK: <your drink here>\nPUB:<name of pub>\nCITY:<city>\nNAME:<your name>',
-      }),
-    );
-
-    try {
-      if (Platform.isAndroid) {
-        await launchUrl(emailUri, mode: LaunchMode.externalApplication);
-      } else {
-        await launchUrl(emailUri);
-      }
-    } catch (e) {
-      print("error: $e");
-    }
-  }
-
-  String? _encodeQueryParameters(Map<String, String> params) {
-    return params.entries.map((MapEntry<String, String> e) => '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}').join('&');
   }
 
   Future<void> _loadListItems() async {
@@ -99,7 +73,12 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         context: context,
         title: 'did we miss one?',
         color: wineColour,
-        onTap: _sendEmail,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MissingDrinkScreen()),
+          );
+        },
       )
     ];
 
