@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Drink {
-  final String name, id, abv, imageUrl, type;
+  String id;
+  final String name, abv, imageUrl, type;
   final bool isVegan, isGlutenFree;
   final double ratingsCount, averageRating, calories;
   List<Review> reviews;
 
   Drink({
     required this.name,
-    required this.id,
     required this.abv,
     required this.isVegan,
     required this.isGlutenFree,
@@ -17,6 +17,7 @@ class Drink {
     required this.type,
     required this.ratingsCount,
     required this.calories,
+    this.id = "",
     this.reviews = const [],
   });
 

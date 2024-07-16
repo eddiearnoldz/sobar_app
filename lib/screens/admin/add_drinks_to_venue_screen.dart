@@ -207,7 +207,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                             ],
                           ),
                           trailing: IconButton(
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.add_circle,
                               color: wineColour,
                             ),
@@ -218,6 +218,12 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                     ),
                   ),
                 const SizedBox(height: 16),
+                if (drinks.isEmpty)
+                  const Expanded(
+                      child: Text(
+                    "This venue has no drinks yet",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  )),
                 if (drinks.isNotEmpty) ...[
                   const Text(
                     'current drinks selection:',
