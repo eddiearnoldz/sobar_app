@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdPopUp {
@@ -33,11 +35,10 @@ class AdPopUpService {
       QuerySnapshot querySnapshot = await _firestore.collection('adPopUp').limit(1).get();
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot doc = querySnapshot.docs.first;
-        print(doc);
         return AdPopUp.fromFirestore(doc);
       }
     } catch (e) {
-      print('Error loading ad popup: $e');
+      log('Error loading ad popup: $e');
     }
     return null;
   }

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -12,7 +13,7 @@ class AdPopupManager {
 
   Future<int> getOpenCount() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getInt(openCountKey));
+
     return prefs.getInt(openCountKey) ?? 0;
   }
 
@@ -41,13 +42,13 @@ class AdPopupManager {
               borderRadius: BorderRadius.circular(5), // Set border radius here
             ),
             backgroundColor: HexColor('#F8F48F'),
-            insetPadding: EdgeInsets.all(16),
-            contentPadding: EdgeInsets.all(16),
+            insetPadding: const EdgeInsets.all(16),
+            contentPadding: const EdgeInsets.all(16),
             title: Align(
               alignment: Alignment.center,
               child: Text(
                 adPopUp.adTitle,
-                style: TextStyle(fontSize: 24, fontFamily: 'Anton'),
+                style: const TextStyle(fontSize: 24, fontFamily: 'Anton'),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -75,12 +76,12 @@ class AdPopupManager {
                 ),
                 Text(
                   adPopUp.adSubheader,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, height: 1.2),
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, height: 1.2),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(adPopUp.adBody, style: TextStyle(fontSize: 12, height: 1.2)),
+                Text(adPopUp.adBody, style: const TextStyle(fontSize: 12, height: 1.2)),
               ],
             ),
             actions: [
@@ -96,7 +97,7 @@ class AdPopupManager {
                           launchUrl(Uri.parse(url));
                         }
                       } catch (e) {
-                        print("error: $e");
+                        log("error: $e");
                       }
                     }
                     Navigator.of(context).pop();

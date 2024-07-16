@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/components/article_widget.dart';
 import 'package:sobar_app/models/newsletter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsletterScreen extends StatelessWidget {
   const NewsletterScreen({super.key});
@@ -17,14 +16,6 @@ class NewsletterScreen extends StatelessWidget {
     return Newsletter.fromFirestore(doc);
   }
 
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Newsletter>(
@@ -33,7 +24,6 @@ class NewsletterScreen extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          print(snapshot.error);
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
           return const Center(child: Text('No data available'));

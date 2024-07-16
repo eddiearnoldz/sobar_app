@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -31,12 +32,12 @@ class MapScreenController {
       }
       if (apiKey != null) {
         _placesHelper = GooglePlacesHelper(apiKey);
-        print('GooglePlacesHelper initialized with API key: $apiKey');
+        log('GooglePlacesHelper initialized with API key: $apiKey');
       } else {
-        print('API key is still null after fetching.');
+        log('API key is still null after fetching.');
       }
     } catch (e) {
-      print('Error during _initializePlaces: $e');
+      log('Error during _initializePlaces: $e');
     }
   }
 
@@ -156,7 +157,7 @@ class MapScreenController {
       if (previousMarkerId != null) {
         final previousMarker = markers.firstWhere(
           (marker) => marker.markerId.value == previousMarkerId,
-          orElse: () => Marker(markerId: MarkerId('')),
+          orElse: () => const Marker(markerId: MarkerId('')),
         );
         final updatedPreviousMarker = previousMarker.copyWith(iconParam: customIcon);
         context.read<MapBloc>().add(UpdateMarker(updatedPreviousMarker));
@@ -165,7 +166,7 @@ class MapScreenController {
       if (markerId != null) {
         final marker = markers.firstWhere(
           (marker) => marker.markerId.value == markerId,
-          orElse: () => Marker(markerId: MarkerId('')),
+          orElse: () => const Marker(markerId: MarkerId('')),
         );
         final updatedMarker = marker.copyWith(iconParam: selectedIcon);
         context.read<MapBloc>().add(UpdateMarker(updatedMarker));

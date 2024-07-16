@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class UsefulLinksScreen extends StatelessWidget {
                             launchUrl(Uri.parse(link.urlLink));
                           }
                         } catch (e) {
-                          print("error: $e");
+                          log("error: $e");
                         }
                       },
                     ),

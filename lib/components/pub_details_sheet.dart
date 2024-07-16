@@ -171,7 +171,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    'rating★ (ratingTotal)',
+                                    '$rating★ ($ratingTotal)',
                                     style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16),
                                   ),
                                   Text(
@@ -280,7 +280,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                                       launchUrl(Uri.parse('tel:$phoneNumber'));
                                     }
                                   } catch (e) {
-                                    print("error: $e");
+                                    log("error: $e");
                                   }
                                 }
                               : null,

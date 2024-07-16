@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -79,7 +81,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 }).toSet();
 
                 context.read<MapBloc>().add(UpdateMarkers(markers));
-                print('Markers updated in PubLoaded or PubFiltered state');
+                log('Markers updated in PubLoaded or PubFiltered state');
               }
             },
             child: BlocBuilder<MapBloc, MapState>(
@@ -103,7 +105,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     if (mapProvider.controller == null || mapState is MapInitial) {
                       mapProvider.setController(controller);
                       context.read<MapBloc>().add(InitializeMap(controller));
-                      print('Map created and InitializeMap event added');
+                      log('Map created and InitializeMap event added');
                     }
                   },
                   onTap: (_) {

@@ -57,7 +57,6 @@ class _MyLocationButtonState extends State<MyLocationButton> {
         onPressed: () async {
           try {
             var locationData = await widget.location.getLocation();
-            print(locationData);
             if (mapProvider.controller != null) {
               mapProvider.controller?.animateCamera(
                 CameraUpdate.newLatLngZoom(
@@ -66,7 +65,7 @@ class _MyLocationButtonState extends State<MyLocationButton> {
                 ),
               );
             } else {
-              print("Map controller is not yet initialized");
+              log("Map controller is not yet initialized");
             }
           } catch (e) {
             log("Error getting location: $e");

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 class GooglePlacesHelper {
@@ -26,24 +27,24 @@ class GooglePlacesHelper {
 
   Future<String?> getPlaceId(String name, String address) async {
     final String url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-        '?input=${Uri.encodeComponent('${name},${address}')}'
+        '?input=${Uri.encodeComponent('name,address')}'
         '&inputtype=textquery'
         '&fields=place_id'
         '&key=$apiKey';
-    print('Requesting URL: $url'); // Debug log
+    log('Requesting URL: $url'); 
     final response = await http.get(Uri.parse(url));
-    print('Response Status Code: ${response.statusCode}'); // Debug log
-    print('Response Body: ${response.body}'); // Debug log
+    log('Response Status Code: ${response.statusCode}'); 
+    log('Response Body: ${response.body}'); 
     if (response.statusCode == 200) {
       final results = json.decode(response.body)['candidates'];
       if (results != null && results.isNotEmpty) {
-        print('Found placeId: ${results[0]['place_id']} for $name, $address'); // Debug log
+        log('Found placeId: ${results[0]['place_id']} for $name, $address'); 
         return results[0]['place_id'];
       } else {
-        print('No candidates found for  $name, $address'); // Debug log
+        log('No candidates found for  $name, $address'); 
       }
     } else {
-      print('Failed to fetch placeId for  $name, $address: ${response.body}'); // Debug log
+      log('Failed to fetch placeId for  $name, $address: ${response.body}');
     }
     return null;
   }

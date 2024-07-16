@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:location/location.dart';
 
 class LocationService {
@@ -15,7 +17,7 @@ class LocationService {
           return await location.getLocation();
         }
       }
-      print("Stopping here");
+      log("Stopping here");
     } catch (e) {
       print(e);
     }

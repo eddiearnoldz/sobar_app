@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,16 +37,16 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
     }
     if (apiKey != null) {
       _placesHelper = GooglePlacesHelper(apiKey);
-      print('GooglePlacesHelper initialized with API key: $apiKey');
+      log('GooglePlacesHelper initialized with API key: $apiKey');
     } else {
-      print('API key is still null after fetching.');
+      log('API key is still null after fetching.');
     }
   }
 
   Future<void> _searchPlace() async {
     if (_placesHelper == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('API key is not available')),
+        const SnackBar(content: Text('API key is not available')),
       );
       return;
     }
