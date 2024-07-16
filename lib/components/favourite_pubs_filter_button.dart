@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/utils/map_provider.dart';
 
 class FavouritePubsFilterButton extends StatefulWidget {
-  const FavouritePubsFilterButton({Key? key}) : super(key: key);
+  const FavouritePubsFilterButton({super.key});
 
   @override
   _FavouritePubsFilterButtonState createState() => _FavouritePubsFilterButtonState();

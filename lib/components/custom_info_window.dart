@@ -5,7 +5,7 @@ import 'package:sobar_app/utils/globals.dart';
 class CustomInfoWindow extends StatelessWidget {
   final Pub pub;
 
-  const CustomInfoWindow({Key? key, required this.pub}) : super(key: key);
+  const CustomInfoWindow({super.key, required this.pub});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class CustomInfoWindow extends StatelessWidget {
               pub.locationAddress,
               style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.primary),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
           ],
         ),
       ),
@@ -72,7 +72,7 @@ class CustomInfoWindow extends StatelessWidget {
     return Container(
       width: 10,
       height: 10,
-      margin: EdgeInsets.only(right: 3),
+      margin: const EdgeInsets.only(right: 3),
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,

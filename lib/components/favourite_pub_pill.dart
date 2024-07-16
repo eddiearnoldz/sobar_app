@@ -9,7 +9,7 @@ import 'dart:developer';
 class FavouritePubPill extends StatefulWidget {
   final Pub pub;
 
-  const FavouritePubPill({Key? key, required this.pub}) : super(key: key);
+  const FavouritePubPill({super.key, required this.pub});
 
   @override
   _FavouritePubPillState createState() => _FavouritePubPillState();
@@ -46,7 +46,6 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
       final pubRef = FirebaseFirestore.instance.collection('pubs').doc(widget.pub.id);
       if (pubRef.id.isNotEmpty) {
         await updateUserFavourites(user.userId, pubRef, !isFavourite);
-        print(pubRef.id);
         setState(() {
           isFavourite = !isFavourite;
         });
@@ -94,7 +93,7 @@ class _FavouritePubPillState extends State<FavouritePubPill> {
             ),
             const SizedBox(width: 3),
             Text(
-              "pub",
+              "venue",
               style: TextStyle(color: isFavourite ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimary),
             ),
           ],

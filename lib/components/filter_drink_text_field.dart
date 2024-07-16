@@ -72,7 +72,7 @@ class _FilterDrinkTextFieldState extends State<FilterDrinkTextField> {
               height: 60,
               width: MediaQuery.of(context).size.width - 56,
               child: ListView.builder(
-                padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.filteredDrinks.length,
                 itemBuilder: (context, index) {

@@ -6,11 +6,11 @@ class LaunchUrlPill extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const LaunchUrlPill({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class LaunchUrlPill extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
         borderRadius: BorderRadius.circular(5),
       ),
-      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
       child: GestureDetector(
         onTap: onPressed,
         child: Row(

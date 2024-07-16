@@ -8,12 +8,12 @@ class AdminOptionTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const AdminOptionTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.iconPath,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

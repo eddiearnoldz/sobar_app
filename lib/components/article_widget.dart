@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -21,10 +23,14 @@ class ArticleWidget extends StatelessWidget {
   });
 
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+    try {
+      if (Platform.isAndroid) {
+        launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+      } else {
+        launchUrl(Uri.parse(url));
+      }
+    } catch (e) {
+      print("error: $e");
     }
   }
 

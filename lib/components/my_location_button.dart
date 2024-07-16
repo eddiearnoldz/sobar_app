@@ -53,7 +53,6 @@ class _MyLocationButtonState extends State<MyLocationButton> {
         backgroundColor: Colors.white,
         mini: true,
         onPressed: () async {
-          print("Running my location");
           try {
             var locationData = await widget.location.getLocation();
             print(locationData);
