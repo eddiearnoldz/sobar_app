@@ -15,7 +15,7 @@ class DrinkTile extends StatelessWidget {
       onTap: onTap,
       title: Text(
         drink.name.toUpperCase(),
-        style: const TextStyle(fontFamily: 'Anton'),
+        style: const TextStyle(fontFamily: 'Anton', letterSpacing: 1),
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,17 +67,17 @@ class DrinkTile extends StatelessWidget {
           if (drink.isVegan)
             Text(
               "vegan",
-              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
+              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8), letterSpacing: 1),
             ),
           if (drink.isGlutenFree)
             Text(
               "gf",
-              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
+              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8), letterSpacing: 1),
             ),
           if (drink.calories.isFinite)
             Text(
               "${drink.calories.floor()} cals",
-              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
+              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7), letterSpacing: 1),
             ),
         ],
       ),

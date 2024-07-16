@@ -97,7 +97,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                           children: [
                             Text(
                               widget.drink.name,
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Anton'),
+                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Anton', letterSpacing: 1),
                             ),
                             const SizedBox(
                               height: 5,
@@ -145,12 +145,12 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                             if (widget.drink.isVegan)
                                               Text(
                                                 "vegan",
-                                                style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8)),
+                                                style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8), letterSpacing: 1),
                                               ),
                                             if (widget.drink.calories.isFinite)
                                               Text(
                                                 "${widget.drink.calories.floor()} cals",
-                                                style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7)),
+                                                style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7), letterSpacing: 1),
                                               ),
                                           ],
                                         ),
@@ -163,7 +163,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                             if (widget.drink.isGlutenFree)
                                               Text(
                                                 "gf",
-                                                style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8)),
+                                                style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8), letterSpacing: 1),
                                               ),
                                           ],
                                         ),
