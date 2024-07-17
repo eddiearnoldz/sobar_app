@@ -25,28 +25,22 @@ class GooglePlacesHelper {
     }
   }
 
-  Future<String?> getPlaceId(String name, String address) async {
-    final String url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-        '?input=${Uri.encodeComponent('name,address')}'
-        '&inputtype=textquery'
-        '&fields=place_id'
-        '&key=$apiKey';
-    log('Requesting URL: $url'); 
+  Future<List<String>> getPlaceId(String name, String address) async {
+    final query = '$name $address';
+    final url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=$query&inputtype=textquery&fields=place_id&key=$apiKey';
+
     final response = await http.get(Uri.parse(url));
-    log('Response Status Code: ${response.statusCode}'); 
-    log('Response Body: ${response.body}'); 
     if (response.statusCode == 200) {
-      final results = json.decode(response.body)['candidates'];
-      if (results != null && results.isNotEmpty) {
-        log('Found placeId: ${results[0]['place_id']} for $name, $address'); 
-        return results[0]['place_id'];
-      } else {
-        log('No candidates found for  $name, $address'); 
+      final jsonResponse = json.decode(response.body);
+      if (jsonResponse['status'] == 'OK') {
+        List<String> placeIds = [];
+        for (var candidate in jsonResponse['candidates']) {
+          placeIds.add(candidate['place_id']);
+        }
+        return placeIds;
       }
-    } else {
-      log('Failed to fetch placeId for  $name, $address: ${response.body}');
     }
-    return null;
+    return [];
   }
 
   Future<Map<String, dynamic>> getPlaceDetailsForNewVenue(String placeId) async {

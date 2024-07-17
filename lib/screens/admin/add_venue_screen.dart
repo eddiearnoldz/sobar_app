@@ -57,11 +57,18 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
       _selectedPlace = null;
     });
 
-    final placeId = await _placesHelper.getPlaceId(_nameController.text, _addressController.text);
-    if (placeId != null) {
-      final placeDetails = await _placesHelper.getPlaceDetailsForNewVenue(placeId);
+    final placeIds = await _placesHelper.getPlaceId(_nameController.text, _addressController.text);
+    if (placeIds != null && placeIds.isNotEmpty) {
+      List<Map<String, dynamic>> results = [];
+      for (String placeId in placeIds) {
+        final placeDetails = await _placesHelper.getPlaceDetailsForNewVenue(placeId);
+        if (placeDetails != null) {
+          results.add(placeDetails);
+        }
+      }
       setState(() {
-        _searchResults = [placeDetails];
+        _searchResults = results;
+        log(_searchResults.toString());
         _isSearching = false;
       });
     } else {

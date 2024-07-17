@@ -13,8 +13,6 @@ Future<void> storeApiKeys() async {
     String? storedAndroidApiKey = prefs.getString('google_maps_api_key_android');
 
     if (storedIosApiKey != null && storedAndroidApiKey != null) {
-      log('iOS API key already stored: $storedIosApiKey');
-      log('Android API key already stored: $storedAndroidApiKey');
       return; // Keys are already stored, exit the function
     }
 
