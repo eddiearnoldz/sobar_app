@@ -199,16 +199,18 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     left: 0,
                     right: 60,
                     child: FilterDrinkResultsList(
-                      filteredDrinks: mapProvider.drinkSearchResults,
-                      onDrinkSelected: _controller.filterPubsByDrink,
-                    ),
+                        filteredDrinks: mapProvider.drinkSearchResults, onDrinkSelected: _controller.filterPubsByDrink, isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle),
                   ),
                 if (mapProvider.pubSearchResults.isNotEmpty)
                   Positioned(
                     top: 95, // Adjust this value as needed to ensure it appears below the text fields
                     left: 0,
                     right: 60,
-                    child: FilterPubResultsList(filteredPubs: mapProvider.pubSearchResults, onPubSelected: _controller.onPubSelected, pubSearchController: _pubSearchController),
+                    child: FilterPubResultsList(
+                        filteredPubs: mapProvider.pubSearchResults,
+                        onPubSelected: _controller.onPubSelected,
+                        pubSearchController: _pubSearchController,
+                        isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle),
                   ),
                 if (mapProvider.selectedDrink != null)
                   SelectedDrinkFilterClearButton(

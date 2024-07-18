@@ -4,19 +4,16 @@ import 'package:sobar_app/models/drink.dart';
 class FilterDrinkResultsList extends StatelessWidget {
   final List<Drink> filteredDrinks;
   final Function(Drink) onDrinkSelected;
+  final bool isBlackStyle;
 
-  const FilterDrinkResultsList({
-    super.key,
-    required this.filteredDrinks,
-    required this.onDrinkSelected,
-  });
+  const FilterDrinkResultsList({super.key, required this.filteredDrinks, required this.onDrinkSelected, required this.isBlackStyle});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60, // Adjust height as needed
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * .6,
       child: ListView.builder(
-        scrollDirection: Axis.horizontal,
+        scrollDirection: Axis.vertical,
         itemCount: filteredDrinks.length,
         itemBuilder: (context, index) {
           final drink = filteredDrinks[index];
