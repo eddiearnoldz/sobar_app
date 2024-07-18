@@ -90,7 +90,13 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Screen'),
+        title: const Text(
+          'admin panel',
+          style: TextStyle(
+            fontFamily: 'Anton',
+            letterSpacing: 1,
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Center(

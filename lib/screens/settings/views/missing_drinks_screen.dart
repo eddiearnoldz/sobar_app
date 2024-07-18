@@ -74,7 +74,13 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('missing drink information'),
+        title: const Text(
+          'missing drink information',
+          style: TextStyle(
+            fontFamily: 'Anton',
+            letterSpacing: 1,
+          ),
+        ),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SafeArea(

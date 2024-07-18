@@ -14,28 +14,34 @@ class DeleteConfirmationDialog extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       content: const Text(
-        'Are you sure you want to delete your account? You will not be able to retrieve your profile.',
+        'are you sure you want to delete your account? you will not be able to retrieve your profile.',
         textAlign: TextAlign.center,
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
         TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
           child: Text(
             'cancel',
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
           ),
         ),
         TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+          ),
           onPressed: () {
             Navigator.of(context).pop();
             onConfirm();
           },
           child: Text(
             'delete',
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
           ),
         ),
       ],

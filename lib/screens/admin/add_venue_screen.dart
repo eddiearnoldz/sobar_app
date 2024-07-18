@@ -87,9 +87,10 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
 
       if (existingVenue.docs.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
               content: Text(
-            'Venue already exists in the database',
+            'venue already exists in the database',
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
             textAlign: TextAlign.center,
           )),
         );
@@ -148,6 +149,7 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('add venue'),
         backgroundColor: Theme.of(context).colorScheme.primary,

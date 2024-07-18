@@ -48,7 +48,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
   Future<void> _updateUserName() async {
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a name')),
+        const SnackBar(content: Text('please enter a name')),
       );
       return;
     }
@@ -66,12 +66,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User name updated')),
+        const SnackBar(
+          content: Text(
+            'user name updated',
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to update user name: $e'),
+          content: Text(
+            'failed to update user name: $e',
+            textAlign: TextAlign.center,
+          ),
           duration: const Duration(seconds: 5),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
@@ -88,7 +96,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to delete account: $e'),
+          content: Text(
+            'failed to delete account: $e',
+            textAlign: TextAlign.center,
+          ),
           duration: const Duration(seconds: 5),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
@@ -192,7 +203,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.secondary,
           title: const Text(
-            'Update Profile',
+            'update profile',
             style: TextStyle(
               fontFamily: 'Anton',
               letterSpacing: 1,
@@ -257,7 +268,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
                               TextFormField(
                                 controller: _nameController,
                                 decoration: InputDecoration(
-                                    labelText: 'Name',
+                                    labelText: 'name',
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
                                       borderSide: const BorderSide(),
@@ -365,7 +376,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
                   child: Row(
                     children: [
                       const Text(
-                        'app Version: ',
+                        'app version: ',
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
