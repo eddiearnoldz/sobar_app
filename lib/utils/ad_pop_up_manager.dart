@@ -35,13 +35,13 @@ class AdPopupManager {
     showDialog(
       context: context,
       builder: (context) {
-        return Stack(children: [
+        return Stack(alignment: Alignment.topRight, children: [
           AlertDialog(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5), // Set border radius here
+              borderRadius: BorderRadius.circular(5),
             ),
             backgroundColor: HexColor('#F8F48F'),
-            insetPadding: const EdgeInsets.all(16),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
             contentPadding: const EdgeInsets.all(16),
             title: Align(
               alignment: Alignment.center,
@@ -63,7 +63,9 @@ class AdPopupManager {
                       decoration: BoxDecoration(color: HexColor('#F8F48F'), borderRadius: BorderRadius.circular(2)),
                     ),
                     errorWidget: (context, url, error) => const Icon(Icons.error),
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
                 const SizedBox(
@@ -112,22 +114,19 @@ class AdPopupManager {
             ],
             actionsAlignment: MainAxisAlignment.center,
           ),
-          Positioned(
-            top: 25,
-            right: 16,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                decoration: BoxDecoration(color: HexColor('#F8F48F'), shape: BoxShape.circle, border: Border.all(width: 1, color: Theme.of(context).colorScheme.onPrimary)),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Icon(
-                    Icons.close,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 20,
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(color: HexColor('#F8F48F'), shape: BoxShape.circle, border: Border.all(width: 1, color: Theme.of(context).colorScheme.onPrimary)),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Icon(
+                  Icons.close,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  size: 20,
                 ),
               ),
             ),
