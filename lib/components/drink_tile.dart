@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:sobar_app/components/av_rating_text_span.dart';
 import 'package:sobar_app/models/drink.dart';
+import 'package:sobar_app/utils/globals.dart';
 
 class DrinkTile extends StatelessWidget {
   final Drink drink;
@@ -19,6 +20,7 @@ class DrinkTile extends StatelessWidget {
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text.rich(
             TextSpan(
@@ -61,25 +63,34 @@ class DrinkTile extends StatelessWidget {
         width: 40,
         fit: BoxFit.contain,
       ),
-      trailing: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          if (drink.isVegan)
-            Text(
-              "vegan",
-              style: TextStyle(fontFamily: 'Anton', color: Colors.green.withOpacity(0.8), letterSpacing: 1),
-            ),
-          if (drink.isGlutenFree)
-            Text(
-              "gf",
-              style: TextStyle(fontFamily: 'Anton', color: Colors.red.withOpacity(0.8), letterSpacing: 1),
-            ),
-          if (drink.calories.isFinite)
-            Text(
-              "${drink.calories.floor()} cals",
-              style: TextStyle(fontFamily: 'Anton', color: const Color.fromARGB(255, 0, 91, 249).withOpacity(0.7), letterSpacing: 1),
-            ),
-        ],
+      trailing: IntrinsicWidth(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            if (drink.isVegan)
+              const Text(
+                "vegan",
+                style: TextStyle(fontFamily: 'Anton', color: wineColour, letterSpacing: 1, height: 1.3),
+              ),
+            if (drink.isGlutenFree)
+              Text(
+                "gf",
+                style: TextStyle(fontFamily: 'Anton', color: bottleColour, letterSpacing: 1, height: 1.3),
+              ),
+            if (drink.calories.isFinite)
+              Text(
+                "${drink.calories.floor()} cals",
+                style: TextStyle(fontFamily: 'Anton', color: canColour, letterSpacing: 1, height: 1.3),
+              ),
+            if (drink.category.isNotEmpty)
+              Text(
+                drink.category,
+                style: const TextStyle(fontFamily: 'Anton', color: draughtColour, letterSpacing: 1, height: 1.3),
+              ),
+          ],
+        ),
       ),
     );
   }

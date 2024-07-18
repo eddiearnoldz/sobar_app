@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Drink {
   String id;
-  final String name, abv, imageUrl, type;
+  final String name, abv, imageUrl, type, category;
   final bool isVegan, isGlutenFree;
   final double ratingsCount, averageRating, calories;
   List<Review> reviews;
@@ -15,6 +15,7 @@ class Drink {
     required this.averageRating,
     required this.imageUrl,
     required this.type,
+    required this.category,
     required this.ratingsCount,
     required this.calories,
     this.id = "",
@@ -30,6 +31,7 @@ class Drink {
         calories = (json['calories'] as num).toDouble(),
         imageUrl = json['imageUrl'],
         type = json['type'],
+        category = json['category'] ?? "",
         ratingsCount = (json['ratingsCount'] as num).toDouble(),
         reviews = [];
 
@@ -43,6 +45,7 @@ class Drink {
       'averageRating': averageRating,
       'imageUrl': imageUrl,
       'type': type,
+      'category': category,
       'ratingsCount': ratingsCount,
       'ratings': reviews.map((review) => review.toJson()).toList(),
     };

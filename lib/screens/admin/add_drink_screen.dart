@@ -15,6 +15,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _abvController = TextEditingController();
   final TextEditingController _caloriesController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
   bool _isVegan = false;
   bool _isGlutenFree = false;
   String _selectedType = 'draught';
@@ -39,6 +40,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
       final newDrink = Drink(
         name: _nameController.text,
         abv: _abvController.text,
+        category: _categoryController.text,
         isVegan: _isVegan,
         isGlutenFree: _isGlutenFree,
         averageRating: 0.0,
@@ -163,6 +165,31 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                 },
               ),
               const SizedBox(height: 16),
+              TextFormField(
+                controller: _categoryController,
+                decoration: InputDecoration(
+                  labelText: 'category',
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'please enter the category, e.g. pale ale';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               const Text(
                 'type',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -197,7 +224,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                         ))
                     .toList(),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   Expanded(
