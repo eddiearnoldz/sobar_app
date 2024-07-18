@@ -35,6 +35,8 @@ class MyTextField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       focusNode: focusNode,
+      cursorColor: Theme.of(context).colorScheme.onPrimary,
+      cursorHeight: 16,
       onTap: onTap,
       textInputAction: TextInputAction.next,
       onChanged: onChanged,

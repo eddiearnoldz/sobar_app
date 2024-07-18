@@ -185,6 +185,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                       ),
                     ),
                     cursorColor: Theme.of(context).colorScheme.onPrimary,
+                    cursorHeight: 20,
                   ),
                 if (filteredPubs.isNotEmpty && _pubController.text.isNotEmpty)
                   Expanded(
@@ -253,6 +254,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                         ),
                       ),
                       cursorColor: Theme.of(context).colorScheme.onPrimary,
+                      cursorHeight: 20,
                       onChanged: (value) {
                         if (value.isEmpty) {
                           FocusScope.of(context).unfocus();

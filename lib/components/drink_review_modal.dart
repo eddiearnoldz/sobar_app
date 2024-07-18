@@ -54,8 +54,11 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
 
         setState(() {
           _showReviewSubmittedAnimation = true;
+          _showReviewInput = !_showReviewInput;
+          _reviewController.clear();
+          _rating = 3;
         });
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 2), () {
           setState(() {
             _showReviewSubmittedAnimation = false;
           });
@@ -277,6 +280,8 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                 focusedBorder: const OutlineInputBorder(),
                                 alignLabelWithHint: true,
                               ),
+                              cursorColor: Theme.of(context).colorScheme.onPrimary,
+                              cursorHeight: 16,
                               maxLines: 3,
                             ),
                             const SizedBox(height: 05),
