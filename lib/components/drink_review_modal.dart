@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/review_tile.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -20,34 +21,60 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   double _rating = 3.0;
   final TextEditingController _reviewController = TextEditingController();
   bool _showReviewInput = false;
+  bool _showReviewSubmittedAnimation = false;
 
   Future<void> _submitReview() async {
-    User? user = FirebaseAuth.instance.currentUser;
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      CollectionReference reviewsCollection = FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).collection('reviews');
-      QuerySnapshot existingReviews = await reviewsCollection.where('userRef', isEqualTo: FirebaseFirestore.instance.collection('users').doc(user.uid)).get();
+      if (user != null) {
+        CollectionReference reviewsCollection = FirebaseFirestore.instance.collection('drinks').doc(widget.drink.id).collection('reviews');
+        QuerySnapshot existingReviews = await reviewsCollection.where('userRef', isEqualTo: FirebaseFirestore.instance.collection('users').doc(user.uid)).get();
 
-      if (existingReviews.docs.isNotEmpty) {
-        // Update the existing review
-        DocumentSnapshot existingReview = existingReviews.docs.first;
-        await existingReview.reference.update({
-          'rating': _rating,
-          'writtenReview': _reviewController.text,
-          'date': Timestamp.now(),
+        if (existingReviews.docs.isNotEmpty) {
+          // Update the existing review
+          DocumentSnapshot existingReview = existingReviews.docs.first;
+          await existingReview.reference.update({
+            'rating': _rating,
+            'writtenReview': _reviewController.text,
+            'date': Timestamp.now(),
+          });
+        } else {
+          // Create a new review
+          await reviewsCollection.add({
+            'userRef': FirebaseFirestore.instance.collection('users').doc(user.uid),
+            'rating': _rating,
+            'writtenReview': _reviewController.text,
+            'date': Timestamp.now(),
+          });
+        }
+
+        await _updateAverageRating();
+        FocusScope.of(context).unfocus();
+
+        setState(() {
+          _showReviewSubmittedAnimation = true;
         });
-      } else {
-        // Create a new review
-        await reviewsCollection.add({
-          'userRef': FirebaseFirestore.instance.collection('users').doc(user.uid),
-          'rating': _rating,
-          'writtenReview': _reviewController.text,
-          'date': Timestamp.now(),
+        Future.delayed(const Duration(seconds: 3), () {
+          setState(() {
+            _showReviewSubmittedAnimation = false;
+          });
         });
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('review not submitted. Please try again.', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+        ),
+      );
+    }
+  }
 
-      await _updateAverageRating();
-      FocusScope.of(context).unfocus();
+  String formatRating(double rating) {
+    if (rating % 1 == 0) {
+      return rating.toStringAsFixed(0);
+    } else {
+      return rating.toStringAsFixed(2);
     }
   }
 
@@ -74,8 +101,8 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.5,
-      minChildSize: 0.3,
+      initialChildSize: 0.6,
+      minChildSize: 0.5,
       maxChildSize: 0.9,
       expand: false,
       snap: true,
@@ -119,7 +146,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                     color: Color.fromARGB(255, 247, 119, 87),
                                   ),
                                   Text(
-                                    ': ${widget.drink.averageRating}',
+                                    formatRating(widget.drink.averageRating),
                                     style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                   ),
                                 ],
@@ -217,7 +244,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            const Text('your Rating:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                             RatingBar.builder(
                               initialRating: _rating,
                               minRating: 1,
@@ -244,7 +271,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                             TextField(
                               controller: _reviewController,
                               decoration: InputDecoration(
-                                labelText: 'Write a review',
+                                labelText: 'write a review',
                                 floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                                 border: const OutlineInputBorder(),
                                 focusedBorder: const OutlineInputBorder(),
@@ -263,8 +290,8 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                     });
                                   },
                                   child: Text(
-                                    'Cancel',
-                                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                                    'cancel',
+                                    style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 const SizedBox(
@@ -274,8 +301,8 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary)),
                                   onPressed: _submitReview,
                                   child: Text(
-                                    'Submit',
-                                    style: TextStyle(color: Theme.of(context).colorScheme.primary),
+                                    'submit',
+                                    style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
@@ -333,6 +360,12 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                     height: MediaQuery.of(context).size.width / 3,
                     fit: BoxFit.contain,
                   ),
+                  if (_showReviewSubmittedAnimation)
+                    Positioned.fill(
+                      child: Center(
+                        child: Lottie.asset('assets/animations/confetti_review_added.json'),
+                      ),
+                    ),
                 ],
               ),
             ),

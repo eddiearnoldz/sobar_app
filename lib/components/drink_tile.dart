@@ -10,6 +10,14 @@ class DrinkTile extends StatelessWidget {
 
   const DrinkTile({super.key, required this.drink, required this.onTap});
 
+  String formatRating(double rating) {
+    if (rating % 1 == 0) {
+      return rating.toStringAsFixed(0);
+    } else {
+      return rating.toStringAsFixed(2);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -35,7 +43,7 @@ class DrinkTile extends StatelessWidget {
               ],
             ),
           ),
-          AvgRatingSpan(avRating: drink.averageRating.toString()),
+          AvgRatingSpan(avRating: formatRating(drink.averageRating)),
           Text.rich(
             TextSpan(
               children: [

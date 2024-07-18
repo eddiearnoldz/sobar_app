@@ -36,6 +36,7 @@ dependencies:
   package_info_plus: ^8.0.0
   shimmer: ^3.0.0
   map_launcher: ^3.3.1
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +49,7 @@ flutter:
   - assets/backgrounds/
   - assets/logos/
   - assets/icons/
+  - assets/animations/
   - assets/lucky_saint_pubs_london.json
 
   fonts:
