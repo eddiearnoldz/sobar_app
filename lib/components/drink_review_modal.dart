@@ -64,7 +64,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('review not submitted. Please try again.', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          content: Text('review not submitted. please try again.', textAlign: TextAlign.center, style: TextStyle(color: Theme.of(context).colorScheme.error)),
         ),
       );
     }

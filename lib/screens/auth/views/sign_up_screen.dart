@@ -90,11 +90,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please fill in the email field';
+                              return 'please fill in the email field';
                             } else if (!RegExp(
                               r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
                             ).hasMatch(value)) {
-                              return 'Please enter a valid email';
+                              return 'please enter a valid email';
                             }
                             return null;
                           },
@@ -110,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           keyboardType: TextInputType.text,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please fill in the password field';
+                              return 'please fill in the password field';
                             } else if (!RegExp(
                               r'^(?=.*[a-z])(?=.*[A-Z]).{8,}$',
                             ).hasMatch(value)) {

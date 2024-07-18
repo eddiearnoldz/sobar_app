@@ -283,7 +283,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
                                     floatingLabelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary)),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter a name';
+                                    return 'please enter a name';
                                   }
                                   return null;
                                 },

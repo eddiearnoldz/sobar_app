@@ -112,8 +112,6 @@ class MapScreenController {
   }
 
   void showPubDetailsSheet(BuildContext context, Pub pub, GooglePlacesHelper placesHelper) {
-    final screenHeight = MediaQuery.of(context).size.height;
-
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
 
     mapProvider.setBottomModalState(true);
@@ -121,14 +119,12 @@ class MapScreenController {
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
-      builder: (context) {
-        return SizedBox(
-          height: screenHeight * 0.75,
-          child: PubDetailsSheet(pub: pub, placesHelper: placesHelper),
-        );
-      },
+      enableDrag: true,
       backgroundColor: Theme.of(context).colorScheme.primary,
-      isScrollControlled: true, // To allow the modal to be full screen if needed
+      isScrollControlled: true,
+      builder: (context) {
+        return PubDetailsSheet(pub: pub, placesHelper: placesHelper);
+      },
     ).whenComplete(() {
       mapProvider.setBottomModalState(false);
     });

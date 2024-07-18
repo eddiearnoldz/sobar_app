@@ -24,7 +24,7 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Please select a drink type',
+              'please select a drink type',
               textAlign: TextAlign.center,
             ),
           ),
@@ -40,7 +40,8 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Drink information submitted successfully!',
+              'drink information submitted successfully!',
+              style: TextStyle(color: wineColour),
               textAlign: TextAlign.center,
             ),
             duration: Duration(seconds: 5),
@@ -93,7 +94,7 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Please be as accurate as possible and we'll update our database asap. Currently we only have London venues",
+                    "please be as accurate as possible and we'll update our database asap. Currently we only have London venues",
                     style: TextStyle(
                       fontSize: 16,
                     ),
