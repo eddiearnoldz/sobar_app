@@ -186,7 +186,6 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
                         Text(
                           widget.pub.locationAddress,
                           style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),

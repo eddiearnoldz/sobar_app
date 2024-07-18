@@ -152,7 +152,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                 onTap: _controller.onCustomInfoWindowTap,
                 child: FractionallySizedBox(
                   alignment: Alignment.centerLeft,
-                  widthFactor: 0.85,
+                  widthFactor: 0.83,
                   child: CustomInfoWindow(pub: mapProvider.selectedPub != null ? mapProvider.selectedPub! : _selectedPub!),
                 ),
               ),
