@@ -177,7 +177,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 7.5),
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: color,
@@ -299,7 +299,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
                                       shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(4.0),
-                                          side: BorderSide(color: bottleColour, width: 1.0),
+                                          side: const BorderSide(color: bottleColour, width: 1.0),
                                         ),
                                       ),
                                     ),
