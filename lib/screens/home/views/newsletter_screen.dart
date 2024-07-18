@@ -24,9 +24,9 @@ class NewsletterScreen extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('error: ${snapshot.error}'));
         } else if (!snapshot.hasData) {
-          return const Center(child: Text('No data available'));
+          return const Center(child: Text('no data available'));
         } else {
           final newsletter = snapshot.data!;
           return Scaffold(

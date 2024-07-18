@@ -110,7 +110,7 @@ class OldMapScreen extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: Text('Failed to load pubs'));
+            return const Center(child: Text('failed to load pubs'));
           }
         },
       ),

@@ -293,12 +293,12 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                             return const Center(child: CircularProgressIndicator());
                           }
                           if (snapshot.data!.docs.isEmpty) {
-                            return const Text('No reviews yet.');
+                            return const Text('no reviews yet.');
                           }
 
                           var reviews = snapshot.data!.docs;
                           if (reviews.isEmpty) {
-                            return const Text('No reviews yet.');
+                            return const Text('no reviews yet.');
                           }
 
                           double totalRating = reviews.fold(0.0, (totalSum, review) => totalSum + (review['rating'] as num).toDouble());

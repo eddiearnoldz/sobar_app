@@ -80,7 +80,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                return const Center(child: Text('Error loading drinks'));
+                return const Center(child: Text('error loading drinks'));
               } else {
                 final drinkGroups = snapshot.data!;
                 final drinksOfType = drinkGroups.values.elementAt(_selectedPage);
@@ -92,7 +92,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
                     visible: true,
                     maintainState: true,
                     child: drinksOfType.isEmpty
-                        ? Center(child: Text('No ${drinkGroups.keys.elementAt(_selectedPage)}s at this pub yet'))
+                        ? Center(child: Text('no ${drinkGroups.keys.elementAt(_selectedPage)}s at this pub yet'))
                         : ListView.builder(
                             itemCount: drinksOfType.length,
                             itemBuilder: (context, index) {
