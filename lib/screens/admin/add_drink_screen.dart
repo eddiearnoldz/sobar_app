@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/models/drink.dart';
-import 'package:sobar_app/utils/globals.dart';
 
 class AddDrinkScreen extends StatefulWidget {
   const AddDrinkScreen({super.key});

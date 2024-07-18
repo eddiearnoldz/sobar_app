@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/models/pub.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -37,7 +36,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
 
     // Load all drinks
     final drinkSnapshot = await FirebaseFirestore.instance.collection('drinks').get();
-    final drinks = drinkSnapshot.docs.map((doc) => Drink.fromJson(doc.id, doc.data() as Map<String, dynamic>)).toList();
+    final drinks = drinkSnapshot.docs.map((doc) => Drink.fromJson(doc.id, doc.data())).toList();
 
     setState(() {
       allPubs = pubs;
@@ -199,7 +198,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                             children: [
                               Text(
                                 pub.locationName,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 pub.locationAddress,
@@ -320,7 +319,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                         itemBuilder: (context, index) {
                           final drink = drinks[index];
                           return ListTile(
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                             title: Row(
                               children: [
                                 Expanded(
@@ -336,7 +335,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
                               ],
                             ),
                             trailing: IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.remove_circle,
                                 color: bottleColour,
                               ),

@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sobar_app/screens/settings/views/missing_drinks_screen.dart';
 import 'package:sobar_app/screens/settings/views/update_profile.dart';
 import 'package:sobar_app/screens/settings/views/useful_links_screen.dart';
 import 'package:sobar_app/utils/globals.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -123,14 +120,14 @@ class _SettingsScreenState extends State<SettingsScreen> with SingleTickerProvid
         centerTitle: false,
         title: AnimatedOpacity(
           opacity: _showTitle ? 1.0 : 0.0,
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
           child: RichText(
             text: TextSpan(
               text: "‘sup ",
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18),
               children: <TextSpan>[
                 TextSpan(
-                  text: '${user?.displayName}' ?? 'bello',
+                  text: (user?.displayName ?? 'bello'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onPrimary,

@@ -75,14 +75,14 @@ class DrinkTile extends StatelessWidget {
                 style: TextStyle(fontFamily: 'Anton', color: wineColour, letterSpacing: 1, height: 1.3),
               ),
             if (drink.isGlutenFree)
-              Text(
+              const Text(
                 "gf",
                 style: TextStyle(fontFamily: 'Anton', color: bottleColour, letterSpacing: 1, height: 1.3),
               ),
             if (drink.calories.isFinite)
               Text(
                 "${drink.calories.floor()} cals",
-                style: TextStyle(fontFamily: 'Anton', color: canColour, letterSpacing: 1, height: 1.3),
+                style: const TextStyle(fontFamily: 'Anton', color: canColour, letterSpacing: 1, height: 1.3),
               ),
             if (drink.category.isNotEmpty)
               Text(

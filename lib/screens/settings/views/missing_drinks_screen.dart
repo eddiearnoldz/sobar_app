@@ -111,13 +111,13 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
                         fontSize: 20,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(color: canColour),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: canColour),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: canColour),
                       ),
                     ),
@@ -159,13 +159,13 @@ class _MissingDrinkScreenState extends State<MissingDrinkScreen> {
                         fontSize: 20,
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(color: spiritColour),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: spiritColour),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: spiritColour),
                       ),
                     ),

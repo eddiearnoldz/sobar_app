@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -9,7 +8,7 @@ import 'package:sobar_app/components/dialogs/delete_confirmation_dialog.dart';
 import 'package:sobar_app/components/dialogs/sign_out_confirmation_dialog.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
-  const UpdateProfileScreen({Key? key}) : super(key: key);
+  const UpdateProfileScreen({super.key});
 
   @override
   _UpdateProfileScreenState createState() => _UpdateProfileScreenState();
@@ -310,7 +309,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> with SingleTi
                                         _nameController.text = _displayName;
                                       });
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'cancel',
                                       style: TextStyle(color: bottleColour, fontWeight: FontWeight.bold),
                                     ),

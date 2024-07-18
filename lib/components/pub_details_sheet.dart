@@ -367,8 +367,8 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                               _launchMap(map.mapType);
                             },
                             title: Text(
-                              'Open in ${map.mapName}',
-                              style: TextStyle(color: canColour, fontSize: 18),
+                              'open in ${map.mapName}',
+                              style: const TextStyle(color: canColour, fontSize: 18),
                               textAlign: TextAlign.center,
                             ),
                           ),

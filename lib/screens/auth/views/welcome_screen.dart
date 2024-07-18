@@ -97,7 +97,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                       } else {
                         launchUrl(Uri.parse(url));
                       }
-                    } catch (e) {}
+                    } catch (e) {
+                      print(e);
+                    }
                   },
                   child: RichText(
                     text: TextSpan(

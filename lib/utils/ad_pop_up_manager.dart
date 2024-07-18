@@ -51,7 +51,7 @@ class AdPopupManager {
                 textAlign: TextAlign.center,
               ),
             ),
-            titlePadding: EdgeInsets.only(top: 16),
+            titlePadding: const EdgeInsets.only(top: 16),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

@@ -6,7 +6,7 @@ import 'package:sobar_app/screens/admin/add_venue_screen.dart';
 import 'package:sobar_app/screens/admin/add_drinks_to_venue_screen.dart';
 
 class AdminScreen extends StatefulWidget {
-  const AdminScreen({Key? key}) : super(key: key);
+  const AdminScreen({super.key});
 
   @override
   _AdminScreenState createState() => _AdminScreenState();

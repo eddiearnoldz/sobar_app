@@ -5,10 +5,10 @@ class OpeningHoursTable extends StatelessWidget {
   final bool showOpeningHours;
 
   const OpeningHoursTable({
-    Key? key,
+    super.key,
     required this.openingHours,
     required this.showOpeningHours,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

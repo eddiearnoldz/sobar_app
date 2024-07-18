@@ -6,7 +6,7 @@ import 'package:sobar_app/utils/globals.dart';
 class PubDetailsDrinksOptionTable extends StatefulWidget {
   final Future<Map<String, List<Drink>>> drinkGroupsFuture;
 
-  const PubDetailsDrinksOptionTable({Key? key, required this.drinkGroupsFuture}) : super(key: key);
+  const PubDetailsDrinksOptionTable({super.key, required this.drinkGroupsFuture});
 
   @override
   _PubDetailsDrinksOptionTableState createState() => _PubDetailsDrinksOptionTableState();
@@ -60,7 +60,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
                   Positioned(
                     bottom: 0,
                     child: AnimatedContainer(
-                      duration: Duration(milliseconds: 200),
+                      duration: const Duration(milliseconds: 200),
                       curve: Curves.easeInOut,
                       height: 2,
                       width: _selectedPage == index ? MediaQuery.of(context).size.width : 0,
@@ -87,7 +87,7 @@ class _PubDetailsDrinksOptionTableState extends State<PubDetailsDrinksOptionTabl
 
                 return AnimatedOpacity(
                   opacity: 1,
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   child: Visibility(
                     visible: true,
                     maintainState: true,

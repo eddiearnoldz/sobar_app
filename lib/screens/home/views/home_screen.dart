@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:location/location.dart';
 import 'package:sobar_app/models/adPopUp.dart';
 import 'package:sobar_app/screens/admin/admin_screen.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
