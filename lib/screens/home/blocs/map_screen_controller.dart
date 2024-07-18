@@ -154,7 +154,6 @@ class MapScreenController {
       final markers = mapState.markers;
       final previousMarkerId = mapProvider.previousSelectedMarkerId;
 
-
       // If there is a previous marker and it's not the same as the new marker, update it to customIcon
       if (previousMarkerId != null && previousMarkerId != markerId) {
         final previousMarker = markers.firstWhere(
@@ -223,14 +222,15 @@ class MapScreenController {
   void searchDrinks(String text) {
     final pubState = context.read<PubBloc>().state;
     List<Drink> uniqueDrinks = [];
-    Set<String> uniqueDrinkIds = {};
+    Set<String> uniqueDrinkIdentifiers = {};
 
     if (pubState is PubLoaded || pubState is PubFiltered) {
       final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
       for (var pub in pubs) {
         for (var drink in pub.drinksData) {
-          if (drink.name.toLowerCase().contains(text.toLowerCase()) && !uniqueDrinkIds.contains(drink.id)) {
-            uniqueDrinkIds.add(drink.id);
+          final drinkIdentifier = '${drink.id}_${drink.type}';
+          if (drink.name.toLowerCase().contains(text.toLowerCase()) && !uniqueDrinkIdentifiers.contains(drinkIdentifier)) {
+            uniqueDrinkIdentifiers.add(drinkIdentifier);
             uniqueDrinks.add(drink);
           }
         }
