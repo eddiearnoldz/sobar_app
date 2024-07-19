@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sobar_app/models/pub.dart';
+import 'package:sobar_app/utils/globals.dart';
 import 'package:sobar_app/utils/google_places_helper.dart';
 
 class AddVenueScreen extends StatefulWidget {
@@ -94,6 +95,7 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
             textAlign: TextAlign.center,
           )),
         );
+        FocusScope.of(context).unfocus();
         _clearForm();
         return;
       }
@@ -114,10 +116,13 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
 
       await FirebaseFirestore.instance.collection('pubs').add(newPub.toJson());
 
+      FocusScope.of(context).unfocus();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
           'Venue added: ${newPub.locationName}',
+          style: const TextStyle(color: wineColour),
           textAlign: TextAlign.center,
         )),
       );
