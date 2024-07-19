@@ -22,14 +22,14 @@ class CustomInfoWindow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  flex: 4,
+                  flex: 7,
                   child: Text(
                     pub.locationName,
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary, fontFamily: 'Anton', letterSpacing: 1),
                   ),
                 ),
                 Flexible(
-                  flex: 1,
+                  flex: 3,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: _buildDrinkTypeIndicators(),
