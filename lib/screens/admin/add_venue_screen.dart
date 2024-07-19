@@ -245,7 +245,7 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Theme.of(context).colorScheme.onPrimary),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: _clearForm,
                       child: Text(

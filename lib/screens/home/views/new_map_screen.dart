@@ -198,7 +198,10 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     left: 0,
                     right: 60,
                     child: FilterDrinkResultsList(
-                        filteredDrinks: mapProvider.drinkSearchResults, onDrinkSelected: _controller.filterPubsByDrink, isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle),
+                      filteredDrinks: mapProvider.drinkSearchResults,
+                      onDrinkSelected: _controller.filterPubsByDrink,
+                      isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle,
+                    ),
                   ),
                 if (mapProvider.pubSearchResults.isNotEmpty)
                   Positioned(
@@ -206,15 +209,16 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     left: 0,
                     right: 60,
                     child: FilterPubResultsList(
-                        filteredPubs: mapProvider.pubSearchResults,
-                        onPubSelected: _controller.onPubSelected,
-                        pubSearchController: _pubSearchController,
-                        isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle),
+                      filteredPubs: mapProvider.pubSearchResults,
+                      pubSearchController: _pubSearchController,
+                      onPubSelected: _controller.onPubSelected,
+                      isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle,
+                    ),
                   ),
                 if (mapProvider.selectedDrink != null)
                   SelectedDrinkFilterClearButton(
                     selectedDrink: mapProvider.selectedDrink!,
-                    onClear: _controller.clearSelectedDrink,
+                    onClear: () => _controller.clearSelectedDrink(_drinkSearchController),
                     drinkSearchController: _drinkSearchController,
                   ),
                 Positioned(

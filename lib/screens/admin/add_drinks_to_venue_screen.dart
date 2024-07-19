@@ -80,6 +80,7 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
     if (!drinks.any((d) => d.id == drink.id)) {
       setState(() {
         drinks.add(drink);
+        filteredDrinks.remove(drink);
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -108,11 +109,13 @@ class _AddDrinksToVenueScreenState extends State<AddDrinksToVenueScreen> {
         ),
       );
     }
+    _drinkController.clear();
   }
 
   void _removeDrink(Drink drink) {
     setState(() {
       drinks.remove(drink);
+      filteredDrinks.add(drink);
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

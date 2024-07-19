@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sobar_app/models/pub.dart';
@@ -18,36 +17,36 @@ class PubBloc extends Bloc<PubEvent, PubState> {
     on<FilterPubs>(_onFilterPubs);
   }
 
-  void _onLoadPubs(LoadPubs event, Emitter<PubState> emit) async {
+  Future<void> _onLoadPubs(LoadPubs event, Emitter<PubState> emit) async {
     emit(PubLoading());
     try {
-      QuerySnapshot snapshot = await firestore.collection('pubs').get();
+      await for (var snapshot in firestore.collection('pubs').snapshots()) {
+        List<Future<Pub?>> futures = snapshot.docs.map((doc) async {
+          try {
+            final data = doc.data() as Map<String, dynamic>;
+            final pub = Pub.fromJson(doc.id, data);
 
-      List<Future<Pub?>> futures = snapshot.docs.map((doc) async {
-        try {
-          final data = doc.data() as Map<String, dynamic>;
-          final pub = Pub.fromJson(doc.id, data);
-
-          // Fetch associated drinks for each pub
-          List<Drink> drinks = [];
-          for (DocumentReference drinkRef in pub.drinks) {
-            final drinkDoc = await drinkRef.get();
-            if (drinkDoc.exists) {
-              drinks.add(Drink.fromJson(drinkDoc.id, drinkDoc.data() as Map<String, dynamic>));
+            // Fetch associated drinks for each pub
+            List<Drink> drinks = [];
+            for (DocumentReference drinkRef in pub.drinks) {
+              final drinkDoc = await drinkRef.get();
+              if (drinkDoc.exists) {
+                drinks.add(Drink.fromJson(drinkDoc.id, drinkDoc.data() as Map<String, dynamic>));
+              }
             }
+            pub.drinksData = drinks;
+
+            return pub;
+          } catch (e) {
+            log('Error parsing pub document: ${doc.id}, error: $e');
+            return null; // Skip the document if there's an error
           }
-          pub.drinksData = drinks;
+        }).toList();
 
-          return pub;
-        } catch (e) {
-          log('Error parsing pub document: ${doc.id}, error: $e');
-          return null; // Skip the document if there's an error
-        }
-      }).toList();
-
-      List<Pub> pubs = (await Future.wait(futures)).whereType<Pub>().toList();
-      originalPubs = pubs;
-      emit(PubLoaded(pubs: pubs));
+        List<Pub> pubs = (await Future.wait(futures)).whereType<Pub>().toList();
+        originalPubs = pubs;
+        emit(PubLoaded(pubs: pubs));
+      }
     } catch (e) {
       log('Error loading pubs: $e');
       emit(PubError());
