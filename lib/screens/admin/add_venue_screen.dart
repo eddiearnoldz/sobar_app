@@ -99,7 +99,7 @@ class _AddVenueScreenState extends State<AddVenueScreen> {
       }
 
       final vicinity = _selectedPlace!['vicinity'];
-      final city = vicinity.split(', ').last ?? "";
+      final city = vicinity?.split(', ').last ?? "London";
 
       final newPub = Pub(
         id: '',
