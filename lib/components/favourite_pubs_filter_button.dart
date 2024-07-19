@@ -60,7 +60,7 @@ class _FavouritePubsFilterButtonState extends State<FavouritePubsFilterButton> {
             heroTag: 'favouritePubsFilterButton',
             mini: true,
             onPressed: _toggleFavouriteFilter,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             child: Icon(
               Icons.favorite,
               color: isFilterActive ? Colors.red : Theme.of(context).colorScheme.onPrimary,
