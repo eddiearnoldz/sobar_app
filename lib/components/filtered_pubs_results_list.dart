@@ -22,8 +22,9 @@ class FilterPubResultsList extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height * .6,
+        Container(
+          color: Colors.white.withOpacity(0.5),
+          height: MediaQuery.of(context).size.height * .5,
           child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: filteredPubs.length,

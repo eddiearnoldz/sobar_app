@@ -120,6 +120,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     }
                   },
                   onTap: (_) {
+                    FocusScope.of(context).unfocus();
                     if (mapProvider.isBottomModalOpen) {
                       Navigator.of(context).pop();
                       mapProvider.setBottomModalState(false);
@@ -132,7 +133,6 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       mapProvider.setSelectedMarkerId(null);
                       mapProvider.setPreviousSelectedMarkerId(null);
                       setState(() {});
-                      FocusScope.of(context).unfocus();
                     }
                   },
                   onCameraMove: (position) {

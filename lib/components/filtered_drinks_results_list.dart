@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:sobar_app/models/drink.dart';
@@ -15,7 +16,7 @@ class FilterDrinkResultsList extends StatelessWidget {
 
     return Stack(alignment: Alignment.bottomCenter, children: [
       SizedBox(
-        height: MediaQuery.of(context).size.height * .6,
+        height: MediaQuery.of(context).size.height * .5,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: filteredDrinks.length,
@@ -33,7 +34,18 @@ class FilterDrinkResultsList extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Image.network(drink.imageUrl, width: 40, height: 40, fit: BoxFit.contain),
+                    CachedNetworkImage(
+                      imageUrl: drink.imageUrl,
+                      placeholder: (context, url) => Container(
+                        decoration: const BoxDecoration(color: Colors.transparent),
+                        width: 40,
+                        height: 40,
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                      height: 40,
+                      width: 40,
+                      fit: BoxFit.contain,
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,

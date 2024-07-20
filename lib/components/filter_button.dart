@@ -17,7 +17,7 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      padding: const EdgeInsets.symmetric(horizontal: 3.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: isActive ? color : Theme.of(context).colorScheme.primary,
