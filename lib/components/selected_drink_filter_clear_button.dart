@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sobar_app/models/drink.dart';
 
@@ -25,10 +26,14 @@ class SelectedDrinkFilterClearButton extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(50),
-              image: DecorationImage(
-                image: NetworkImage(selectedDrink.imageUrl),
-                fit: BoxFit.contain,
+            ),
+            child: CachedNetworkImage(
+              imageUrl: selectedDrink.imageUrl,
+              placeholder: (context, url) => Container(
+                decoration: BoxDecoration(color: Theme.of(context).colorScheme.primary),
               ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              fit: BoxFit.contain,
             ),
           ),
           Positioned(
