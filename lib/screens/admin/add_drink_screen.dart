@@ -45,7 +45,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
         isVegan: _isVegan,
         isGlutenFree: _isGlutenFree,
         averageRating: 0.0,
-        imageUrl: 'https://firebasestorage.googleapis.com/v0/b/sobar-app.appspot.com/o/empty_pint_glass.jpg?alt=media&token=3722311f-555a-4bd9-916b-80b2a887a87b',
+        imageUrl: '',
         type: _selectedType,
         ratingsCount: 0.0,
         calories: double.parse(_caloriesController.text),
