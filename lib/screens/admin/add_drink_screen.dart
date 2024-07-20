@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sobar_app/models/drink.dart';
+import 'package:sobar_app/utils/globals.dart';
+import 'package:flutter/services.dart';
 
 class AddDrinkScreen extends StatefulWidget {
   const AddDrinkScreen({super.key});
@@ -125,6 +127,9 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                     borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(4),
+                ],
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'please enter the abv with % e.g. 0.5%';
@@ -154,6 +159,9 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.number,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(3),
+                ],
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'please enter the calories';
@@ -181,6 +189,9 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                   ),
                 ),
                 keyboardType: TextInputType.text,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(30),
+                ],
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'please enter the category, e.g. pale ale';
@@ -228,6 +239,9 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                 children: [
                   Expanded(
                     child: CheckboxListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      checkColor: wineColour,
+                      selectedTileColor: wineColour,
                       title: const Text('vegan'),
                       value: _isVegan,
                       onChanged: (value) {
@@ -237,8 +251,12 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                       },
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: CheckboxListTile(
+                      contentPadding: EdgeInsets.all(0),
+                      checkColor: wineColour,
+                      selectedTileColor: wineColour,
                       title: const Text('gluten free'),
                       value: _isGlutenFree,
                       onChanged: (value) {
