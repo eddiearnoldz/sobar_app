@@ -85,10 +85,11 @@ class MapScreenController {
   }
 
   void clearSelectedDrink(TextEditingController drinkSearchController) {
-    Provider.of<MapProvider>(context, listen: false).setSelectedDrink(null);
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    mapProvider.setSelectedDrink(null);
     drinkSearchController.clear();
+    mapProvider.setDrinkSearchResults([]);
     applyFilters();
-    unfocusTextField();
   }
 
   void onPubSelected(Pub pub, TextEditingController pubSearchController) {

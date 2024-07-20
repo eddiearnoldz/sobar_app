@@ -126,7 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: _screens[currentPageIndex],
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: _screens,
+      ),
     );
   }
 

@@ -216,10 +216,14 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     ),
                   ),
                 if (mapProvider.selectedDrink != null)
-                  SelectedDrinkFilterClearButton(
-                    selectedDrink: mapProvider.selectedDrink!,
-                    onClear: () => _controller.clearSelectedDrink(_drinkSearchController),
-                    drinkSearchController: _drinkSearchController,
+                  Positioned(
+                    left: 10,
+                    top: 100,
+                    child: SelectedDrinkFilterClearButton(
+                      selectedDrink: mapProvider.selectedDrink!,
+                      onClear: (controller) => _controller.clearSelectedDrink(controller), // Corrected line
+                      drinkSearchController: _drinkSearchController,
+                    ),
                   ),
                 Positioned(
                   top: 0,
