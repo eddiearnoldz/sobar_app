@@ -50,6 +50,12 @@ class MapFilterBar extends StatelessWidget {
               isActive: currentFilter.contains('spirit'),
               onPressed: () => onFilterChanged('spirit'),
             ),
+            FilterButton(
+              label: '5 plus',
+              color: fivePlusColour,
+              isActive: currentFilter.contains('5Plus'),
+              onPressed: () => onFilterChanged('5Plus'),
+            ),
           ],
         ),
       ),

@@ -82,6 +82,9 @@ class PubBloc extends Bloc<PubEvent, PubState> {
           case 'draught':
             filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.type == 'draught')).toList();
             break;
+          case '5Plus':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.length >= 5).toList();
+            break;
           default:
             break;
         }

@@ -9,3 +9,4 @@ const Color bottleColour = Color(0xFFEF5350);
 const Color canColour = Color(0xFF2979FF);
 const Color wineColour = Color(0xFF4CAF50);
 const Color spiritColour = Color(0xFFFFB300);
+const Color fivePlusColour = Color(0xFFFA720F);
