@@ -180,7 +180,7 @@ class _AddDrinkScreenState extends State<AddDrinkScreen> {
                     borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.text,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'please enter the category, e.g. pale ale';

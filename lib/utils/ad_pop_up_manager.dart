@@ -26,7 +26,7 @@ class AdPopupManager {
   Future<void> showAdPopupIfNeeded(BuildContext context, AdPopUp adPopUp) async {
     int openCount = await getOpenCount();
     if (openCount > 0 && adPopUp.isLive && openCount % 5 == 0) {
-      Future.delayed(const Duration(seconds: 8), () => showAdPopup(context, adPopUp));
+      Future.delayed(const Duration(seconds: 10), () => showAdPopup(context, adPopUp));
     }
     await incrementOpenCount();
   }
@@ -47,7 +47,7 @@ class AdPopupManager {
               alignment: Alignment.center,
               child: Text(
                 adPopUp.adTitle,
-                style: const TextStyle(fontSize: 28, fontFamily: 'Anton'),
+                style: TextStyle(fontSize: 28, fontFamily: 'Anton', color: HexColor('#1C1C1C')),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -73,12 +73,12 @@ class AdPopupManager {
                 ),
                 Text(
                   adPopUp.adSubheader,
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.2),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, height: 1.2, color: HexColor('#1C1C1C')),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(adPopUp.adBody, style: const TextStyle(fontSize: 14, height: 1.2)),
+                Text(adPopUp.adBody, style: TextStyle(fontSize: 14, height: 1.2, color: HexColor('#1C1C1C'))),
               ],
             ),
             actions: [
@@ -100,7 +100,7 @@ class AdPopupManager {
                     Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: HexColor('#1C1C1C'),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
@@ -120,12 +120,12 @@ class AdPopupManager {
             },
             child: Container(
               margin: const EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(color: HexColor('#F8F48F'), shape: BoxShape.circle, border: Border.all(width: 1, color: Theme.of(context).colorScheme.onPrimary)),
+              decoration: BoxDecoration(color: HexColor('#F8F48F'), shape: BoxShape.circle, border: Border.all(width: 1, color: HexColor('#1C1C1C'))),
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Icon(
                   Icons.close,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: HexColor('#1C1C1C'),
                   size: 20,
                 ),
               ),
