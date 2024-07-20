@@ -210,7 +210,7 @@ class MapScreenController {
 
     if (pubState is PubLoaded || pubState is PubFiltered) {
       final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
-      filteredPubs = pubs.where((pub) => pub.locationName.toLowerCase().contains(text.toLowerCase())).toList();
+      filteredPubs = pubs.where((pub) => pub.locationName.replaceAll("'", "").toLowerCase().contains(text.toLowerCase().replaceAll("'", ""))).toList();
     }
 
     Provider.of<MapProvider>(context, listen: false).setPubSearchResults(filteredPubs);
