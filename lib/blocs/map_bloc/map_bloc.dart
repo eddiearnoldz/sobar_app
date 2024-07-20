@@ -35,7 +35,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void _onToggleMapStyle(ToggleMapStyle event, Emitter<MapState> emit) async {
     if (state is MapLoaded) {
       final newStyle = !(state as MapLoaded).isBlackStyle;
-      final newIconPath = newStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
+      final newIconPath = newStyle ? 'assets/icons/marker_light_pint.png' : 'assets/icons/marker_dark_pint.png';
       final newIcon = await BitmapDescriptor.asset(
         height: 30,
         const ImageConfiguration(),

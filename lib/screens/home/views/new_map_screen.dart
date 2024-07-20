@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart' as lottie;
 import 'package:provider/provider.dart';
 import 'package:sobar_app/blocs/map_bloc/map_bloc.dart';
 import 'package:sobar_app/blocs/pub_bloc/pub_bloc.dart';
@@ -34,6 +35,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
   final FocusNode _pubFocusNode = FocusNode();
   bool _isDrinkFocused = false;
   bool _isPubFocused = false;
+  bool _isMapLoading = true;
   Pub? _selectedPub;
   late MapScreenController _controller;
 
@@ -74,10 +76,10 @@ class _NewMapScreenState extends State<NewMapScreen> {
       body: Stack(
         children: [
           BlocListener<PubBloc, PubState>(
-            listener: (context, pubState) {
+            listener: (context, pubState) async {
               if (pubState is PubLoaded || pubState is PubFiltered) {
                 final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
-                final markers = pubs.map((pub) {
+                final markerFutures = pubs.map((pub) async {
                   final isSelected = pub.id == mapProvider.selectedMarkerId;
                   return Marker(
                     markerId: MarkerId(pub.id),
@@ -89,10 +91,15 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       _controller.updateMarker(pub.id);
                     },
                   );
-                }).toSet();
+                }).toList();
+
+                final markers = await Future.wait(markerFutures).then((markerList) => markerList.toSet());
 
                 context.read<MapBloc>().add(UpdateMarkers(markers));
                 log('Markers updated in PubLoaded or PubFiltered state');
+                setState(() {
+                  _isMapLoading = false;
+                });
               }
             },
             child: BlocBuilder<MapBloc, MapState>(
@@ -237,6 +244,12 @@ class _NewMapScreenState extends State<NewMapScreen> {
                   ),
                 ),
                 const FavouritePubsFilterButton(),
+                if (_isMapLoading)
+                  Positioned.fill(
+                    child: Center(
+                      child: lottie.Lottie.asset('assets/animations/loading_dots.json'),
+                    ),
+                  ),
               ],
             ),
           ),

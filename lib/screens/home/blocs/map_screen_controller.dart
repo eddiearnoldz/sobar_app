@@ -42,7 +42,7 @@ class MapScreenController {
   }
 
   Future<void> updateCustomIcon(bool isBlackStyle) async {
-    final assetPath = isBlackStyle ? 'assets/icons/coloured_pint_reversed.png' : 'assets/icons/coloured_pint.png';
+    final assetPath = isBlackStyle ? 'assets/icons/marker_light_pint.png' : 'assets/icons/marker_dark_pint.png';
     final icon = await BitmapDescriptor.asset(
       height: 30,
       const ImageConfiguration(),
@@ -51,7 +51,7 @@ class MapScreenController {
 
     customIcon = icon;
 
-    const selectedAssetPath = "assets/icons/icon_selected_pint.png";
+    const selectedAssetPath = "assets/icons/marker_selected_pint.png";
     final selectedIcon = await BitmapDescriptor.asset(
       height: 30,
       const ImageConfiguration(),
@@ -114,6 +114,7 @@ class MapScreenController {
 
   void showPubDetailsSheet(BuildContext context, Pub pub, GooglePlacesHelper placesHelper) {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
+     FocusScope.of(context).unfocus();
 
     mapProvider.setBottomModalState(true);
 
@@ -127,6 +128,7 @@ class MapScreenController {
         return PubDetailsSheet(pub: pub, placesHelper: placesHelper);
       },
     ).whenComplete(() {
+      FocusScope.of(context).unfocus();
       mapProvider.setBottomModalState(false);
     });
   }
@@ -181,12 +183,14 @@ class MapScreenController {
     }
   }
 
-  void reinitializeMarkers() {
+  void reinitializeMarkers() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final pubState = context.read<PubBloc>().state;
     if (pubState is PubLoaded || pubState is PubFiltered) {
       final pubs = pubState is PubLoaded ? pubState.pubs : (pubState as PubFiltered).filteredPubs;
-      final markers = pubs.map((pub) {
+
+      // Use Future.wait to parallelize the marker creation process
+      final markerFutures = pubs.map((pub) async {
         final isSelected = pub.id == mapProvider.selectedMarkerId;
         return Marker(
           markerId: MarkerId(pub.id),
@@ -198,9 +202,12 @@ class MapScreenController {
             updateMarker(pub.id);
           },
         );
-      }).toSet();
+      }).toList();
+
+      final markers = await Future.wait(markerFutures).then((markerList) => markerList.toSet());
 
       context.read<MapBloc>().add(UpdateMarkers(markers));
+      log('Markers updated in PubLoaded or PubFiltered state');
     }
   }
 
