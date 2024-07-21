@@ -206,7 +206,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: photos.take(3).map<Widget>((photo) {
+                                  children: photos.take(2).map<Widget>((photo) {
                                     final photoUrl = 'https://maps.googleapis.com/maps/api/place/photo'
                                         '?maxwidth=400&photoreference=${photo['photo_reference']}&key=${widget.placesHelper.apiKey}';
                                     return Padding(
