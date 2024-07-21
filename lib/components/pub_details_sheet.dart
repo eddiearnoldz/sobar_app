@@ -203,29 +203,28 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
                           if (photos.isNotEmpty)
                             SizedBox(
                               height: MediaQuery.of(context).size.width / 3,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: Row(
                                   children: photos.take(2).map<Widget>((photo) {
                                     final photoUrl = 'https://maps.googleapis.com/maps/api/place/photo'
                                         '?maxwidth=400&photoreference=${photo['photo_reference']}&key=${widget.placesHelper.apiKey}';
                                     return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                                      child: AspectRatio(
-                                        aspectRatio: 3 / 2,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(5),
+                                        child: SizedBox(
+                                          height: MediaQuery.of(context).size.width / 3,
+                                          width: MediaQuery.of(context).size.width / 2 - 15,
                                           child: CachedNetworkImage(
                                             imageUrl: photoUrl,
                                             placeholder: (context, url) => Container(
                                               color: Theme.of(context).colorScheme.primary,
                                               height: MediaQuery.of(context).size.width / 3,
-                                              width: MediaQuery.of(context).size.width / 2,
+                                              width: MediaQuery.of(context).size.width / 2 - 15,
                                             ),
                                             errorWidget: (context, url, error) => const Icon(Icons.error),
                                             fit: BoxFit.cover,
-                                            height: MediaQuery.of(context).size.width / 3,
-                                            width: MediaQuery.of(context).size.width / 2,
                                           ),
                                         ),
                                       ),
