@@ -63,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "find and enjoy the best no and low alcohol drinks in town",
+                    "discover and enjoy the best no and low alcohol drinks around",
                     style: TextStyle(
                       fontFamily: 'Work Sans',
                       fontSize: 18,
