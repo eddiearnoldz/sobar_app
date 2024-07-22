@@ -348,7 +348,7 @@ class _PubDetailsSheetState extends State<PubDetailsSheet> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white.withOpacity(0.8),
+      backgroundColor: Colors.white.withOpacity(0.9),
       builder: (context) {
         return FractionallySizedBox(
           widthFactor: 0.98,

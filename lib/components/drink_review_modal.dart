@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/review_tile.dart';
 import 'package:sobar_app/utils/globals.dart';
@@ -144,9 +145,14 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                               ),
                               Row(
                                 children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Color.fromARGB(255, 247, 119, 87),
+                                  Shimmer.fromColors(
+                                    baseColor: const Color.fromARGB(255, 247, 119, 87),
+                                    highlightColor: const Color.fromARGB(255, 234, 152, 131),
+                                    direction: ShimmerDirection.ltr,
+                                    child: const Icon(
+                                      Icons.star,
+                                      color: Color.fromARGB(255, 247, 119, 87),
+                                    ),
                                   ),
                                   Text(
                                     formatRating(widget.drink.averageRating),
