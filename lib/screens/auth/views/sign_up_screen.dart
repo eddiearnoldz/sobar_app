@@ -59,7 +59,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           body: Stack(children: [
             Positioned.fill(

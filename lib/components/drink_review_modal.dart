@@ -102,8 +102,12 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   }
 
   Future<String> _getUserName(DocumentReference userRef) async {
-    DocumentSnapshot userSnapshot = await userRef.get();
-    return userSnapshot['name'] ?? 'Unknown';
+    try {
+      DocumentSnapshot userSnapshot = await userRef.get();
+      return userSnapshot['name'];
+    } catch (e) {
+      return "SOBÆR";
+    }
   }
 
   @override

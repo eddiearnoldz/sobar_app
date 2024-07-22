@@ -63,7 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "Find the best low and no alcoholic options in town!",
+                    "find the best low and no alcoholic options in town!",
                     style: TextStyle(
                       fontFamily: 'Work Sans',
                       fontSize: 16,
@@ -82,7 +82,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   child: Text(
-                    'Get Started',
+                    'get started',
                     style: TextStyle(fontFamily: 'Anton', fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),

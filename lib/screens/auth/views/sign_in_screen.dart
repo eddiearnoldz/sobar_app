@@ -5,6 +5,7 @@ import 'package:sobar_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:sobar_app/components/my_text_field.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:sobar_app/screens/auth/blocs/sign_up_bloc/sign_up_bloc.dart'; // Import the SignUpBloc
+import 'package:sobar_app/screens/auth/views/forgotten_passwrod_screen.dart';
 import 'package:sobar_app/screens/auth/views/sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -57,7 +58,6 @@ class _SignInScreenState extends State<SignInScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
           body: Stack(children: [
             Positioned.fill(
@@ -144,10 +144,36 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             )
                           : const CircularProgressIndicator(),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ForgottenPasswordScreen(), // Navigate to the Forgotten Password Screen
+                            ),
+                          );
+                        },
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'forgotten password?',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
+                              height: 1,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
