@@ -7,8 +7,11 @@ class FilterDrinkResultsList extends StatelessWidget {
   final List<Drink> filteredDrinks;
   final Function(Drink) onDrinkSelected;
   final bool isBlackStyle;
+   final TextEditingController drinkController;
+  final FocusNode focusNode;
 
-  const FilterDrinkResultsList({super.key, required this.filteredDrinks, required this.onDrinkSelected, required this.isBlackStyle});
+  const FilterDrinkResultsList({super.key, required this.filteredDrinks, required this.onDrinkSelected, required this.isBlackStyle,  required this.drinkController,
+    required this.focusNode,});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,11 @@ class FilterDrinkResultsList extends StatelessWidget {
           itemBuilder: (context, index) {
             final drink = filteredDrinks[index];
             return GestureDetector(
-              onTap: () => onDrinkSelected(drink),
+            onTap: () {
+                onDrinkSelected(drink);
+                drinkController.clear();
+                focusNode.unfocus();
+              },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.75,
                 padding: const EdgeInsets.all(5),

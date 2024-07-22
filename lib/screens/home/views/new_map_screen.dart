@@ -208,6 +208,8 @@ class _NewMapScreenState extends State<NewMapScreen> {
                       filteredDrinks: mapProvider.drinkSearchResults,
                       onDrinkSelected: _controller.filterPubsByDrink,
                       isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle,
+                      drinkController: _drinkSearchController,
+                      focusNode: _drinkFocusNode,
                     ),
                   ),
                 if (mapProvider.pubSearchResults.isNotEmpty)
