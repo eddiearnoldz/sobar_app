@@ -66,7 +66,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     "find the best low and no alcoholic options in town!",
                     style: TextStyle(
                       fontFamily: 'Work Sans',
-                      fontSize: 16,
+                      fontSize: 18,
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                       height: 1.5,
@@ -74,7 +74,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const Spacer(flex: 2),
+                const Spacer(flex: 1),
                 ElevatedButton(
                   onPressed: () => _navigateToSignIn(context),
                   style: ElevatedButton.styleFrom(
@@ -91,7 +91,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 ),
                 GestureDetector(
                   onTap: () {
-                    String url = "https://www.burnleyfootballclub.com";
+                    String url = "https://www.oneyearnobeer.com/";
                     try {
                       if (Platform.isAndroid) {
                         launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);

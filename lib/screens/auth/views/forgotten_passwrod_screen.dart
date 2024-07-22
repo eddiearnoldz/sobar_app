@@ -36,73 +36,87 @@ class _ForgottenPasswordScreenState extends State<ForgottenPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('forgot password'),
-      ),
-      body: Stack(children: [
-        Positioned.fill(
-          child: Image.asset(
-            "assets/backgrounds/password_background.jpg",
-            fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text(
+            'reset password',
+            style: TextStyle(fontFamily: 'Anton', color: Theme.of(context).colorScheme.primary),
+          ),
+          backgroundColor: Colors.transparent, // Make AppBar transparent
+          elevation: 0,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.primary, // Set the color of the back button
           ),
         ),
-        Positioned.fill(
-            child: Container(
-          color: Colors.black.withOpacity(0.5),
-        )),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'enter your email to receive password reset instructions.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: MyTextField(
-                    controller: emailController,
-                    hintText: 'email',
-                    obscureText: false,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please fill in the email field';
-                      } else if (!RegExp(
-                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                      ).hasMatch(value)) {
-                        return 'please enter a valid email';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _sendPasswordResetEmail,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: Text(
-                    'send reset password email',
-                    style: TextStyle(fontFamily: 'Anton', fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                ),
-              ],
+        body: Stack(children: [
+          Positioned.fill(
+            child: Image.asset(
+              "assets/backgrounds/password_background.jpg",
+              fit: BoxFit.cover,
             ),
           ),
-        ),
-      ]),
+          Positioned.fill(
+              child: Container(
+            color: Colors.black.withOpacity(0.5),
+          )),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'enter your email to receive password reset instructions.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: MyTextField(
+                      controller: emailController,
+                      hintText: 'email',
+                      obscureText: false,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'please fill in the email field';
+                        } else if (!RegExp(
+                          r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                        ).hasMatch(value)) {
+                          return 'please enter a valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _sendPasswordResetEmail,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Text(
+                      'send password email',
+                      style: TextStyle(fontFamily: 'Anton', fontSize: 18, color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }
