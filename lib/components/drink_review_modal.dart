@@ -23,6 +23,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   final TextEditingController _reviewController = TextEditingController();
   bool _showReviewInput = false;
   bool _showReviewSubmittedAnimation = false;
+  bool _modalExpanded = false;
 
   Future<void> _submitReview() async {
     try {
@@ -105,7 +106,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
-      initialChildSize: 0.6,
+      initialChildSize: _modalExpanded ? 0.9 : 0.6,
       minChildSize: 0.5,
       maxChildSize: 0.9,
       expand: false,
@@ -141,7 +142,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                             children: [
                               Text(
                                 'abv: ${widget.drink.abv}',
-                                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               Row(
                                 children: [
@@ -156,7 +157,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                   ),
                                   Text(
                                     formatRating(widget.drink.averageRating),
-                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -289,6 +290,11 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                               cursorColor: Theme.of(context).colorScheme.onPrimary,
                               cursorHeight: 16,
                               maxLines: 3,
+                              onTap: () {
+                                setState(() {
+                                  _modalExpanded = true;
+                                });
+                              },
                             ),
                             const SizedBox(height: 05),
                             Row(
@@ -301,7 +307,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                     });
                                   },
                                   child: Text(
-                                    'cancel',
+                                    'close',
                                     style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
                                   ),
                                 ),
