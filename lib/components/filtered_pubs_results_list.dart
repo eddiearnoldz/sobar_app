@@ -7,6 +7,7 @@ class FilterPubResultsList extends StatelessWidget {
   final Function(Pub, TextEditingController) onPubSelected;
   final TextEditingController pubSearchController;
   final bool isBlackStyle;
+  final FocusNode focusNode;
 
   const FilterPubResultsList({
     super.key,
@@ -14,6 +15,7 @@ class FilterPubResultsList extends StatelessWidget {
     required this.isBlackStyle,
     required this.onPubSelected,
     required this.pubSearchController,
+    required this.focusNode,
   });
 
   @override
@@ -31,7 +33,7 @@ class FilterPubResultsList extends StatelessWidget {
             itemBuilder: (context, index) {
               final pub = filteredPubs[index];
               return GestureDetector(
-                onTap: () => onPubSelected(pub, pubSearchController),
+                onTap: () => {onPubSelected(pub, pubSearchController), focusNode.unfocus(), pubSearchController.clear()},
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.75,
                   padding: const EdgeInsets.all(5),

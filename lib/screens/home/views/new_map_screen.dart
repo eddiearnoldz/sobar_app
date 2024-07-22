@@ -220,6 +220,7 @@ class _NewMapScreenState extends State<NewMapScreen> {
                     child: FilterPubResultsList(
                       filteredPubs: mapProvider.pubSearchResults,
                       pubSearchController: _pubSearchController,
+                      focusNode: _pubFocusNode,
                       onPubSelected: _controller.onPubSelected,
                       isBlackStyle: (context.read<MapBloc>().state as MapLoaded).isBlackStyle,
                     ),
