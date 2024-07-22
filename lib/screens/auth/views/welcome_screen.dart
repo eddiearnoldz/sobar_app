@@ -63,11 +63,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
-                    "If you're staying on the wagon or thank you in Italian this is the app for you.",
+                    "Find the best low and no alcoholic options in town!",
                     style: TextStyle(
                       fontFamily: 'Work Sans',
                       fontSize: 16,
                       color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,

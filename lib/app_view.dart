@@ -38,20 +38,6 @@ class MyAppView extends StatelessWidget {
           fontFamily: 'Work Sans',
           focusColor: HexColor("#FBF6C7"),
         ),
-        darkTheme: ThemeData(
-          primaryColor: HexColor("#1C1C1C"),
-          colorScheme: ColorScheme.dark(
-            surface: HexColor("#1C1C1C"),
-            onSurface: HexColor("#FCF4F0"),
-            primary: HexColor("#1C1C1C"),
-            onPrimary: HexColor("#FCF4F0"),
-            secondary: HexColor('#181717'),
-            onSecondary: HexColor('#FFFFFF'),
-            error: HexColor("#FE5454"),
-          ),
-          fontFamily: 'Work Sans',
-          focusColor: HexColor("#1C1C1C"),
-        ),
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: (context, state) {
             if (state.status == AuthenticationStatus.authenticated) {
