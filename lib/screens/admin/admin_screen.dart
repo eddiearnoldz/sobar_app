@@ -29,7 +29,7 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
 
     final items = [
       AdminOptionTile(
-        title: 'add drinks to a venue',
+        title: 'update drinks at a venue',
         iconPath: "assets/icons/icon_two_pints.svg",
         color: wineColour,
         onTap: () => _navigateToAddDrinksToVenue(context),
