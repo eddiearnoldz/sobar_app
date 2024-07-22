@@ -85,6 +85,15 @@ class PubBloc extends Bloc<PubEvent, PubState> {
           case '5Plus':
             filteredPubs = filteredPubs.where((pub) => pub.drinksData.length >= 5).toList();
             break;
+          case 'vegan':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.isVegan)).toList();
+            break;
+          case 'glutenFree':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.isGlutenFree)).toList();
+            break;
+          case 'zero':
+            filteredPubs = filteredPubs.where((pub) => pub.drinksData.any((drink) => drink.abv == '0.0%')).toList();
+            break;
           default:
             break;
         }
