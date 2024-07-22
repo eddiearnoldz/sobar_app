@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sobar_app/components/drink_review_modal.dart';
+import 'package:sobar_app/screens/home/views/drink_screen.dart';
 import 'package:sobar_app/components/drink_tile.dart';
 import 'package:sobar_app/components/drinks_filter_bar.dart';
 import 'package:sobar_app/models/drink.dart';
@@ -45,18 +45,16 @@ class _DrinksScreenState extends State<DrinksScreen> {
     });
   }
 
-  void _showReviewModal(Drink drink) {
-    showModalBottomSheet(
-        context: context,
-        showDragHandle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        isScrollControlled: true,
-        builder: (context) {
-          return DrinkReviewModal(
-            drink: drink,
-            onSearchOnMap: widget.onSearchOnMap,
-          );
-        });
+  void _navigateToDrinkReview(Drink drink) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DrinkScreen(
+          drink: drink,
+          onSearchOnMap: widget.onSearchOnMap,
+        ),
+      ),
+    );
   }
 
   @override
@@ -92,7 +90,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
                     Drink drink = filteredDrinks[index];
                     return DrinkTile(
                       drink: drink,
-                      onTap: () => _showReviewModal(filteredDrinks[index]),
+                      onTap: () => _navigateToDrinkReview(filteredDrinks[index]),
                     );
                   }
                 },

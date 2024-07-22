@@ -6,6 +6,7 @@ class Drink {
   final bool isVegan, isGlutenFree;
   final double ratingsCount, averageRating, calories;
   List<Review> reviews;
+  String? buyUrl;
 
   Drink({
     required this.name,
@@ -18,6 +19,7 @@ class Drink {
     required this.category,
     required this.ratingsCount,
     required this.calories,
+    this.buyUrl,
     this.id = "",
     this.reviews = const [],
   });
@@ -30,6 +32,7 @@ class Drink {
         averageRating = (json['averageRating'] as num).toDouble(),
         calories = (json['calories'] as num).toDouble(),
         imageUrl = json['imageUrl'],
+        buyUrl = json['buyUrl'],
         type = json['type'],
         category = json['category'] ?? "",
         ratingsCount = (json['ratingsCount'] as num).toDouble(),
@@ -44,6 +47,7 @@ class Drink {
       'calories': calories,
       'averageRating': averageRating,
       'imageUrl': imageUrl,
+      'buyUrl': buyUrl,
       'type': type,
       'category': category,
       'ratingsCount': ratingsCount,
