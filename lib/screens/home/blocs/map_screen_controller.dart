@@ -78,10 +78,11 @@ class MapScreenController {
   }
 
   void filterPubsByDrink(Drink drink) {
+    final mapProvider = Provider.of<MapProvider>(context, listen: false);
+    mapProvider.setSelectedDrink(drink);
+    mapProvider.setDrinkSearchResults([]);
     final filter = 'drink_${drink.id}';
     context.read<PubBloc>().add(FilterPubs(filters: [filter]));
-    Provider.of<MapProvider>(context, listen: false).setSelectedDrink(drink);
-    Provider.of<MapProvider>(context, listen: false).setDrinkSearchResults([]);
   }
 
   void clearSelectedDrink(TextEditingController drinkSearchController) {
@@ -114,7 +115,7 @@ class MapScreenController {
 
   void showPubDetailsSheet(BuildContext context, Pub pub, GooglePlacesHelper placesHelper) {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
-     FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus();
 
     mapProvider.setBottomModalState(true);
 

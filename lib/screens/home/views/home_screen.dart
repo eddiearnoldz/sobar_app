@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:sobar_app/models/adPopUp.dart';
+import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/screens/admin/admin_screen.dart';
+import 'package:sobar_app/screens/home/blocs/map_screen_controller.dart';
 import 'package:sobar_app/screens/home/views/new_map_screen.dart';
 import 'package:sobar_app/screens/home/views/drinks_screen.dart';
 import 'package:sobar_app/screens/home/views/newsletter_screen.dart';
@@ -10,6 +13,7 @@ import 'package:sobar_app/utils/ad_pop_up_manager.dart';
 import 'package:sobar_app/utils/location_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sobar_app/utils/map_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,13 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentPageIndex = 0;
   bool isAdmin = false;
-
-  final List<Widget> _screens = [
-    const NewMapScreen(),
-    const DrinksScreen(),
-    const NewsletterScreen(),
-    const SettingsScreen(),
-  ];
+  late List<Widget> _screens;
 
   final LocationService locationService = LocationService();
 
@@ -36,6 +34,20 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _checkAdPopup();
     _checkAdminStatus();
+    _initilizeScreens();
+  }
+
+  void _initilizeScreens() {
+    _screens = [
+      const NewMapScreen(),
+      DrinksScreen(
+        onSearchOnMap: (Drink drink) {
+          onSearchOnMap(drink);
+        },
+      ),
+      const NewsletterScreen(),
+      const SettingsScreen(),
+    ];
   }
 
   void _checkAdPopup() async {
@@ -58,6 +70,20 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     }
+  }
+
+  void onSearchOnMap(Drink drink) {
+    print("running");
+    setState(() {
+      currentPageIndex = 0; // Switch to the map screen
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final mapProvider = Provider.of<MapProvider>(context, listen: false);
+      mapProvider.setSelectedDrink(drink);
+      mapProvider.setDrinkSearchResults([]);
+      final controller = MapScreenController(context);
+      controller.filterPubsByDrink(drink);
+    });
   }
 
   @override

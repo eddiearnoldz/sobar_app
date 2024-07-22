@@ -8,11 +8,14 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sobar_app/models/drink.dart';
 import 'package:sobar_app/components/review_tile.dart';
 import 'package:sobar_app/utils/globals.dart';
+import 'package:provider/provider.dart';
+import 'package:sobar_app/utils/map_provider.dart';
 
 class DrinkReviewModal extends StatefulWidget {
   final Drink drink;
+  final Function(Drink) onSearchOnMap;
 
-  const DrinkReviewModal({super.key, required this.drink});
+  const DrinkReviewModal({super.key, required this.drink, required this.onSearchOnMap});
 
   @override
   _DrinkReviewModalState createState() => _DrinkReviewModalState();
@@ -214,40 +217,73 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                       const SizedBox(height: 15),
                       Visibility(
                           visible: !_showReviewInput,
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
-                              foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-                              side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                          child: Row(
+                            children: [
+                              TextButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                                  foregroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+                                  side: MaterialStateProperty.all(BorderSide(color: Theme.of(context).colorScheme.onPrimary)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Leave a review",
+                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                      size: 14,
+                                    )
+                                  ],
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showReviewInput = !_showReviewInput;
+                                    _modalExpanded = true;
+                                  });
+                                },
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  widget.onSearchOnMap(widget.drink);
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5), // Border radius
+                                    side: BorderSide(
+                                      width: 1,
+                                      color: Theme.of(context).colorScheme.onPrimary, // Solid border color
+                                    ),
+                                  ),
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                ),
+                                child: Text(
+                                  "on map📍",
+                                  style: TextStyle(
+                                    fontFamily: 'Anton',
+                                    fontSize: 18,
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Leave a review",
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 14,
-                                )
-                              ],
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _showReviewInput = !_showReviewInput;
-                              });
-                            },
+                            ],
                           )),
                       Visibility(
                         visible: _showReviewInput,
@@ -296,7 +332,7 @@ class _DrinkReviewModalState extends State<DrinkReviewModal> {
                                 });
                               },
                             ),
-                            const SizedBox(height: 05),
+                            const SizedBox(height: 5),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

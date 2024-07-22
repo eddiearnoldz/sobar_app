@@ -6,7 +6,8 @@ import 'package:sobar_app/components/drinks_filter_bar.dart';
 import 'package:sobar_app/models/drink.dart';
 
 class DrinksScreen extends StatefulWidget {
-  const DrinksScreen({super.key});
+  final Function(Drink) onSearchOnMap;
+  const DrinksScreen({super.key, required this.onSearchOnMap});
 
   @override
   _DrinksScreenState createState() => _DrinksScreenState();
@@ -51,7 +52,10 @@ class _DrinksScreenState extends State<DrinksScreen> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         isScrollControlled: true,
         builder: (context) {
-          return DrinkReviewModal(drink: drink);
+          return DrinkReviewModal(
+            drink: drink,
+            onSearchOnMap: widget.onSearchOnMap,
+          );
         });
   }
 
