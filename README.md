@@ -3,18 +3,20 @@
 An app to search London's pubs for no and low alcohol drinks.
 
 ## Screen Shots
-
-![Sobaer App Screenshot 1](assets/backgrounds/app_screnshot_map.png)
-*App home screen showing pub search functionality.*
-
-![Sobaer App Screenshot 2](assets/backgrounds/app_screenshot_drinks.png)
-*Drinks list search page*
-
-![Sobaer App Screenshot 3](path_to_image_3)
-*Apps welcome screen*
-
-![Sobaer App Screenshot 4](path_to_image_4)
-*App venue meta data page*
+<div style="display: grid; grid-template-columns: 1fr 1fr;">
+<p align="center">
+  <img src="assets/backgrounds/app_screnshot_map.png" alt="App home screen showing pub search functionality." width="500" />
+</p>
+<p align="center">
+  <img src="assets/backgrounds/app_screenshot_drinks.png" alt="Drinks list search page" width="500" />
+</p>
+<p align="center">
+  <img src="assets/backgrounds/app_screenshot_welcome.png" alt="Apps welcome screen" width="500" />
+</p>
+<p align="center">
+  <img src="assets/backgrounds/app_screenshot_bottom_modal.png" alt="App venue meta data page" width="500" />
+</p>
+</div>
 
 ## Tech Stack
 
