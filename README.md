@@ -1,16 +1,23 @@
-# sobar_app
+# Sobaer App
 
 An app to search London's pubs for no and low alcohol drinks.
 
-## Getting Started
+## Screen Shots
 
-This project is a starting point for a Flutter application.
+![Sobaer App Screenshot 1](assets/backgrounds/app_screnshot_map.png)
+*App home screen showing pub search functionality.*
 
-A few resources to get you started if this is your first Flutter project:
+![Sobaer App Screenshot 2](assets/backgrounds/app_screenshot_drinks.png)
+*Drinks list search page*
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Sobaer App Screenshot 3](path_to_image_3)
+*Apps welcome screen*
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Sobaer App Screenshot 4](path_to_image_4)
+*App venue meta data page*
+
+## Tech Stack
+
+- **Flutter Framework**: Used to build the UI and manage the app’s architecture.
+- **Firebase**: For database management and user authentication.
+- **Google Cloud Functions**: To securely store and manage environment variables.
